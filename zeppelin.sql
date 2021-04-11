@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 09-Abr-2021 às 05:05
+-- Tempo de geração: 11-Abr-2021 às 05:41
 -- Versão do servidor: 10.4.17-MariaDB
 -- versão do PHP: 8.0.2
 
@@ -98,7 +98,8 @@ INSERT INTO `clientes` (`id_cliente`, `id_pessoa_fisica`, `id_pessoa_juridica`, 
 (5, NULL, 19, NULL, NULL),
 (6, 9, NULL, NULL, NULL),
 (7, 8, NULL, NULL, NULL),
-(9, 15, NULL, NULL, NULL);
+(9, 15, NULL, NULL, NULL),
+(11, 31, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -193,7 +194,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (12, '2020_12_07_012245_create_clientes_table', 1),
 (13, '2020_12_07_013939_create_veiculos_table', 1),
 (18, '2021_03_21_180044_create_orcamentos_table', 2),
-(19, '2021_03_21_190530_create_orcamento_items_table', 2);
+(19, '2021_03_21_190530_create_orcamento_items_table', 2),
+(20, '2021_04_10_013121_add_estoque_table_produtos', 3);
 
 -- --------------------------------------------------------
 
@@ -309,26 +311,30 @@ CREATE TABLE `orcamentos` (
 
 INSERT INTO `orcamentos` (`id_orcamento`, `valor_desconto`, `percentual_desconto`, `valor_total_sem_desconto`, `valor_total`, `status_orcamento`, `id_cliente`, `id_veiculo`, `id_user`, `salvo`, `created_at`, `updated_at`) VALUES
 (2, 0.00, 0.00, 128.00, 128.00, 'fechado', 3, 3, 1, '1', NULL, '2021-04-09 03:18:17'),
-(3, 0.00, 0.00, 105.00, 105.00, 'aberto', 1, 1, 1, '1', NULL, '2021-04-09 03:16:27'),
-(4, 0.00, 0.00, 0.00, 0.00, 'aberto', 1, NULL, 1, '1', NULL, '2021-04-09 03:05:42'),
+(3, 0.00, 0.00, 233.00, 233.00, 'aprovado', 1, 1, 1, '1', NULL, '2021-04-10 01:54:24'),
+(4, 6.30, 1.50, 417.99, 411.69, 'aprovado', 1, 1, 1, '1', NULL, '2021-04-10 01:56:37'),
 (5, 0.00, 0.00, 0.00, 0.00, 'aberto', 1, NULL, 1, '0', NULL, NULL),
 (6, 0.00, 0.00, 128.00, 128.00, 'fechado', 2, 2, 1, '1', NULL, '2021-04-09 04:10:30'),
 (7, 0.00, 0.00, 423.98, 423.98, 'aberto', 2, 2, 1, '1', NULL, '2021-04-09 03:56:02'),
-(8, 103.28, 5.00, 1102.84, 999.56, 'aberto', 5, 7, 1, '1', NULL, '2021-04-09 03:08:46'),
-(9, 0.00, 0.00, 16105.00, 16105.00, 'aberto', 1, 1, 1, '1', NULL, '2021-04-09 04:32:42'),
+(8, 103.28, 3.33, 1202.84, 1099.56, 'aberto', 5, 7, 1, '1', NULL, '2021-04-10 03:41:17'),
+(9, 0.00, 0.00, 16125.04, 16125.04, 'cancelado', 1, 1, 1, '1', NULL, '2021-04-10 05:54:34'),
 (10, 0.00, 0.00, 0.00, 0.00, 'aberto', 1, NULL, 1, '0', NULL, NULL),
 (11, 0.00, 0.00, 0.00, 0.00, 'aberto', 6, NULL, 1, '0', NULL, NULL),
-(12, 42.40, 2.50, 871.98, 829.58, 'aberto', 6, 8, 1, '0', '2021-03-30 01:17:36', '2021-03-30 02:26:05'),
-(13, 0.00, 0.00, 211.99, 211.99, 'aberto', 9, 9, 1, '1', '2021-03-30 02:32:25', '2021-04-09 03:02:48'),
-(14, 0.00, 0.00, 415.98, 415.98, 'aberto', 9, 9, 1, '1', '2021-03-30 02:34:31', '2021-03-30 04:35:01'),
-(15, 41.60, 10.00, 415.98, 374.38, 'aberto', 1, 1, 1, '0', '2021-03-31 02:20:33', '2021-03-31 02:21:12'),
-(16, 325.17, 10.00, 3251.74, 2926.57, 'aberto', 9, 9, 1, '0', '2021-03-31 02:26:37', '2021-03-31 02:27:04'),
-(17, 5.25, 0.56, 1436.97, 1431.72, 'aberto', 9, 9, 1, '0', '2021-04-02 05:32:18', '2021-04-02 06:09:54'),
-(18, 367.17, 6.67, 3879.73, 3512.56, 'aberto', 9, 9, 1, '1', '2021-04-02 06:10:03', '2021-04-09 05:43:09'),
-(19, 106.00, 50.00, 211.99, 106.00, 'aberto', 5, 5, 1, '0', '2021-04-02 06:16:31', '2021-04-06 03:52:49'),
+(12, 34.00, 5.00, 599.99, 565.99, 'aprovado', 6, 8, 1, '1', '2021-03-30 01:17:36', '2021-04-10 04:11:20'),
+(13, 0.00, 0.00, 211.99, 211.99, 'aprovado', 9, 9, 1, '1', '2021-03-30 02:32:25', '2021-04-10 02:06:23'),
+(14, 0.00, 0.00, 415.98, 415.98, 'cancelado', 9, 9, 1, '1', '2021-03-30 02:34:31', '2021-04-10 04:22:57'),
+(15, 41.60, 10.00, 415.98, 374.38, 'aprovado', 1, 1, 1, '1', '2021-03-31 02:20:33', '2021-04-10 06:12:08'),
+(16, 325.17, 10.00, 3251.74, 2926.57, 'cancelado', 9, 9, 1, '1', '2021-03-31 02:26:37', '2021-04-10 04:23:16'),
+(17, 5.25, 0.56, 1436.97, 1431.72, 'aprovado', 9, 9, 1, '1', '2021-04-02 05:32:18', '2021-04-10 04:23:48'),
+(18, 367.17, 6.67, 3879.73, 3512.56, 'aprovado', 9, 9, 1, '1', '2021-04-02 06:10:03', '2021-04-10 06:12:25'),
+(19, 126.00, 20.00, 736.99, 611.00, 'cancelado', 5, 7, 1, '1', '2021-04-02 06:16:31', '2021-04-10 04:18:24'),
 (20, 0.00, 0.00, 417.99, 417.99, 'aberto', 9, 9, 1, '0', '2021-04-06 02:14:58', '2021-04-06 03:00:32'),
-(21, 0.00, 0.00, 630.00, 630.00, 'aberto', 9, 9, 1, '0', '2021-04-09 01:49:43', '2021-04-09 02:39:07'),
-(22, 0.00, 0.00, 423.98, 423.98, 'aberto', 3, 3, 1, '1', '2021-04-09 04:26:03', '2021-04-09 04:26:18');
+(21, 0.00, 0.00, 630.00, 630.00, 'aprovado', 9, 9, 1, '1', '2021-04-09 01:49:43', '2021-04-10 04:26:47'),
+(22, 0.00, 0.00, 100.00, 100.00, 'aprovado', 3, 3, 1, '1', '2021-04-09 04:26:03', '2021-04-10 03:40:24'),
+(23, 0.00, 0.00, 190.00, 190.00, 'aberto', 1, 1, 1, '0', '2021-04-10 02:16:56', '2021-04-10 02:25:48'),
+(24, 10.50, 5.00, 125.00, 114.50, 'aprovado', 11, 10, 1, '1', '2021-04-10 05:09:08', '2021-04-10 05:10:23'),
+(25, 0.00, 0.00, 100.00, 100.00, 'cancelado', 11, 10, 1, '1', '2021-04-10 05:11:45', '2021-04-10 05:12:09'),
+(26, 0.00, 0.00, 10120.50, 10120.50, 'aprovado', 11, 10, 1, '1', '2021-04-10 16:00:57', '2021-04-10 16:01:40');
 
 -- --------------------------------------------------------
 
@@ -380,11 +386,30 @@ INSERT INTO `orcamento_items` (`id_orcamento_item`, `id_orcamento`, `id_produto`
 (50, 3, 4, NULL, 1, 0.00, 0.00, 105.00, 105.00, 1, '2021-04-09 03:16:25', '2021-04-09 03:16:25'),
 (51, 2, 6, NULL, 1, 0.00, 0.00, 128.00, 128.00, 1, '2021-04-09 03:18:13', '2021-04-09 03:18:13'),
 (52, 7, 2, NULL, 2, 0.00, 0.00, 423.98, 423.98, 1, '2021-04-09 03:55:56', '2021-04-09 03:55:56'),
-(54, 22, 2, NULL, 2, 0.00, 0.00, 423.98, 423.98, 1, '2021-04-09 04:26:15', '2021-04-09 04:26:15'),
 (55, 9, 4, NULL, 1, 0.00, 0.00, 105.00, 105.00, 1, '2021-04-09 04:32:32', '2021-04-09 04:32:32'),
 (56, 9, 7, NULL, 100, 0.00, 0.00, 16000.00, 16000.00, 1, '2021-04-09 04:32:40', '2021-04-09 04:32:40'),
 (57, 18, 5, NULL, 2, 42.00, 10.00, 420.00, 378.00, 1, '2021-04-09 05:42:37', '2021-04-09 05:42:37'),
-(58, 18, 3, NULL, 1, 0.00, 0.00, 207.99, 207.99, 1, '2021-04-09 05:43:06', '2021-04-09 05:43:06');
+(58, 18, 3, NULL, 1, 0.00, 0.00, 207.99, 207.99, 1, '2021-04-09 05:43:06', '2021-04-09 05:43:06'),
+(59, 3, 6, NULL, 1, 0.00, 0.00, 128.00, 128.00, 1, '2021-04-10 01:23:53', '2021-04-10 01:23:53'),
+(60, 4, 4, NULL, 2, 6.30, 3.00, 210.00, 203.70, 1, '2021-04-10 01:55:58', '2021-04-10 01:55:58'),
+(61, 4, 3, NULL, 1, 0.00, 0.00, 207.99, 207.99, 1, '2021-04-10 01:56:06', '2021-04-10 01:56:06'),
+(62, 23, 2, NULL, 1, 0.00, 0.00, 50.00, 50.00, 1, '2021-04-10 02:17:24', '2021-04-10 02:17:24'),
+(63, 23, 7, NULL, 1, 0.00, 0.00, 20.00, 20.00, 1, '2021-04-10 02:20:24', '2021-04-10 02:20:24'),
+(64, 23, 7, NULL, 1, 0.00, 0.00, 20.00, 20.00, 1, '2021-04-10 02:22:09', '2021-04-10 02:22:09'),
+(65, 23, 3, NULL, 1, 0.00, 0.00, 100.00, 100.00, 1, '2021-04-10 02:25:48', '2021-04-10 02:25:48'),
+(67, 22, NULL, 3, 1, 0.00, 0.00, 100.00, 100.00, 1, '2021-04-10 03:40:18', '2021-04-10 03:40:18'),
+(68, 8, NULL, 9, 1, 0.00, 0.00, 100.00, 100.00, 1, '2021-04-10 03:41:17', '2021-04-10 03:41:17'),
+(69, 12, NULL, 9, 1, 0.00, 0.00, 100.00, 100.00, 1, '2021-04-10 03:56:40', '2021-04-10 03:56:40'),
+(70, 12, 2, NULL, 1, 21.20, 10.00, 211.99, 190.79, 1, '2021-04-10 03:56:55', '2021-04-10 03:56:55'),
+(71, 12, 6, NULL, 1, 12.80, 10.00, 128.00, 115.20, 1, '2021-04-10 03:57:23', '2021-04-10 03:57:23'),
+(72, 19, NULL, 9, 2, 20.00, 10.00, 200.00, 180.00, 1, '2021-04-10 04:12:16', '2021-04-10 04:12:16'),
+(73, 19, 9, NULL, 1, 0.00, 0.00, 325.00, 325.00, 1, '2021-04-10 04:12:31', '2021-04-10 04:12:31'),
+(74, 9, 12, NULL, 2, 0.00, 0.00, 20.04, 20.04, 1, '2021-04-10 05:00:55', '2021-04-10 05:00:55'),
+(75, 24, 4, NULL, 1, 10.50, 10.00, 105.00, 94.50, 1, '2021-04-10 05:09:47', '2021-04-10 05:09:47'),
+(76, 24, NULL, 7, 1, 0.00, 0.00, 20.00, 20.00, 1, '2021-04-10 05:09:56', '2021-04-10 05:09:56'),
+(77, 25, NULL, 9, 1, 0.00, 0.00, 100.00, 100.00, 1, '2021-04-10 05:12:02', '2021-04-10 05:12:02'),
+(78, 26, 1, NULL, 1, 0.00, 0.00, 120.50, 120.50, 1, '2021-04-10 16:01:16', '2021-04-10 16:01:16'),
+(79, 26, NULL, 9, 100, 0.00, 0.00, 10000.00, 10000.00, 1, '2021-04-10 16:01:33', '2021-04-10 16:01:33');
 
 --
 -- Acionadores `orcamento_items`
@@ -504,7 +529,7 @@ CREATE TABLE `pessoa_fisicas` (
 INSERT INTO `pessoa_fisicas` (`id_pessoa_fisica`, `nome`, `dtnascimento`, `cpf`, `sexo`, `rg`, `orgaoexpedidor`, `email`, `id_cidade`, `cep`, `endereco`, `numero`, `complemento`, `bairro`, `telefone`, `celular`, `fornecedor`, `cliente`, `created_at`, `updated_at`) VALUES
 (1, 'Vanessa Emilly Sandra Assis', '1953-08-04', '137.112.911-80', 'f', 459400976, 'SSPGO', 'vanessaemillysandraassis_@homail.com', 1, '74.351-005', 'Alameda das Figueiras', 874, '0', 'Jardim Florença', '(62) 2518-2430', '(62) 9858-37616', 0, 1, NULL, '2021-03-23 02:17:55'),
 (2, 'Bento Anderson Cavalcanti', '1963-05-17', '415.882.951-84', 'm', 134352981, 'SSPGO', 'bentoandersoncavalcanti-92@fertau.com.br', 1, '74484-443', 'Rua GV 16', 194, '0', 'Residencial Goiânia Viva', '(62) 2932-5441', '(62) 99660-0237', 0, 0, NULL, NULL),
-(3, 'Andrea Marcela Marlene Bernardes', '1954-09-09', '486.087.321-14', 'f', 484844672, 'SSPGO', 'andreamarcelamarlenebernardes_@mac.com', 1, '74481-710', 'Rua Boa Vista', 103, '0', 'Residencial Mansões Paraíso', '(62) 2727-1680', '(62) 98278-8018', 0, 0, NULL, NULL),
+(3, 'Andrea Marcela Marlene Bernardes', '1954-09-09', '486.087.321-14', 'f', 484844672, 'SSPGO', 'andreamarcelamarlenebernardes_@mac.com', 1, '74.481-710', 'Rua Boa Vista', 103, '0', 'Residencial Mansões Paraíso', '(62) 2727-1680', '(62) 9827-88018', 0, 0, NULL, '2021-04-10 05:03:10'),
 (4, 'Diego Kevin Cauã Porto', '2003-11-21', '792.572.661-09', 'm', 396232607, 'SSPGO', 'diegokevincauaporto-83@dizain.com.br', 1, '74493-880', 'Rua N 24', 311, '0', 'Setor das Nações Extensão', '(62) 2704-3570', '(62) 99586-8852', 0, 0, NULL, NULL),
 (5, 'Stefany Carolina Daiane Pires', '1993-12-14', '318.996.511-01', 'f', 128838395, 'SSPGO', 'stefanycarolinadaianepires-70@premierpet.com.br', 1, '74391-090', 'Rua Jorge Luís de Abreu', 282, '0', 'Jardim Marques de Abreu', '(62) 2892-8397', '(62) 98988-5964', 0, 0, NULL, NULL),
 (6, 'Henrique Henry Sérgio Novaes', '1998-02-09', '775.634.371-93', 'm', 176022855, 'SSPGO', 'henriquehenrysergionovaes-90@puenteimoveis.com.br', 1, '74055-100', 'Rua 68', 290, '0', 'Setor Central', '(62) 2723-4784', '(62) 98368-3762', 0, 0, NULL, NULL),
@@ -532,7 +557,7 @@ INSERT INTO `pessoa_fisicas` (`id_pessoa_fisica`, `nome`, `dtnascimento`, `cpf`,
 (28, 'Caleb Benício Vieira', '1988-07-27', '024.583.001-46', 'm', 263746355, 'SSPGO', 'calebbeniciovieira__calebbeniciovieira@rabelloadvogados.com.br', 1, '74815-160', 'Alameda Juiz de Fora', 934, '0', 'Vila Alto da Glória', '(62) 3982-7712', '(62) 98567-5088', 0, 0, NULL, NULL),
 (29, 'Gabrielly Heloisa Campos', '1984-07-03', '512.373.161-03', 'f', 182476182, 'SSPGO', 'gabriellyheloisacampos-87@startingfitness.com.br', 1, '74491-477', 'Rua dos Ananás', 945, '0', 'Residencial Jardins do Cerrado 2', '(62) 2892-3388', '(62) 99419-6252', 0, 0, NULL, NULL),
 (30, 'Francisco Renan Baptista', '1974-06-05', '727.823.181-79', 'm', 379496203, 'SSPGO', 'franciscorenanbaptista__franciscorenanbaptista@acaocontabilsjc.com.br', 1, '74355-075', 'Via Tubarão', 274, '0', 'Condomínio Amin Camargo', '(62) 2503-3494', '(62) 98815-9603', 0, 0, NULL, NULL),
-(31, 'ALISSON DA SILVA ALMEIDA OLIVEIRA', '1990-03-04', '026.360.761-58', 'm', 2431, 'SSP', 'alisson_sao@hotmail.com', 1, '74.000-000', 'RUA TESTE', 0, 'TESTE', 'TESTE', '(62) 9999-9999', '(62) 99999-9999', 0, 0, '2020-07-24 00:07:58', '2020-07-24 00:07:58');
+(31, 'ALISSON DA SILVA ALMEIDA OLIVEIRA', '1990-03-04', '026.360.761-58', 'm', 2431, 'SSP', 'alisson_sao@hotmail.com', 1, '74.000-000', 'RUA TESTE', 0, 'TESTE', 'TESTE', '(62) 9999-9999', '(62) 9999-99999', 0, 1, '2020-07-24 00:07:58', '2021-04-10 05:03:20');
 
 --
 -- Acionadores `pessoa_fisicas`
@@ -625,6 +650,7 @@ DELIMITER ;
 CREATE TABLE `produtos` (
   `id_produto` int(10) UNSIGNED NOT NULL,
   `descricao` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estoque` int(11) NOT NULL DEFAULT 0,
   `unidade` enum('UN','PC','CX','DZ','GS','PA','PR','PT','RL','CT') COLLATE utf8mb4_unicode_ci NOT NULL,
   `preco` double(10,2) NOT NULL,
   `ativo` tinyint(1) NOT NULL DEFAULT 1,
@@ -636,18 +662,22 @@ CREATE TABLE `produtos` (
 -- Extraindo dados da tabela `produtos`
 --
 
-INSERT INTO `produtos` (`id_produto`, `descricao`, `unidade`, `preco`, `ativo`, `created_at`, `updated_at`) VALUES
-(1, 'KIT CORREIA DENTADA VOLKSWAGEN GOL, CROSSFOX, FOX', 'UN', 120.50, 0, '2021-03-23 03:40:03', '2021-03-23 03:40:03'),
-(2, 'KIT CORREIA DENTADA GM CORSA E CELTA', 'UN', 211.99, 1, '2021-03-23 03:40:17', '2021-03-23 03:51:50'),
-(3, 'KIT REVISÃO CELTA/PRISMA', 'UN', 207.99, 1, '2021-03-23 03:40:38', '2021-03-23 04:45:32'),
-(4, 'KIT CORREIA DENTADA VOLKSWAGEN GOL, CROSSFOX, FOX', 'UN', 105.00, 1, NULL, NULL),
-(5, 'KIT CORREIA DENTADA GM CORSA E CELTA', 'UN', 210.00, 1, NULL, NULL),
-(6, 'KIT REVISÃO CELTA/PRISMA', 'UN', 128.00, 1, NULL, NULL),
-(7, 'Coxim Completo Do Amortecedor Dianteiro Original Renault Clio E Kangoo Todos 99 Até 2016', 'UN', 160.00, 1, NULL, NULL),
-(8, 'Terminal Maciço 95mm Curto Tcm', 'UN', 35.00, 1, NULL, NULL),
-(9, 'Kit 4 Bucha Braço Barra Estabilizadora Traseira Peugeot 206 207 Sw', 'UN', 325.00, 1, NULL, NULL),
-(10, 'FAROL DIANTEIRO L.E - ONIX - 2020 A 2021', 'UN', 1625.87, 0, '2021-03-30 02:33:26', '2021-03-30 02:33:26'),
-(11, 'AMORTECEDOR DIANTEIRO LD - ZAFIRA - 2001 A 2012', 'UN', 258.21, 0, '2021-03-30 02:34:09', '2021-03-30 02:34:09');
+INSERT INTO `produtos` (`id_produto`, `descricao`, `estoque`, `unidade`, `preco`, `ativo`, `created_at`, `updated_at`) VALUES
+(1, 'KIT CORREIA DENTADA VOLKSWAGEN GOL, CROSSFOX, FOX', 0, 'UN', 120.50, 0, '2021-03-23 03:40:03', '2021-03-23 03:40:03'),
+(2, 'KIT CORREIA DENTADA GM CORSA E CELTA', 0, 'UN', 211.99, 1, '2021-03-23 03:40:17', '2021-03-23 03:51:50'),
+(3, 'KIT REVISÃO CELTA/PRISMA', 0, 'UN', 207.99, 1, '2021-03-23 03:40:38', '2021-03-23 04:45:32'),
+(4, 'KIT CORREIA DENTADA VOLKSWAGEN GOL, CROSSFOX, FOX', 0, 'UN', 105.00, 1, NULL, NULL),
+(5, 'KIT CORREIA DENTADA GM CORSA E CELTA', 0, 'UN', 210.00, 1, NULL, NULL),
+(6, 'KIT REVISÃO CELTA/PRISMA', 0, 'UN', 128.00, 1, NULL, NULL),
+(7, 'Coxim Completo Do Amortecedor Dianteiro Original Renault Clio E Kangoo Todos 99 Até 2016', 0, 'UN', 160.00, 1, NULL, NULL),
+(8, 'Terminal Maciço 95mm Curto Tcm', 0, 'UN', 35.00, 1, NULL, NULL),
+(9, 'Kit 4 Bucha Braço Barra Estabilizadora Traseira Peugeot 206 207 Sw', 0, 'UN', 325.00, 1, NULL, NULL),
+(10, 'FAROL DIANTEIRO L.E - ONIX - 2020 A 2021', 0, 'UN', 1625.87, 0, '2021-03-30 02:33:26', '2021-03-30 02:33:26'),
+(11, 'AMORTECEDOR DIANTEIRO LD - ZAFIRA - 2001 A 2012', 0, 'UN', 258.21, 0, '2021-03-30 02:34:09', '2021-03-30 02:34:09'),
+(12, 'FILTRO ÓLEO CHEVROLET CELTA 1.0 1.4 2001 A 2016 PSL18M TECFIL', 0, 'UN', 10.02, 1, '2021-04-10 04:58:02', '2021-04-10 04:58:02'),
+(13, 'FILTRO AR CHEVROLET CELTA 1.0 1.4 8V 2000 A 2016 WEGA', 0, 'UN', 9.39, 1, '2021-04-10 04:58:26', '2021-04-10 04:58:26'),
+(14, 'CAIXA DIREÇÃO HIDRÁULICA CHEVROLET CELTA 2001 A 2015 COM PONTEIRA AMPRI', 0, 'UN', 9.39, 1, '2021-04-10 04:58:46', '2021-04-10 04:58:46'),
+(15, 'CAIXA DIREÇÃO HIDRÁULICA CHEVROLET CELTA 2001 A 2015 COM PONTEIRA AMPRI', 0, 'UN', 1418.99, 1, '2021-04-10 04:59:03', '2021-04-10 04:59:03');
 
 -- --------------------------------------------------------
 
@@ -743,7 +773,8 @@ INSERT INTO `veiculos` (`id_veiculo`, `descricao_veiculo`, `modelo`, `fabricante
 (6, 'S10 CABINE SIMPLES, 2.4, FLEX', 'S10 CABINE SIMPLES, 2.4 FLEX', 'GM', 'OWXY3229', 2009, 2010, 'BRANCA', 'REVISÃO DE ROTINA', 5, '2021-03-23 04:53:39', '2021-03-23 04:53:39'),
 (7, 'S10 CABINE SIMPLES, 2.4, FLEX', 'S10 CABINE SIMPLES, 2.4 FLEX', 'GM', 'PPXY1012', 2009, 2010, 'BRANCA', 'REVISÃO DE ROTINA', 5, '2021-03-23 04:53:51', '2021-03-23 04:53:51'),
 (8, 'CELTA 4P, 1.0, FLEX', 'CELTA 4 PORTAS, 1.0, FLEX', 'GM', 'PCHI2340', 2010, 2010, 'BRANCA', 'REVISÃO E ALINHAMENTO.', 6, '2021-03-23 05:07:55', '2021-03-23 05:07:55'),
-(9, 'GM CHEVROLET ONIX 1.0, 4P, FLEX', 'ONIX', 'GM', 'XXX6969', 2019, 2019, 'BRETA', 'TROCA DE KIT DE VELAS', 9, '2021-03-26 02:47:00', '2021-03-26 02:47:00');
+(9, 'GM CHEVROLET ONIX 1.0, 4P, FLEX', 'ONIX', 'GM', 'XXX6969', 2019, 2019, 'BRETA', 'TROCA DE KIT DE VELAS', 9, '2021-03-26 02:47:00', '2021-03-26 02:47:00'),
+(10, 'FOX 1.0, FLEX, 4 PORTAS', 'FOX', 'VOLKSWAGEN', 'XXX3344', 2012, 2012, 'PRATA', 'REVISÃO 1000KM', 11, '2021-04-10 05:05:04', '2021-04-10 05:05:04');
 
 -- --------------------------------------------------------
 
@@ -756,6 +787,20 @@ CREATE TABLE `vw_clientes` (
 ,`nome` varchar(255)
 ,`documento` varchar(20)
 ,`count_orcamento` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura stand-in para vista `vw_dashboard_one`
+-- (Veja abaixo para a view atual)
+--
+CREATE TABLE `vw_dashboard_one` (
+`quantidade_aberta` decimal(22,0)
+,`quantidade_cancelado` decimal(22,0)
+,`quantidade_aprovado` decimal(22,0)
+,`valor_em_aberto` double(19,2)
+,`valor_recebido` double(19,2)
 );
 
 -- --------------------------------------------------------
@@ -780,6 +825,33 @@ CREATE TABLE `vw_item_orcamento` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura stand-in para vista `vw_itens`
+-- (Veja abaixo para a view atual)
+--
+CREATE TABLE `vw_itens` (
+`id_produto` int(10) unsigned
+,`descricao` varchar(255)
+,`unidade` varchar(2)
+,`preco` double(10,2)
+,`ativo` tinyint(4)
+,`estoque` int(11)
+,`tipo` varchar(7)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura stand-in para vista `vw_orcamento_qtd_item`
+-- (Veja abaixo para a view atual)
+--
+CREATE TABLE `vw_orcamento_qtd_item` (
+`id_orcamento` int(10) unsigned
+,`total` decimal(32,0)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura para vista `vw_clientes`
 --
 DROP TABLE IF EXISTS `vw_clientes`;
@@ -789,11 +861,38 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Estrutura para vista `vw_dashboard_one`
+--
+DROP TABLE IF EXISTS `vw_dashboard_one`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_dashboard_one`  AS SELECT sum(case when `o`.`status_orcamento` = 'aberto' then 1 else 0 end) AS `quantidade_aberta`, sum(case when `o`.`status_orcamento` = 'cancelado' then 1 else 0 end) AS `quantidade_cancelado`, sum(case when `o`.`status_orcamento` = 'aprovado' then 1 else 0 end) AS `quantidade_aprovado`, sum(case when `o`.`status_orcamento` = 'aberto' then `o`.`valor_total` else 0 end) AS `valor_em_aberto`, sum(case when `o`.`status_orcamento` = 'aprovado' then `o`.`valor_total` else 0 end) AS `valor_recebido` FROM `orcamentos` AS `o` ;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura para vista `vw_item_orcamento`
 --
 DROP TABLE IF EXISTS `vw_item_orcamento`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_item_orcamento`  AS SELECT `oi`.`id_orcamento_item` AS `id_orcamento_item`, `oi`.`id_orcamento` AS `id_orcamento`, `p2`.`id_produto` AS `cod_item`, `p2`.`descricao` AS `descricao`, `p2`.`unidade` AS `unidade`, `p2`.`preco` AS `valor_unitario`, `oi`.`quantidade` AS `quantidade`, `oi`.`valor_desconto` AS `valor_desconto`, `oi`.`percentual_desconto` AS `percentual_desconto`, `oi`.`valor_total` AS `valor_total` FROM (`orcamento_items` `oi` join `produtos` `p2` on(`oi`.`id_produto` = `p2`.`id_produto`)) ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para vista `vw_itens`
+--
+DROP TABLE IF EXISTS `vw_itens`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_itens`  AS SELECT `p`.`id_produto` AS `id_produto`, `p`.`descricao` AS `descricao`, `p`.`unidade` AS `unidade`, `p`.`preco` AS `preco`, `p`.`ativo` AS `ativo`, `p`.`estoque` AS `estoque`, 'produto' AS `tipo` FROM `produtos` AS `p` ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para vista `vw_orcamento_qtd_item`
+--
+DROP TABLE IF EXISTS `vw_orcamento_qtd_item`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vw_orcamento_qtd_item`  AS SELECT `oi`.`id_orcamento` AS `id_orcamento`, sum(`oi`.`quantidade`) AS `total` FROM `orcamento_items` AS `oi` GROUP BY `oi`.`id_orcamento` ;
 
 --
 -- Índices para tabelas despejadas
@@ -923,7 +1022,7 @@ ALTER TABLE `cidades`
 -- AUTO_INCREMENT de tabela `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id_cliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_cliente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de tabela `estados`
@@ -941,19 +1040,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT de tabela `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de tabela `orcamentos`
 --
 ALTER TABLE `orcamentos`
-  MODIFY `id_orcamento` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_orcamento` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de tabela `orcamento_items`
 --
 ALTER TABLE `orcamento_items`
-  MODIFY `id_orcamento_item` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id_orcamento_item` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT de tabela `perfils`
@@ -977,7 +1076,7 @@ ALTER TABLE `pessoa_juridicas`
 -- AUTO_INCREMENT de tabela `produtos`
 --
 ALTER TABLE `produtos`
-  MODIFY `id_produto` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_produto` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de tabela `servicos`
@@ -995,7 +1094,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de tabela `veiculos`
 --
 ALTER TABLE `veiculos`
-  MODIFY `id_veiculo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_veiculo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Restrições para despejos de tabelas
