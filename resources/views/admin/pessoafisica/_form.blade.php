@@ -119,7 +119,7 @@
     @if (isset($registros->cliente) && $registros->cliente == 1)
         <div class="col-sm-2">
             <label for="" class="label"><br/></label>
-            <a href="{{isset($cliente->id_cliente) ? route('admin.veiculos', $cliente->id_cliente ) : '#' }}" class="btn btn btn-warning ">{{isset($veiculo->id_cliente)?'Vizualizar Veículos':'Adicionar Veículo'}} </a>
+            <a href="{{isset($cliente->id_cliente) ? route('admin.veiculos', $cliente->id_cliente ) : '#' }}" class="btn btn btn-warning ">{{isset($veiculo->id_cliente)?'Visualizar Veículos':'Adicionar Veículo'}} </a>
         </div>
     @endif
 </div>
