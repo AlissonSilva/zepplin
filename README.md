@@ -15,17 +15,17 @@ Criar um banco de dados no MySQL Ex.: create database zeppelin.
 
 No arquivo .env e adicionar as informações referente ao seu banco.
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=zeppelin
-DB_USERNAME=root
-DB_PASSWORD=
+DB_CONNECTION=mysql <br>
+DB_HOST=127.0.0.1 <br>
+DB_PORT=3306 <br>
+DB_DATABASE=zeppelin <br>
+DB_USERNAME=root <br>
+DB_PASSWORD= <br>
 
 Após alteração do arquivo .env, salve o arquivo e pela linha de comando segue a linhas abaixo.
 
-php artisan migrate 
-php artisan db:seed
+php artisan migrate  <br>
+php artisan db:seed <br>
 
 Executar o script SCRIPT_001_004.SQL no banco de dados criado e opcional o script SCRIPT_001_002.SQL ( inserção na tabela de pessoas)
 
