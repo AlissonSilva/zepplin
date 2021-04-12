@@ -7,6 +7,33 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+## Como instalar a aplicação.
+
+Download .zip e extrair em sua pasta local.
+
+Criar um banco de dados no MySQL Ex.: create database zeppelin.
+
+No arquivo .env e adicionar as informações referente ao seu banco.
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=zeppelin
+DB_USERNAME=root
+DB_PASSWORD=
+
+Após alteração do arquivo .env, salve o arquivo e pela linha de comando segue a linhas abaixo.
+
+php artisan migrate 
+php artisan db:seed
+
+Executar o script SCRIPT_001_004.SQL no banco de dados criado e opcional o script SCRIPT_001_002.SQL ( inserção na tabela de pessoas)
+
+Por fim, executar o comando php artisan serve para iniciar a aplicação laravel.
+
+Com pré-requisito ter instalado o PHP7, Composer, Laravel e o MySQL.
+
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
