@@ -82,6 +82,8 @@ Route::group(['middleware' => 'auth'], function () {
     // Rotas users
     Route::get('/admin/user/',['as'=> 'admin.user', 'uses'=>'Admin\UserController@index']);
     Route::get('/admin/user/editar/{id}', ['as'=>'admin.user.editar', 'uses'=>'Admin\UserController@editar'])->where('id','[0-9]+');
+    Route::get('/admin/user/adicionar/',['as'=>'admin.user.adicionar', 'uses' => 'Admin\UserController@adicionar']);
+    Route::put('/admin/user/atualizar/{id}', ['as' => 'admin.user.atualizar', 'uses' => 'Admin\UserController@atualizar'])->where('id','[0-9]+');
 
     // Orçacamento
     Route::get('/admin/orcamento/', ['as' => 'admin.orcamentos', 'uses' => 'Admin\OrcamentoController@index']);
