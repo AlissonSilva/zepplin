@@ -59,7 +59,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
               <a class="collapse-item" href="{{route('admin.pessoafisica')}}">Pessoa Física</a>
               <a class="collapse-item" href="{{route('admin.pessoajuridica')}}">Pessoa Jurídica</a>
-              <a class="collapse-item" href="#">Usuários</a>
+              <a class="collapse-item" href="{{route('admin.user')}}">Usuários</a>
               <a class="collapse-item" href="{{route('admin.perfil')}}">Perfil</a>
 
             </div>

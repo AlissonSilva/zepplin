@@ -23,10 +23,11 @@ class CreateOrcamentosTable extends Migration
             $table->enum('status_orcamento', ['aberto', 'fechado', 'cancelado', 'aprovado'])->default('aberto');
             $table->integer('id_cliente')->unsigned();
             $table->integer('id_veiculo')->nullable()->unsigned();
-            $table->integer('id_user')->unsigned();
+            $table->integer('id_user')->nullable()->unsigned();
             $table->enum('salvo', [1, 0])->default(0);
             $table->foreign('id_cliente')->references('id_cliente')->on('clientes');
             $table->foreign('id_veiculo')->references('id_veiculo')->on('veiculos');
+            $table->foreign('id_user')->references('id_user')->on('user');
             $table->timestamps();
         });
     }

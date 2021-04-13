@@ -79,6 +79,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/veiculos/{id_cliente?}', ['as' => 'admin.veiculos', 'uses' => 'Admin\VeiculoController@index'])->where('id', '[0-9]+');
     Route::post('/admin/veiculos/inserir', ['as' => 'admin.veiculos.adicionar', 'uses' => 'Admin\VeiculoController@inserir']);
 
+    // Rotas users
+    Route::get('/admin/user/',['as'=> 'admin.user', 'uses'=>'Admin\UserController@index']);
+    Route::get('/admin/user/editar/{id}', ['as'=>'admin.user.editar', 'uses'=>'Admin\UserController@editar'])->where('id','[0-9]+');
+
     // Orçacamento
     Route::get('/admin/orcamento/', ['as' => 'admin.orcamentos', 'uses' => 'Admin\OrcamentoController@index']);
     Route::get('/admin/orcamento/{id_cliente}', ['as' => 'admin.orcamentos.lista', 'uses' => 'Admin\OrcamentoController@listarOrcamentos'])->where('id_cliente', '[0-9]+');
