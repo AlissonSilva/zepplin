@@ -14,11 +14,25 @@
 </div>
 
 <div class="row form-group">
-    <div class="col-sm-5">
+    <div class="col-sm-3">
         <label for="" class="label">Senha: </label>
         <input type="password" name="password" class="form-control form-control-user" id="password" value="{{isset($registros->password)? $registros->password : '' }}" required>
     </div>
-    <div class="col-sm-5">
+    <div class="col-sm-3">
+        <label for="" class="label">Perfil: </label>
+        <select name="perfil" id="perfil" class="form-control form-control estado">
+            <option>Selecionar um perfil</option>
+            @foreach ($perfil as $opt)
+                    @if (isset($opt->id_perfil) && $opt->id_perfil )
+                        <option value="{{$opt->id_perfil}}" selected>{{$opt->descricao}}</option>
+                    @else
+                        <option value="{{$opt->id_perfil}}">{{$opt->descricao}}</option>
+                    @endif
+            @endforeach
+        </select>
+    </div>
+    
+    <div class="col-sm-2">
         <label for="" class="label">Status: </label>
         <input type="checkbox" name="ativo" class="form-control form-control-user" id="ativo" {{isset($registros->ativo) && $registros->ativo == 1 ? 'checked' : ''}} value="true" >
     </div>

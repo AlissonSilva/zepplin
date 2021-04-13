@@ -22,7 +22,8 @@ class UserController extends Controller
     }
 
     public function adicionar(){
-        return view('admin.user.adicionar');
+        $perfil = Perfil::all();
+        return view('admin.user.adicionar', compact('perfil'));
     }
 
     public function atualizar(){
