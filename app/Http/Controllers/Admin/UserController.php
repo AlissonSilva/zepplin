@@ -18,7 +18,8 @@ class UserController extends Controller
     public function editar($id)
     {
         $registros = User::where('users.id','=',$id)->first();
-        return view('admin.user.editar', compact('registros'));
+        $perfil = Perfil::all();
+        return view('admin.user.editar', compact('registros','perfil'));
     }
 
     public function adicionar(){
