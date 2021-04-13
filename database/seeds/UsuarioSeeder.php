@@ -16,8 +16,7 @@ class UsuarioSeeder extends Seeder
             'name'=>'ADMIN',
             'email'=>'admin@admin.com',
             'password'=>bcrypt('123456'),
-            'cod_cadastro'=>'CF00001',
-            'id_perfil'=>1
+            'cod_cadastro'=>'CF00001'
         ];
 
         if(User::where('email','=',$dados['email'])->count()){
