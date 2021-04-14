@@ -9,7 +9,7 @@
 
 ## Como instalar a aplicação.
 
-Download .zip e extrair em sua pasta local.
+Download .zip e extrair em alguma pasta local.
 
 Criar um banco de dados no MySQL Ex.: create database zeppelin.
 
@@ -22,17 +22,18 @@ DB_DATABASE=zeppelin <br>
 DB_USERNAME=root <br>
 DB_PASSWORD= <br>
 
-Após alteração do arquivo .env, salve o arquivo e pela linha de comando segue a linhas abaixo.
+Após alteração no arquivo .env salve o arquivo. Executar os comandos abaixo via cmd ou shell na pasta do projeto. 
 
 php artisan migrate  <br>
 php artisan db:seed <br>
 
-Executar o script SCRIPT_001_004.SQL no banco de dados criado e opcional o script SCRIPT_001_002.SQL ( inserção na tabela de pessoas)
+Executar o script SCRIPT_001_004.SQL no banco de dados criado anteriomente (zeppelin), nesse script contem a criação de VIEW's, PROCEDURE, TRIGGER e FUNCTIONS. O script SCRIPT_001_002.SQL é opcional (inserção na tabela de pessoas).
 
 Por fim, executar o comando php artisan serve para iniciar a aplicação laravel.
 
-Com pré-requisito ter instalado o PHP7, Composer, Laravel e o MySQL.
+php artisan serve <br>
 
+Como pré-requisito ter instalado o PHP7, Composer, Laravel e o MySQL.
 
 ## About Laravel
 
