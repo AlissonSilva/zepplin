@@ -20,6 +20,7 @@
                 <div class="row form-group">
                     <div class="col-sm-10">
                         <button class="btn btn btn-primary " id="adicionarUsuario">Adicionar</button>
+                        <a class="btn btn-secondary" href="{{route('admin.user')}}">Voltar</a>
                     </div>
                 </div>
             </div>

@@ -428,4 +428,25 @@ $(document).ready(function () {
     });
 
 
+    $('#adicionarUsuario').click(function () {
+        let name = $('#name').val();
+        let perfil = $('#perfil').val();
+        let email = $('#email').val();
+        let password = $('#password').val();
+        let ativo = $('#ativo').prop('checked');
+
+        $.ajax({
+            type: 'post',
+            url: '/admin/user/inserir/',
+            header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'), name: name, perfil: perfil, email: email, ativo: ativo, password: password
+            },
+            success: function (e) {
+                $('#resultadoUsuario').html(e.msg);
+            }
+        });
+    });
+
+
 })

@@ -35,7 +35,7 @@
                     <td>{{$registro->id}}</td>
                     <td>{{$registro->name}}</td>
                     <td>{{$registro->email}}</td>
-                    <td>{{$registro->id_perfil}}</td>
+                    <td>{{$registro->descricao}}</td>
                     <td>
                         @if ($registro->ativo)
                         Ativo

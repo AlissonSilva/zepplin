@@ -84,6 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/user/editar/{id}', ['as'=>'admin.user.editar', 'uses'=>'Admin\UserController@editar'])->where('id','[0-9]+');
     Route::get('/admin/user/adicionar/',['as'=>'admin.user.adicionar', 'uses' => 'Admin\UserController@adicionar']);
     Route::put('/admin/user/atualizar/{id}', ['as' => 'admin.user.atualizar', 'uses' => 'Admin\UserController@atualizar'])->where('id','[0-9]+');
+    Route::post('/admin/user/inserir/',['as'=>'admin.user.inserir', 'uses'=>'Admin\UserController@inserir']);
 
     // Orçacamento
     Route::get('/admin/orcamento/', ['as' => 'admin.orcamentos', 'uses' => 'Admin\OrcamentoController@index']);
