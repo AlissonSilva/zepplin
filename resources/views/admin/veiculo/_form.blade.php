@@ -2,7 +2,7 @@
 <div class="row form-group">
     <div class="col-sm-4">
         <label for="" class="label">Descrição: </label>
-        <input type="text" name="descricao" class="form-control form-control-user" id="descricao_veiculo" value="{{isset($registros->descricao)? $registros->descricao : '' }}" onChange="javascript:this.value=this.value.toUpperCase();" required>
+        <input type="text" name="descricao" class="form-control form-control-user" id="descricao_veiculo" value="{{isset($registros->descricao_veiculo)? $registros->descricao_veiculo : '' }}" onChange="javascript:this.value=this.value.toUpperCase();" required>
     </div>
     <div class="col-sm-4">
         <label for="" class="label">Modelo: </label>

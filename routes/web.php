@@ -78,6 +78,9 @@ Route::group(['middleware' => 'auth'], function () {
     // Rotas veículos
     Route::get('/admin/veiculos/{id_cliente?}', ['as' => 'admin.veiculos', 'uses' => 'Admin\VeiculoController@index'])->where('id', '[0-9]+');
     Route::post('/admin/veiculos/inserir', ['as' => 'admin.veiculos.adicionar', 'uses' => 'Admin\VeiculoController@inserir']);
+    Route::get('/admin/veiculos/{id_cliente}/{id}', ['as' => 'admin.veiculos.editar', 'uses' => 'Admin\VeiculoController@editar'])->where('id', '[0-9]+');
+    Route::put('/admin/veiculos/atualizar/', ['as'=>'admin.veiculos.atualizar', 'uses'=>'Admin\VeiculoController@atualizar']);
+
 
     // Rotas users
     Route::get('/admin/user/',['as'=> 'admin.user', 'uses'=>'Admin\UserController@index']);

@@ -59,7 +59,7 @@
                                 <td> {{$registro->fabricante}} </td>
                                 <td> {{$registro->ano}} / {{$registro->fabricacao}}</td>
                                 <td> {{$registro->cor}} </td>
-                                <td><a href="" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Editar</a></td>
+                                <td><a href="{{ route('admin.veiculos.editar', [ 'id_cliente'=>$registro->id_cliente, 'id'=>$registro->id_veiculo]) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Editar</a></td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -94,7 +94,7 @@
                         <label for="" class="label">Documento: </label>
                         <input type="text" name="documento" class="form-control form-control-user" id="documento" value="{{isset($cliente->cpf)? $cliente->cpf : $cliente->cnpj}}"  onChange="javascript:this.value=this.value.toUpperCase();"  disabled>
                     </div>
-                    </div>
+                </div>
                 @endif
 
                 <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
