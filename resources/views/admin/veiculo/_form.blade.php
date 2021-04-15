@@ -2,6 +2,7 @@
 <div class="row form-group">
     <div class="col-sm-4">
         <label for="" class="label">Descrição: </label>
+        <input type="text" name="veiculo" id="veiculo" value="{{isset($registros->id_veiculo)? $registros->id_veiculo : '' }}" style="display: none" >
         <input type="text" name="descricao" class="form-control form-control-user" id="descricao_veiculo" value="{{isset($registros->descricao_veiculo)? $registros->descricao_veiculo : '' }}" onChange="javascript:this.value=this.value.toUpperCase();" required>
     </div>
     <div class="col-sm-4">

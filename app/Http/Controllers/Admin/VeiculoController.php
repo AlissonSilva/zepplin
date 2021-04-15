@@ -32,12 +32,39 @@ class VeiculoController extends Controller
     public function editar($id_cliente, $id){
         $registros = DB::table('veiculos')->join('vw_clientes','veiculos.id_cliente','=','vw_clientes.id_cliente')
         ->where(['veiculos.id_veiculo'=>$id, 'veiculos.id_cliente'=>$id_cliente])->first();
-
         return view('admin.veiculo.editar', compact('registros'));
     }
 
     public function atualizar(Request $request){
-        dd($request);
+        $dados = $request->all();
+        //dd($dados);
+
+        unset($dados['_token']);
+        unset($dados['_method']);
+        unset($dados['metodo']);
+        unset($dados['id_cliente']);
+
+/*        $obj = collect([
+            'descricao_veiculo' => $dados->descricao_veiculo,
+            'modelo' => $dados->modelo,
+            'fabricante' => $dados->fabricante,
+            'placa' => $dados->placa,
+            'ano' => $dados->ano,
+            'fabricacao' => $dados->fabricacao,
+            'cor' => $dados->cor,
+            'observacao' => $dados->observacao
+        ])->toArray();
+*/
+        // dd($dados);
+
+        
+        try {
+            Veiculo::where('veiculos.id_veiculo', $dados->id_veiculo)->update($dados);
+            
+            return response()->json(['msg' => '<div class="alert alert-danger">Veículo atualizado com sucesso.' . $th->getMessage() . '.</div>', 'tipo' => 'true']);
+        } catch (\Throwable $th) {
+            return response()->json(['msg' => '<div class="alert alert-danger">Erro ao atualizar o cadastro do veículo.' . $th->getMessage() . '.</div>', 'tipo' => 'false']);
+        }
     }
 
     public function listarVeiculosCliente($id_pessoa)

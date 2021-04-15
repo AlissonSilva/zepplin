@@ -16,6 +16,7 @@
           <div class="card-body">
             <div class="form-produto">
                 <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
+                <input name="_method" type="hidden" value="PUT" id="metodo">
 
                 <div class="row">
 
