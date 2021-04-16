@@ -488,7 +488,7 @@ class ComposerStaticInitca6d9f286156ff2cbe8f9b12052cf83c
         'App\\Http\\Controllers\\Admin\\PessoaJuridicaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/PessoaJuridicaController.php',
         'App\\Http\\Controllers\\Admin\\ProdutoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ProdutoController.php',
         'App\\Http\\Controllers\\Admin\\ServicoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ServicoController.php',
-        'App\\Http\\Controllers\\Admin\\User' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/User.php',
+        'App\\Http\\Controllers\\Admin\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/UserController.php',
         'App\\Http\\Controllers\\Admin\\VeiculoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/VeiculoController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\Site\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/Site/HomeController.php',

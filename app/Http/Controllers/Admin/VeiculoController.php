@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -29,13 +30,15 @@ class VeiculoController extends Controller
         return view('admin.veiculo.index', compact('registros', 'cliente'));
     }
 
-    public function editar($id_cliente, $id){
-        $registros = DB::table('veiculos')->join('vw_clientes','veiculos.id_cliente','=','vw_clientes.id_cliente')
-        ->where(['veiculos.id_veiculo'=>$id, 'veiculos.id_cliente'=>$id_cliente])->first();
+    public function editar($id_cliente, $id)
+    {
+        $registros = DB::table('veiculos')->join('vw_clientes', 'veiculos.id_cliente', '=', 'vw_clientes.id_cliente')
+            ->where(['veiculos.id_veiculo' => $id, 'veiculos.id_cliente' => $id_cliente])->first();
         return view('admin.veiculo.editar', compact('registros'));
     }
 
-    public function atualizar(Request $request){
+    public function atualizar(Request $request)
+    {
         $dados = $request->all();
         //dd($dados);
 
@@ -44,24 +47,22 @@ class VeiculoController extends Controller
         unset($dados['metodo']);
         unset($dados['id_cliente']);
 
-/*        $obj = collect([
-            'descricao_veiculo' => $dados->descricao_veiculo,
-            'modelo' => $dados->modelo,
-            'fabricante' => $dados->fabricante,
-            'placa' => $dados->placa,
-            'ano' => $dados->ano,
-            'fabricacao' => $dados->fabricacao,
-            'cor' => $dados->cor,
-            'observacao' => $dados->observacao
+        $obj = collect([
+            'descricao_veiculo' => $dados['descricao_veiculo'],
+            'modelo' => $dados['modelo'],
+            'fabricante' => $dados['fabricante'],
+            'placa' => $dados['placa'],
+            'ano' => $dados['ano'],
+            'fabricacao' => $dados['fabricacao'],
+            'cor' => $dados['cor'],
+            'observacao' => $dados['observacao']
         ])->toArray();
-*/
-        // dd($dados);
 
-        
+        // dd($dados);
         try {
-            Veiculo::where('veiculos.id_veiculo', $dados->id_veiculo)->update($dados);
-            
-            return response()->json(['msg' => '<div class="alert alert-danger">Veículo atualizado com sucesso.' . $th->getMessage() . '.</div>', 'tipo' => 'true']);
+            Veiculo::where('veiculos.id_veiculo', $dados['id_veiculo'])->update($obj);
+
+            return response()->json(['msg' => '<div class="alert alert-success">Veículo atualizado com sucesso.</div>', 'tipo' => 'true']);
         } catch (\Throwable $th) {
             return response()->json(['msg' => '<div class="alert alert-danger">Erro ao atualizar o cadastro do veículo.' . $th->getMessage() . '.</div>', 'tipo' => 'false']);
         }
@@ -85,6 +86,5 @@ class VeiculoController extends Controller
         } catch (\Throwable $e) {
             return response()->json(['msg' => '<div class="alert alert-danger" role="alert"> Erro ao salvar o cadastro. ' . $e->getMessage() . ' </div>']);;
         }
-
     }
 }

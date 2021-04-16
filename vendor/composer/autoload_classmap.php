@@ -19,7 +19,7 @@ return array(
     'App\\Http\\Controllers\\Admin\\PessoaJuridicaController' => $baseDir . '/app/Http/Controllers/Admin/PessoaJuridicaController.php',
     'App\\Http\\Controllers\\Admin\\ProdutoController' => $baseDir . '/app/Http/Controllers/Admin/ProdutoController.php',
     'App\\Http\\Controllers\\Admin\\ServicoController' => $baseDir . '/app/Http/Controllers/Admin/ServicoController.php',
-    'App\\Http\\Controllers\\Admin\\User' => $baseDir . '/app/Http/Controllers/Admin/User.php',
+    'App\\Http\\Controllers\\Admin\\UserController' => $baseDir . '/app/Http/Controllers/Admin/UserController.php',
     'App\\Http\\Controllers\\Admin\\VeiculoController' => $baseDir . '/app/Http/Controllers/Admin/VeiculoController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\Site\\HomeController' => $baseDir . '/app/Http/Controllers/Site/HomeController.php',
