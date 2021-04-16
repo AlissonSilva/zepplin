@@ -14,10 +14,9 @@
             <h6 class="m-0 font-weight-bold text-primary">Editar veículo</h6>
           </div>
           <div class="card-body">
-            <div class="form-produto">
-                <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
-                <input name="_method" type="hidden" value="PUT" id="metodo">
-
+            <form class="form-produto"  action="{{route('admin.veiculos.atualizar')}}"  method="POST" enctype="multipart/form-data" >
+                {{ csrf_field() }}
+                <input type="hidden" name="_method" value="put" >
                 <div class="row">
 
                     <div class="col-sm-2">
@@ -38,10 +37,10 @@
                 <div class="row form-group">
                     <div class="col-sm-10">
                         <button class="btn btn btn-primary " id="atualizarVeiculo">Atualizar</button>
+                        <a class="btn btn-secondary" href="{{route('admin.veiculos', $registros->id_cliente)}}">Voltar</a>
                     </div>
                 </div>
-            </div>
-            <div id="resultadoVeiculo"></div>
+            </form>
           </div>
     </div>
 </div>

@@ -40,7 +40,7 @@ class VeiculoController extends Controller
     public function atualizar(Request $request)
     {
         $dados = $request->all();
-        //dd($dados);
+//         dd($dados);
 
         unset($dados['_token']);
         unset($dados['_method']);
@@ -48,7 +48,7 @@ class VeiculoController extends Controller
         unset($dados['id_cliente']);
 
         $obj = collect([
-            'descricao_veiculo' => $dados['descricao_veiculo'],
+            'descricao_veiculo' => $dados['descricao'],
             'modelo' => $dados['modelo'],
             'fabricante' => $dados['fabricante'],
             'placa' => $dados['placa'],
@@ -58,14 +58,13 @@ class VeiculoController extends Controller
             'observacao' => $dados['observacao']
         ])->toArray();
 
-        // dd($dados);
+  //      dd($dados);
         try {
-            Veiculo::where('veiculos.id_veiculo', $dados['id_veiculo'])->update($obj);
-
-            return response()->json(['msg' => '<div class="alert alert-success">Veículo atualizado com sucesso.</div>', 'tipo' => 'true']);
+            Veiculo::where('veiculos.id_veiculo', $dados['veiculo'])->update($obj);
+            return back();
         } catch (\Throwable $th) {
             return response()->json(['msg' => '<div class="alert alert-danger">Erro ao atualizar o cadastro do veículo.' . $th->getMessage() . '.</div>', 'tipo' => 'false']);
-        }
+        } 
     }
 
     public function listarVeiculosCliente($id_pessoa)

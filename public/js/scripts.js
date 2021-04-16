@@ -368,33 +368,6 @@ $(document).ready(function () {
         });
     });
 
-    $('#atualizarVeiculo').click(function(){
-        let id_cliente = $('#id_cliente').val();
-        let descricao_veiculo = $('#descricao_veiculo').val();
-        let modelo = $('#modelo').val();
-        let fabricante = $('#fabricante').val();
-        let placa = $('#placa').val();
-        let ano = $('#ano').val();
-        let fabricacao = $('#fabricacao').val();
-        let cor = $('#cor').val()
-        let observacao = $('#observacao').val();
-        let id_veiculo = $('#veiculo').val();
-        let metodo = $('#metodo').val();
-
-        $.ajax({
-            type: 'put',
-            url: '/admin/veiculos/atualizar/',
-            header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            data: {
-                _token: $('meta[name="csrf-token"]').attr('content'), id_veiculo: id_veiculo, descricao_veiculo: descricao_veiculo, modelo: modelo, fabricante: fabricante,
-                placa: placa, ano: ano, fabricacao: fabricacao, cor: cor, observacao: observacao, id_cliente: id_cliente, metodo: metodo
-            },
-            success: function (e) {
-                $('#resultadoVeiculo').html(e);
-            }
-
-        });
-    });
 
     $('#salvarOrcamento').click(function () {
         let id_orcamento = $('#id_orcamento').val();
