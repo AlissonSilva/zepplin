@@ -102,4 +102,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/orcamento/printer/{id}', ['as' => 'admin.orcamentos.printer', 'uses' => 'Admin\OrcamentoController@printerOrcamento'])->where('id', '[0-9]+');
     Route::post('/admin/orcamento/aprovar/', ['as' => 'admin.orcamentos.aprovar', 'uses' => 'Admin\OrcamentoController@aprovarOrcamento']);
     Route::post('/admin/orcamento/cancelar/', ['as' => 'admin.orcamentos.cancelar', 'uses' => 'Admin\OrcamentoController@cancelarOrcamento']);
+
+    // Bancos
+    Route::get('/admin/financeiro/banco/', ['as' => 'admin.bancos', 'uses' => 'Admin\BancoController@index']);
+    Route::get('/admin/financeiro/banco/adicionar', ['as' => 'admin.bancos.adicionar', 'uses' => 'Admin\BancoController@adicionar']);
+    Route::post('/admin/financeiro/banco/inserir', ['as' => 'admin.bancos.inserir', 'uses' => 'Admin\BancoController@inserir']);
 });
