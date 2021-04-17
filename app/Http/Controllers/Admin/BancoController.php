@@ -18,6 +18,17 @@ class BancoController extends Controller
     }
 
     public function inserir(Request $request){
-        //
+        $dados = $request->all();
+
+        unset($dados['_token']);
+
+        $msg = $this->verificador($dados);
+
+        if($msg == "true"){
+            Banco::create($dados);
+            return response()->json(array('msg'=>'<div class="alert alert-success" role="alert"> Banco cadastrado com sucesso. </div>', 'tipo'=>'true'));
+        }else{
+            return response()->json(array('msg'=>$msg, 'tipo'=>'false'));
+        }
     }
 }
