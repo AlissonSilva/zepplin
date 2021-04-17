@@ -8,7 +8,7 @@
     <h1 class="h3 mb-0 text-gray-800">Veículos</h1>
 
     @if (!isset($cliente->nome) || !isset($cliente->razao_social))
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Adicionar veículo</a>
+        <a href="{{ route('admin.veiculos.adicionar' , ['id_cliente'=>$cliente->id_cliente] ) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Adicionar veículo</a>
     @endif
 
     </div>
@@ -49,9 +49,7 @@
                           </tr>
                         </thead>
                         <tbody>
-
                             @foreach ($registros as $registro)
-
                             <tr>
                                 <td> {{$registro->placa}} </td>
                                 <td> {{$registro->descricao_veiculo}} </td>

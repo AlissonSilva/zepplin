@@ -23,10 +23,6 @@ class VeiculoController extends Controller
             ->leftJoin('pessoa_juridicas', 'clientes.id_pessoa_juridica', '=', 'pessoa_juridicas.id_pessoa_juridica')
             ->where('clientes.id_cliente', '=', $id_cliente)->first();
 
-        // dd($registros);
-
-        // dd($cliente);
-
         return view('admin.veiculo.index', compact('registros', 'cliente'));
     }
 
@@ -37,10 +33,16 @@ class VeiculoController extends Controller
         return view('admin.veiculo.editar', compact('registros'));
     }
 
+    public function adicionar($id_cliente)
+    {
+        $registros = DB::table('vw_clientes')->where('id_cliente', $id_cliente)->first();
+        return view('admin.veiculo.adicionar', compact('registros'));
+    }
+
     public function atualizar(Request $request)
     {
         $dados = $request->all();
-//         dd($dados);
+        //         dd($dados);
 
         unset($dados['_token']);
         unset($dados['_method']);
@@ -58,13 +60,13 @@ class VeiculoController extends Controller
             'observacao' => $dados['observacao']
         ])->toArray();
 
-  //      dd($dados);
+        //      dd($dados);
         try {
             Veiculo::where('veiculos.id_veiculo', $dados['veiculo'])->update($obj);
             return back();
         } catch (\Throwable $th) {
             return response()->json(['msg' => '<div class="alert alert-danger">Erro ao atualizar o cadastro do veículo.' . $th->getMessage() . '.</div>', 'tipo' => 'false']);
-        } 
+        }
     }
 
     public function listarVeiculosCliente($id_pessoa)

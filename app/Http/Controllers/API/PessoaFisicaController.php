@@ -15,6 +15,11 @@ class PessoaFisicaController extends Controller
         return PessoaFisica::all();
     }
 
+    public function pginicial()
+    {
+        return response()->json(['message' => 'SIGOM - API', 'status' => 'Connected']);
+    }
+
     public function inserir(Request $request)
     {
         $dados = $request->all();

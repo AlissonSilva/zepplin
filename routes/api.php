@@ -21,9 +21,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'apisigom'], function () {
 
-    Route::get('/', function () {
-        return response()->json(['message' => 'SIGOM - API', 'status' => 'Connected']);;
-    });
+    // Route::get('/', function () {
+    //     return response()->json(['message' => 'SIGOM - API', 'status' => 'Connected']);
+    // });
+
+    Route::get('pgconn', 'API\PessoaFisicaController@pginicial');
     Route::get('pessoafisica', 'API\PessoaFisicaController@index');
     Route::post('pessoafisica/insert', 'API\PessoaFisicaController@inserir');
 

@@ -18,6 +18,7 @@ Route::get('/', ['as' => 'site.home', 'uses' => 'Site\HomeController@index']);
 
 Route::get('/login', ['as' => 'login', 'uses' => 'Site\LoginController@index']);
 Route::post('/login/entrar', ['as' => 'site.login.entrar', 'uses' => 'Site\LoginController@entrar']);
+Route::get('/login/sair', ['as' => 'site.login.sair', 'uses' => 'Site\LoginController@sair']);
 
 
 // Grupo de rotas administrativas
@@ -76,18 +77,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/perfil/deletar/{id}', ['as' => 'admin.perfil.deletar', 'uses' => 'Admin\PerfilController@deletar'])->where('id', '[0-9]+');
 
     // Rotas veículos
-    Route::get('/admin/veiculos/{id_cliente?}', ['as' => 'admin.veiculos', 'uses' => 'Admin\VeiculoController@index'])->where('id', '[0-9]+');
-    Route::post('/admin/veiculos/inserir', ['as' => 'admin.veiculos.adicionar', 'uses' => 'Admin\VeiculoController@inserir']);
+    Route::get('/admin/veiculos/{id_cliente}', ['as' => 'admin.veiculos', 'uses' => 'Admin\VeiculoController@index'])->where('id', '[0-9]+');
+    Route::post('/admin/veiculos/inserir', ['as' => 'admin.veiculos.inserir', 'uses' => 'Admin\VeiculoController@inserir']);
     Route::get('/admin/veiculos/{id_cliente}/{id}', ['as' => 'admin.veiculos.editar', 'uses' => 'Admin\VeiculoController@editar'])->where('id', '[0-9]+');
-    Route::put('/admin/veiculos/atualizar/', ['as'=>'admin.veiculos.atualizar', 'uses'=>'Admin\VeiculoController@atualizar']);
+    Route::get('/admin/veiculos/{id_cliente}/adicionar', ['as' => 'admin.veiculos.adicionar', 'uses' => 'Admin\VeiculoController@adicionar'])->where('id_cliente', '[0-9]+');
+    Route::put('/admin/veiculos/atualizar/', ['as' => 'admin.veiculos.atualizar', 'uses' => 'Admin\VeiculoController@atualizar']);
 
 
     // Rotas users
-    Route::get('/admin/user/',['as'=> 'admin.user', 'uses'=>'Admin\UserController@index']);
-    Route::get('/admin/user/editar/{id}', ['as'=>'admin.user.editar', 'uses'=>'Admin\UserController@editar'])->where('id','[0-9]+');
-    Route::get('/admin/user/adicionar/',['as'=>'admin.user.adicionar', 'uses' => 'Admin\UserController@adicionar']);
-    Route::put('/admin/user/atualizar/{id}', ['as' => 'admin.user.atualizar', 'uses' => 'Admin\UserController@atualizar'])->where('id','[0-9]+');
-    Route::post('/admin/user/inserir/',['as'=>'admin.user.inserir', 'uses'=>'Admin\UserController@inserir']);
+    Route::get('/admin/user/', ['as' => 'admin.user', 'uses' => 'Admin\UserController@index']);
+    Route::get('/admin/user/editar/{id}', ['as' => 'admin.user.editar', 'uses' => 'Admin\UserController@editar'])->where('id', '[0-9]+');
+    Route::get('/admin/user/adicionar/', ['as' => 'admin.user.adicionar', 'uses' => 'Admin\UserController@adicionar']);
+    Route::put('/admin/user/atualizar/{id}', ['as' => 'admin.user.atualizar', 'uses' => 'Admin\UserController@atualizar'])->where('id', '[0-9]+');
+    Route::post('/admin/user/inserir/', ['as' => 'admin.user.inserir', 'uses' => 'Admin\UserController@inserir']);
 
     // Orçacamento
     Route::get('/admin/orcamento/', ['as' => 'admin.orcamentos', 'uses' => 'Admin\OrcamentoController@index']);

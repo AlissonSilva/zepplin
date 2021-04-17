@@ -113,7 +113,7 @@
 
         <!-- Nav Item - Tables -->
         <li class="nav-item">
-          <a class="nav-link" href="login/sair">
+          <a class="nav-link" href="{{route('site.login.sair')}}">
             <i class="fas fa-fw fa-times"></i>
             <span>Sair</span></a>
         </li>
