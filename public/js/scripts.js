@@ -449,5 +449,27 @@ $(document).ready(function () {
         });
     });
 
+    $('#adicionarBanco').click(function () {
+        var descricao = $('#descricao_banco').val();
+        var codigo = $('#codigo_banco').val();
+
+        $.ajax({
+            type: 'post',
+            url: '/admin/financeiro/banco/inserir',
+            header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            data: { _token: $('meta[name="csrf-token"]').attr('content'), codigo: codigo, descricao: descricao },
+            success: function (e) {
+                if (e.tipo == 'true') {
+                    $('#descricao_banco').val('');
+                    $('#codigo_banco').val('');
+                    $('#resultadoBanco').html(e.msg);
+                } else {
+                    $('#resultadoBanco').html(e.msg);
+                }
+
+            }
+        });
+    })
+
 
 })

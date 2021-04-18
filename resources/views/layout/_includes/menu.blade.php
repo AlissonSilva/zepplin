@@ -75,22 +75,22 @@
 
           <!-- Divider -->
           <hr class="sidebar-divider">
-  
+
           <!-- Heading -->
         <div class="sidebar-heading">
               Financeiro
         </div>
-  
+
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFinanceiro" aria-expanded="true" aria-controls="collapseFinanceiro">
-            <i class="fas fa-fw fa-cog"></i>
+            <i class="fas fa-fw fa-dollar-sign"></i>
             <span>Financeiro</span>
           </a>
           <div id="collapseFinanceiro" class="collapse" aria-labelledby="headingFinanceiro" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <a class="collapse-item" href="{{route('admin.bancos')}}">Banco</a>
-              <a class="collapse-item" href="#">Agente</a>
+              <a class="collapse-item" href="{{route('admin.agentes')}}">Agente</a>
               <a class="collapse-item" href="#">Tipo de Pagamento</a>
             </div>
           </div>

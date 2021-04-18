@@ -107,4 +107,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/financeiro/banco/', ['as' => 'admin.bancos', 'uses' => 'Admin\BancoController@index']);
     Route::get('/admin/financeiro/banco/adicionar', ['as' => 'admin.bancos.adicionar', 'uses' => 'Admin\BancoController@adicionar']);
     Route::post('/admin/financeiro/banco/inserir', ['as' => 'admin.bancos.inserir', 'uses' => 'Admin\BancoController@inserir']);
+    Route::get('/admin/financeiro/banco/editar/{id}', ['as' => 'admin.bancos.editar', 'uses' => 'Admin\BancoController@editar'])->where('id', '[0-9]+');
+    Route::put('/admin/financeiro/banco/atualizar/{id}', ['as' => 'admin.bancos.atualizar', 'uses' => 'Admin\BancoController@atualizar'])->where('id', '[0-9]+');
+
+    // Agentes
+
+    Route::get('/admin/financeiro/agente', ['as' => 'admin.agentes', 'uses' => 'Admin\AgenteController@index']);
+    Route::get('/admin/financeiro/agente/adicionar', ['as' => 'admin.agentes.adicionar', 'uses' => 'Admin\AgenteController@adicionar']);
 });
