@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\model\admin\Agente;
 use Illuminate\Http\Request;
 use App\model\admin\Banco;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,8 @@ class BancoController extends Controller
     public function editar($id)
     {
         $registros = DB::table('bancos')->where('id_banco', '=', $id)->first();
-        return view('admin.banco.editar', compact('registros'));
+        $agentes = Agente::where('id_banco', '=', $id)->get();
+        return view('admin.banco.editar', compact('registros', 'agentes'));
     }
 
     public function atualizar(Request $request, $id)

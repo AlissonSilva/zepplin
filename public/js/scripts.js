@@ -469,7 +469,80 @@ $(document).ready(function () {
 
             }
         });
-    })
+    });
+
+    $('#adicionarAgente').click(function () {
+        var codigo = $('#codigo').val();
+        var titular = $('#titular').val();
+        var banco = $('#id_banco').val();
+        var tipo_conta = $('#tipo_conta').val();
+        var agencia = $('#agencia').val();
+        var conta = $('#conta').val();
+        var digito = $('#digito').val();
+        var ativo = $('#status_agente').prop('checked');
+
+        $.ajax({
+            type: 'post',
+            url: '/admin/financeiro/agente/inserir',
+            header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+            data: { _token: $('meta[name="csrf-token"]').attr('content'), codigo: codigo, titular: titular, id_banco: banco, tipo_conta: tipo_conta, agencia: agencia, conta: conta, digito: digito, status_agente: status_agente },
+            success: function (e) {
+                // $('#resultadoAgente').html(e);
+                if (e.tipo == 'true') {
+                    $('#codigo').val('');
+                    $('#titular').val('');
+                    $('#id_banco').val('');
+                    $('#tipo_conta').val('');
+                    $('#agencia').val('');
+                    $('#conta').val('');
+                    $('#digito').val('');
+                    $('#status_agente').prop('');
+                    $('#resultadoAgente').html(e.msg);
+                } else {
+                    $('#resultadoAgente').html(e.msg);
+                }
+
+            }
+        });
+    });
+
+    $('#adicionarPagamento').click(function () {
+        var descricao = $('#descricao').val();
+        var id_agente = $('#id_agente').val();
+        var numero_parcelas = $('#numero_parcelas').val();
+        var intervalo_parcelas = $('#intervalo_parcelas').val();
+        var status_pagamento = $('#status_pagamento').prop('checked');
+
+        if (descricao == '' || descricao == null) {
+            $('#resultadoPagamento').html('<div class="alert alert-danger" role="alert"> Campo DESCRIÇÃO obrigatório </div>');
+        } else if (numero_parcelas <= 0) {
+            $('#resultadoPagamento').html('<div class="alert alert-warning" role="alert">Número máximo de parcelas: Valor inválido. Marcar acima de 0</div>');
+        } else if (numero_parcelas == '' || numero_parcelas == null) {
+            $('#resultadoPagamento').html('<div class="alert alert-danger" role="alert">Campo NÚMERO MÁXIMO DE PARCELA obrigatório</div>');
+        } else if (intervalo_parcelas == '' || intervalo_parcelas == null) {
+            $('#resultadoPagamento').html('<div class="alert alert-danger" role="alert">Campo INTERVALO ENTRE PARCELA (DIAS) obrigatório</div>');
+        } else {
+            $.ajax({
+                type: 'post',
+                url: '/admin/financeiro/forma_pagamento/inserir',
+                header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data: { _token: $('meta[name="csrf-token"]').attr('content'), descricao: descricao, id_agente: id_agente, numero_parcelas: numero_parcelas, intervalo_parcelas: intervalo_parcelas, status_pagamento: status_pagamento },
+                success: function (e) {
+                    // $('#resultadoAgente').html(e);
+                    if (e.tipo == 'true') {
+                        $('#descricao').val('');
+                        $('#id_agente').val('');
+                        $('#numero_parcelas').val('');
+                        $('#intervalo_parcelas').val('');
+                        $('#status_pagamento').val('');
+                        $('#resultadoPagamento').html(e.msg);
+                    } else {
+                        $('#resultadoPagamento').html(e.msg);
+                    }
+                }
+            });
+        }
+    });
 
 
 })

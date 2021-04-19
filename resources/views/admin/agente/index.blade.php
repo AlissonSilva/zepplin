@@ -1,11 +1,11 @@
 @extends('layout.site')
 
-@section('titulo','SIGOM : Agentes')
+@section('titulo','SIGOM : Agentes Financeiro')
 
 @section('conteudo')
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Agente</h1>
+        <h1 class="h3 mb-0 text-gray-800">Agente Financeiro</h1>
         <a href="{{route('admin.agentes.adicionar')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Adicionar uma agente</a>
     </div>
 
@@ -35,7 +35,7 @@
                     <td>{{$registro->descricao}}</td>
                     <td>{{$registro->agencia}}</td>
                     <td>{{$registro->conta}}-{{ $registro->digito}}</td>
-                    <td><a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Editar</a></td>
+                    <td><a href="{{route('admin.agentes.editar',$registro->id_agente)}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Editar</a></td>
                 </tr>
                 @endforeach
               </tbody>

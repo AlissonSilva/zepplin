@@ -90,8 +90,19 @@
           <div id="collapseFinanceiro" class="collapse" aria-labelledby="headingFinanceiro" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
               <a class="collapse-item" href="{{route('admin.bancos')}}">Banco</a>
-              <a class="collapse-item" href="{{route('admin.agentes')}}">Agente</a>
-              <a class="collapse-item" href="#">Tipo de Pagamento</a>
+              <a class="collapse-item" href="{{route('admin.agentes')}}">Agente Financeiro</a>
+              <a class="collapse-item" href="{{route('admin.pagamentos')}}">Froma de Pagamento</a>
+            </div>
+          </div>
+
+
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCaixa" aria-expanded="true" aria-controls="collapseCaixa">
+            <i class="fas fa-fw fa-dollar-sign"></i>
+            <span>Caixa</span>
+          </a>
+          <div id="collapseCaixa" class="collapse" aria-labelledby="headingCaixa" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href="#">Baixa Manual</a>
             </div>
           </div>
         </li>

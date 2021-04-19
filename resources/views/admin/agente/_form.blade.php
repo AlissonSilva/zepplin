@@ -2,7 +2,7 @@
 <div class="row form-group">
     <div class="col-sm-2">
         <label for="" class="label">Código: </label>
-        <input type="number" name="codigo" class="form-control form-control-user" id="codigo" value="{{isset($registros->codigo) ? $registros->codigo : '' }}" required>
+        <input type="number" name="codigo" class="form-control form-control-user" id="codigo" value="{{isset($registros->codigo) ? $registros->codigo : '' }}" {{isset($registros->codigo) ? 'disabled' : '' }} required>
     </div>
 
     <div class="col-sm-3">
@@ -15,7 +15,7 @@
         <label for="" class="label">Banco: </label>
         <select name="id_banco" id="id_banco" class="form-control form-control">
             @foreach ($bancos as $obj)
-                <option value="{{$obj->id_banco}}" >{{$obj->descricao}}</option>
+                <option value="{{$obj->id_banco}}" {{isset($registros->id_banco)?($registros->id_banco == $obj->id_banco?'selected':''):''}} >{{$obj->descricao}}</option>
             @endforeach
         </select>
     </div>
@@ -24,7 +24,10 @@
 <div class="row form-group">
     <div class="col-sm-3">
         <label for="" class="label">Tipo de Conta: </label>
-        <input type="text" name="tipo_conta" class="form-control form-control-user" id="tipo_conta" value="{{isset($registros->tipo_conta)? $registros->tipo_conta : '' }}" required>
+        <select name="tipo_conta" id="tipo_conta" class="form-control form-control">
+            <option value="Conta Corrente" {{isset($registros->tipo_conta) ? ($registros->tipo_conta == 'Conta Corrente' ? 'selected' : '' ): '' }}> Conta Corrente </option>
+            <option value="Conta Poupança" {{isset($registros->tipo_conta) ? ($registros->tipo_conta == 'Conta Poupança' ? 'selected' : '' ): '' }}> Conta Poupança </option>
+        </select>
     </div>
     <div class="col-sm-2">
         <label for="" class="label">Agencia: </label>
@@ -43,6 +46,6 @@
 <div class="row form-group">
     <div class="col-sm-2">
         <label for="" class="label">Ativo: </label>
-        <input type="checkbox" name="ativo" class="form-control form-control-user" id="ativo_produto" {{isset($registros->ativo) && $registros->ativo == 1 ? 'checked' : ''}} value="true" >
+        <input type="checkbox" name="status_agente" class="form-control form-control-user" id="status_agente" {{isset($registros->status_agente) ? ( $registros->status_agente == 1 ? 'checked' :'') : ''}} value="true" >
     </div>
 </div>

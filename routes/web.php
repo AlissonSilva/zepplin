@@ -111,7 +111,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/admin/financeiro/banco/atualizar/{id}', ['as' => 'admin.bancos.atualizar', 'uses' => 'Admin\BancoController@atualizar'])->where('id', '[0-9]+');
 
     // Agentes
-
     Route::get('/admin/financeiro/agente', ['as' => 'admin.agentes', 'uses' => 'Admin\AgenteController@index']);
     Route::get('/admin/financeiro/agente/adicionar', ['as' => 'admin.agentes.adicionar', 'uses' => 'Admin\AgenteController@adicionar']);
+    Route::post('/admin/financeiro/agente/inserir', ['as' => 'admin.agentes.inserir', 'uses' => 'Admin\AgenteController@inserir']);
+    Route::get('/admin/financeiro/agente/editar/{id}', ['as' => 'admin.agentes.editar', 'uses' => 'Admin\AgenteController@editar'])->where('id', '[0-9]+');
+    Route::put('/admin/financeiro/agente/atualizar/{id}', ['as' => 'admin.agentes.atualizar', 'uses' => 'Admin\AgenteController@atualizar'])->where('id', '[0-9]+');
+
+    // Formas de pagamentos
+    Route::get('/admin/financeiro/forma_pagamento', ['as' => 'admin.pagamentos', 'uses' => 'Admin\PagamentoController@index']);
+    Route::get('/admin/financeiro/forma_pagamento/adicionar', ['as' => 'admin.pagamentos.adicionar', 'uses' => 'Admin\PagamentoController@adicionar']);
+    Route::post('/admin/financeiro/forma_pagamento/inserir', ['as' => 'admin.pagamentos.inserir', 'uses' => 'Admin\PagamentoController@inserir']);
+    Route::get('/admin/financeiro/forma_pagamento/editar/{id}', ['as' => 'admin.pagamentos.editar', 'uses' => 'Admin\PagamentoController@editar'])->where('id', '[0-9]');
+    Route::put('/admin/financeiro/forma_pagamento/atualizar/{id}', ['as' => 'admin.pagamentos.atualizar', 'uses' => 'Admin\PagamentoController@atualizar'])->where('id', '[0-9]');
 });
