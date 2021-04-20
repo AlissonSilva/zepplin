@@ -114,6 +114,24 @@ from
     `zeppelin`.`orcamento_items` `oi`
 group by
     `oi`.`id_orcamento`;
+
+create or replace
+algorithm = UNDEFINED view `zeppelin`.`vw_forma_pagamento` as
+select
+    `p`.`id_pagamento` as `id_pagamento`,
+    `p`.`descricao` as `forma_pagamento`,
+    `a`.`id_agente` as `id_agente`,
+    `p`.`numero_parcelas` as `numero_parcelas`,
+    `p`.`intervalo_parcelas` as `intervalo_parcelas`,
+    `b`.`id_banco` as `id_banco`
+from
+    ((`zeppelin`.`pagamentos` `p`
+join `zeppelin`.`agentes` `a` on
+    (`p`.`id_agente` = `a`.`id_agente`))
+join `zeppelin`.`bancos` `b` on
+    (`a`.`id_banco` = `b`.`id_banco`))
+where
+    `p`.`status_pagamento` = 1;
 	
 	
 DELIMITER $$

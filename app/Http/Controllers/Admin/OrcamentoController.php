@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\model\admin\Orcamento;
 use App\model\admin\OrcamentoItem;
 use App\model\admin\Cliente;
+use App\model\admin\Pagamento;
 use App\model\admin\Veiculo;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\TryCatch;
 
 class OrcamentoController extends Controller
@@ -25,8 +27,17 @@ class OrcamentoController extends Controller
         return view('admin.orcamento.listarorcamento', compact('registros'));
     }
 
+    public function pagOrcamento(Request $request)
+    {
+        $dados = $request->all();
+        dd($dados);
+    }
+
     public function adicionar($id, $id_orcamento)
     {
+        $pagamentos = DB::table('vw_forma_pagamento')->get();
+
+        // dd($pagamentos);
         $tabelaItem = '';
         $orcamento = '';
         $registros = Cliente::join('vw_clientes', 'clientes.id_cliente', '=', 'vw_clientes.id_cliente')->where('vw_clientes.id_cliente', '=', $id)->first();
@@ -40,7 +51,7 @@ class OrcamentoController extends Controller
 
         $objOcamento = ['id_orcamento' => $id_orcamento];
 
-        return view('admin.orcamento.adicionar', compact('registros', 'veiculos', 'objOcamento', 'orcamento', 'tabelaItem'));
+        return view('admin.orcamento.adicionar', compact('registros', 'veiculos', 'objOcamento', 'orcamento', 'tabelaItem', 'pagamentos'));
     }
 
     public function novo($id)
@@ -147,7 +158,6 @@ class OrcamentoController extends Controller
     public function salvarOrcamento(Request $request)
     {
         $dados = $request->all();
-
         $obj = collect([
             'salvo' => 1,
         ])->toArray();
