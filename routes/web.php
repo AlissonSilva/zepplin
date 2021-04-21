@@ -103,6 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/admin/orcamento/aprovar/', ['as' => 'admin.orcamentos.aprovar', 'uses' => 'Admin\OrcamentoController@aprovarOrcamento']);
     Route::post('/admin/orcamento/cancelar/', ['as' => 'admin.orcamentos.cancelar', 'uses' => 'Admin\OrcamentoController@cancelarOrcamento']);
     Route::post('/admin/financeiro/forma_pagamento/pagamento_orcamento',['as' => 'admin.orcamentos.pagorcamento', 'uses'=>'Admin\OrcamentoController@pagOrcamento']);
+    Route::get('/admin/orcament/forma_pagamento/{id}', ['as'=> 'admin.orcamentos.tabelaPagamentos', 'uses'=>'Admin\OrcamentoController@tabelaPagamento'])->where('id', '[0-9]+');
 
     // Bancos
     Route::get('/admin/financeiro/banco/', ['as' => 'admin.bancos', 'uses' => 'Admin\BancoController@index']);

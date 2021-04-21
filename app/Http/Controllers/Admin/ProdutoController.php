@@ -38,12 +38,14 @@ class ProdutoController extends Controller
             unset($dados['_token']);
             unset($dados['_method']);
 
+            isset($dados['ativo']) ? ($dados['ativo']==true ? 1 : 0) : 0;
             if (isset($dados['ativo']) && $dados['ativo'] == 'true') {
                 $dados['ativo'] = 1;
             } else {
                 $dados['ativo'] = 0;
             }
 
+            // dd($dados);
             Produto::where('produtos.id_produto', $id_produto)->update($dados);
             return redirect()->route('admin.produtos');
         };
@@ -57,17 +59,19 @@ class ProdutoController extends Controller
             return response()->json(['msg' => '<div class="alert alert-danger">O campo valor é obrigatório.</div>', 'tipo' => 'false']);
         } else {
             $dados = $request->all();
-
-            //dd($dados);
             if ($dados['ativo'] == 'true') {
                 $dados['ativo'] = 1;
             } else if ($dados['ativo'] == 'false') {
                 $dados['ativo'] = 0;
             }
 
-            //dd($dados);
-            Produto::create($dados);
-            return response()->json(['msg' => '<div class="alert alert-success">Produto cadastrado com sucesso.</div>', 'tipo' => 'true']);
+            // dd($dados);
+            try {    
+                Produto::create($dados);
+                return response()->json(['msg' => '<div class="alert alert-success">Produto cadastrado com sucesso.</div>', 'tipo' => 'true']);
+            } catch (\Throwable $th) {
+                return response()->json(['msg' => '<div class="alert alert-danger">Erro técnico ao inserir '.$th->getMessage().'</div>', 'tipo' => 'false']);
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 create or replace
-algorithm = UNDEFINED view `zeppelin`.`vw_clientes` as
+algorithm = UNDEFINED view `vw_clientes` as
 select
     `c`.`id_cliente` as `id_cliente`,
     case
@@ -14,28 +14,28 @@ select
     select
         count(0)
     from
-        `zeppelin`.`orcamentos` `o2`
+        `orcamentos` `o2`
     where
         `o2`.`id_cliente` = `c`.`id_cliente`) as `count_orcamento`
 from
-    ((`zeppelin`.`clientes` `c`
-left join `zeppelin`.`pessoa_fisicas` `pf` on
+    ((`clientes` `c`
+left join `pessoa_fisicas` `pf` on
     (`c`.`id_pessoa_fisica` = `pf`.`id_pessoa_fisica`))
-left join `zeppelin`.`pessoa_juridicas` `pj` on
+left join `pessoa_juridicas` `pj` on
     (`c`.`id_pessoa_juridica` = `pj`.`id_pessoa_juridica`))
 where
     exists(
     select
         1
     from
-        `zeppelin`.`veiculos` `v`
+        `veiculos` `v`
     where
         `v`.`id_cliente` = `c`.`id_cliente`
     limit 1)
 ;
 
 create or replace
-algorithm = UNDEFINED view `zeppelin`.`vw_item_orcamento` as
+algorithm = UNDEFINED view `vw_item_orcamento` as
 select
     `oi`.`id_orcamento_item` as `id_orcamento_item`,
     `oi`.`id_orcamento` as `id_orcamento`,
@@ -48,8 +48,8 @@ select
     `oi`.`percentual_desconto` as `percentual_desconto`,
     `oi`.`valor_total` as `valor_total`
 from
-    (`zeppelin`.`orcamento_items` `oi`
-join `zeppelin`.`produtos` `p2` on
+    (`orcamento_items` `oi`
+join `produtos` `p2` on
     (`oi`.`id_produto` = `p2`.`id_produto`))
 union all
 select
@@ -64,13 +64,13 @@ select
     `oi2`.`percentual_desconto` as `percentual_desconto`,
     `oi2`.`valor_total` as `valor_total`
 from
-    (`zeppelin`.`orcamento_items` `oi2`
-join `zeppelin`.`servicos` `s2` on
+    (`orcamento_items` `oi2`
+join `servicos` `s2` on
     (`oi2`.`id_servico` = `s2`.`id_servico`));
 
 
 create or replace
-algorithm = UNDEFINED view `zeppelin`.`vw_dashboard_one` as
+algorithm = UNDEFINED view `vw_dashboard_one` as
 select
     sum(case when `o`.`status_orcamento` = 'aberto' then 1 else 0 end) as `quantidade_aberta`,
     sum(case when `o`.`status_orcamento` = 'cancelado' then 1 else 0 end) as `quantidade_cancelado`,
@@ -78,10 +78,10 @@ select
     sum(case when `o`.`status_orcamento` = 'aberto' then `o`.`valor_total` else 0 end) as `valor_em_aberto`,
     sum(case when `o`.`status_orcamento` = 'aprovado' then `o`.`valor_total` else 0 end) as `valor_recebido`
 from
-    `zeppelin`.`orcamentos` `o`;
+    `orcamentos` `o`;
 
 create or replace
-algorithm = UNDEFINED view `zeppelin`.`vw_itens` as
+algorithm = UNDEFINED view `vw_itens` as
 select
     `p`.`id_produto` as `id_produto`,
     `p`.`descricao` as `descricao`,
@@ -91,7 +91,7 @@ select
     `p`.`estoque` as `estoque`,
     'produto' as `tipo`
 from
-    `zeppelin`.`produtos` `p`
+    `produtos` `p`
 union all
 select
     `s`.`id_servico` as `id_servico`,
@@ -102,21 +102,21 @@ select
     1 as `estoque`,
     'servico' as `tipo`
 from
-    `zeppelin`.`servicos` `s`;
+    `servicos` `s`;
 
 
 create or replace
-algorithm = UNDEFINED view `zeppelin`.`vw_orcamento_qtd_item` as
+algorithm = UNDEFINED view `vw_orcamento_qtd_item` as
 select
     `oi`.`id_orcamento` as `id_orcamento`,
     sum(`oi`.`quantidade`) as `total`
 from
-    `zeppelin`.`orcamento_items` `oi`
+    `orcamento_items` `oi`
 group by
     `oi`.`id_orcamento`;
 
 create or replace
-algorithm = UNDEFINED view `zeppelin`.`vw_forma_pagamento` as
+algorithm = UNDEFINED view `vw_forma_pagamento` as
 select
     `p`.`id_pagamento` as `id_pagamento`,
     `p`.`descricao` as `forma_pagamento`,
@@ -125,18 +125,18 @@ select
     `p`.`intervalo_parcelas` as `intervalo_parcelas`,
     `b`.`id_banco` as `id_banco`
 from
-    ((`zeppelin`.`pagamentos` `p`
-join `zeppelin`.`agentes` `a` on
+    ((`pagamentos` `p`
+join `agentes` `a` on
     (`p`.`id_agente` = `a`.`id_agente`))
-join `zeppelin`.`bancos` `b` on
+join `bancos` `b` on
     (`a`.`id_banco` = `b`.`id_banco`))
 where
     `p`.`status_pagamento` = 1;
 	
 	
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` TRIGGER tg_orcamento_item AFTER insert 
-ON zeppelin.orcamento_items FOR EACH ROW
+create or replace TRIGGER tg_orcamento_item AFTER insert 
+ON orcamento_items FOR EACH ROW
 begin
 	declare valor_desconto_tg float;
 	declare percentual_desconto_tg float;
@@ -157,8 +157,8 @@ DELIMITER ;
 
 	
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` TRIGGER tg_orcamento_item_delete AFTER delete 
-ON zeppelin.orcamento_items FOR EACH ROW
+create or replace TRIGGER tg_orcamento_item_delete AFTER delete 
+ON orcamento_items FOR EACH ROW
 begin
 	declare valor_desconto_tg float;
 	declare percentual_desconto_tg float;
@@ -186,8 +186,8 @@ DELIMITER ;
 
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` TRIGGER tg_cliente_pf_insert AFTER insert 
-ON zeppelin.pessoa_fisicas FOR EACH ROW
+create or replace TRIGGER tg_cliente_pf_insert AFTER insert 
+ON pessoa_fisicas FOR EACH ROW
 BEGIN
 	IF NEW.cliente = 1 THEN
     	INSERT INTO clientes (id_pessoa_fisica) VALUES (new.id_pessoa_fisica);
@@ -197,7 +197,7 @@ $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` TRIGGER tg_cliente_pf_update AFTER UPDATE
+create or replace TRIGGER tg_cliente_pf_update AFTER UPDATE
 ON pessoa_fisicas FOR EACH ROW
 BEGIN
 	if new.cliente <> old.cliente && new.cliente = 0 then 
@@ -210,8 +210,8 @@ $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` TRIGGER tg_cliente_pj_insert AFTER insert 
-ON zeppelin.pessoa_juridicas FOR EACH ROW
+create or replace TRIGGER tg_cliente_pj_insert AFTER insert 
+ON pessoa_juridicas FOR EACH ROW
 BEGIN
 	IF NEW.cliente = 1 THEN
     	INSERT INTO clientes ( id_pessoa_juridica) VALUES (new.id_pessoa_juridica);
@@ -221,7 +221,7 @@ $$
 DELIMITER ;
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` TRIGGER tg_cliente_pj_update AFTER UPDATE
+create or replace TRIGGER tg_cliente_pj_update AFTER UPDATE
 ON pessoa_juridicas FOR EACH ROW
 BEGIN
 	if new.cliente <> old.cliente && new.cliente = 0 then 

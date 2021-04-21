@@ -30,6 +30,8 @@ class AgenteController extends Controller
 
         //dd($dados);
         unset($dados['_token']);
+        // $dados['status_agente'] = $dados['status_agente'] == 'true' ? 1 : 0;
+
 
         $msg = $this->verificador($dados['codigo']);
         try {
@@ -58,6 +60,9 @@ class AgenteController extends Controller
         unset($dados['_method']);
 
         $dados['status_agente'] = $dados['status_agente'] == 'true' ? 1 : 0;
+        $dados['estoque'] = $dados['quantidade'];
+
+
 
         try {
             Agente::where('id_agente', '=', $id)->update($dados);

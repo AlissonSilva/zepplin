@@ -19,7 +19,8 @@
                 @include('admin.produto._form')
                 <div class="row form-group">
                     <div class="col-sm-10">
-                        <button class="btn btn btn-primary " id="adicionarProduto">Adicionar</button>
+                        <button class="btn btn-primary " id="adicionarProduto">Adicionar</button>
+                        <a href="{{route('admin.produtos')}}" class="btn btn-secondary">Voltar</a>
                     </div>
                 </div>
             </div>

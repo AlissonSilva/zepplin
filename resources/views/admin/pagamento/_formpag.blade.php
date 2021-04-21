@@ -2,9 +2,9 @@
     <div class="row ">
         <div class="col-md-9">
             <label for="" class="label">Valor Recebido:</label>
-            <input type="text" name="valor_receber" class="form-control form-control-user" id="valor_receber" value="{{isset($valorAPagar) ?  $valorAPagar :'0.0'}}" disabled >
+            <input type="text" name="valor_recebido" class="form-control form-control-user" id="valor_recebido" value="{{isset($valorRecebido) ?  $valorRecebido :'0.0'}}" disabled >
             <label for="" class="label">Forma de Pagamento:</label>
-            @if (($orcamento->valor_total - $valorAPagar) <= 0)
+            @if (($orcamento->valor_total - $valorRecebido) <= 0)
                 <select name="id_pagamento" id="id_pagamento" class="form-control form-control" disabled>
                 </select>
             @else
@@ -23,8 +23,12 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-md-12">
         <div id="result_tabela">
-
+            @if ($valorRecebido > 0)
+               {{ print_r($tabelaPag) }}              
+            @endif
+        </div>
         </div>
     </div>
 </div>
@@ -38,22 +42,34 @@
             $("#parcelas").append('<option value="'+i+'">'+i+'</option>');
         }
     });
+    
     function eventos(){
         var parcela = $('#parcelas').val();
-        var valor = $('#valor_parcela').val();
+        var valor = $('#valor_parcela').val().replace(',','.');
         var id_pagamento = $('#id_pagamento').val();
         var id_orcamento = $('#id_orcamento_m').val();
+        var valor_recebido = $('#valor_recebido').val()
 
-        $('#valor_receber').val(valor_receber - valor);
         $.ajax({
                 type: 'post',
                 url: '/admin/financeiro/forma_pagamento/pagamento_orcamento',
                 header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data: { _token: $('meta[name="csrf-token"]').attr('content'), parcela:parcela, valor:valor, id_pagamento:id_pagamento, id_orcamento:id_orcamento},
                 success: function (e) {
-                    console.log(e);
-                    $('#result_tabela').html(e.msg);
+                    if(e.tipo == 'true'){                
+                        $('#parcelas').val('');
+                        $('#valor_parcela').val('');
+                        $('#id_pagamento').val('');
+                        $('#result_tabela').html(e.msg);
+                    }else{
+                        $('#result_tabela').html(e.msg);
+                    }
+                    
                 }
-        })
+        });
+        
+        $('#valor_receber').val(parceFloat(valor_receber) - parceFloat(valor));
+        $('#valor_recebido').val(parceFloat(valor_recebido) + parceFloat(valor));
+
     }
 </script>

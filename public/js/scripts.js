@@ -232,19 +232,25 @@ $(document).ready(function () {
         let preco = $('#preco_produto').val();
         let unidade = $('#unidade_produto').val();
         let ativo = $('#ativo_produto').prop('checked');
+        let estoque = $('#quantidade_produto').val();
 
         $.ajax({
             type: 'POST',
             url: '/admin/produtos/inserir',
             header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            data: { _token: $('meta[name="csrf-token"]').attr('content'), descricao: descricao, preco: preco, unidade: unidade, ativo: ativo },
+            data: { _token: $('meta[name="csrf-token"]').attr('content'), descricao: descricao, preco: preco, unidade: unidade, ativo: ativo, estoque: estoque },
             success: function (e) {
-                $('#resultadoProduto').html(e.msg);
-                /* if (e.tipo == 'true') {
+                // $('#resultadoProduto').html(e);
+                 if (e.tipo == 'true') {  
+                        $('#descricao_produto').val('');
+                        $('#preco_produto').val('');
+                        $('#unidade_produto').val('');
+                        $('#ativo_produto').prop('checked');
+                        $('#quantidade_produto').val('');
                      $('#resultadoProduto').html(e.msg);
                  } else {
                      $('#resultadoProduto').html(e.msg);
-                 }*/
+                 }
             }
         });
     });
@@ -485,7 +491,7 @@ $(document).ready(function () {
             type: 'post',
             url: '/admin/financeiro/agente/inserir',
             header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            data: { _token: $('meta[name="csrf-token"]').attr('content'), codigo: codigo, titular: titular, id_banco: banco, tipo_conta: tipo_conta, agencia: agencia, conta: conta, digito: digito, status_agente: status_agente },
+            data: { _token: $('meta[name="csrf-token"]').attr('content'), codigo: codigo, titular: titular, id_banco: banco, tipo_conta: tipo_conta, agencia: agencia, conta: conta, digito: digito, status_agente: ativo },
             success: function (e) {
                 // $('#resultadoAgente').html(e);
                 if (e.tipo == 'true') {

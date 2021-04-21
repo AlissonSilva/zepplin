@@ -46,16 +46,16 @@ class OrcamentoController extends Controller
         // dd($obj);
         try {
             OrcamentoPagamento::create($obj);
-            return response()->json(['msg' => $this->tabelaPagamento($dados['id_orcamento'])]);
+            return response()->json(['msg' => $this->tabelaPagamento($dados['id_orcamento']), 'tipo' => 'true']);
         } catch (\Throwable $th) {
-            return response()->json(['msg' => '<div class="alert alert-danger" role="alert"> Erro tecnico: ' . $th->getMessage() . ' </div>',]);;
+            return response()->json(['msg' => '<div class="alert alert-danger" role="alert"> Erro tecnico: ' . $th->getMessage() . ' </div>', 'tipo' => 'false']);
         }
     }
 
     public function tabelaPagamento($id_orcamento)
     {
         $dados = OrcamentoPagamento::where('id_orcamento', '=', $id_orcamento)->get();
-        $tabela = '<table class="table-active table table-bordered" id="resultado_itemorcamento">
+        $tabela = '<br><table class="table" id="resultado_itemorcamento">
          <thead>
              <tr>
                  <th>Parcelas</th>
@@ -68,9 +68,9 @@ class OrcamentoController extends Controller
         foreach ($dados as $obj) {
             $tabela .= '<tr>';
             $tabela .= '<td>' . $obj->parcelas . '</td>';
-            $tabela .= '<td>' . $obj->valor_parcela . '</td>';
-            $tabela .= '<td>' . $obj->valor_total . '</td>';
-            $tabela .= '<td> remover </td>';
+            $tabela .= '<td>' .  number_format($obj->valor_parcela, 2, ',', '.')  . '</td>';
+            $tabela .= '<td>' .  number_format($obj->valor_total, 2, ',', '.')   . '</td>';
+            $tabela .= '<td> x </td>';
             $tabela .= '</tr>';
         }
         $tabela .= '</tbody></table>';
@@ -96,9 +96,11 @@ class OrcamentoController extends Controller
 
         $objOcamento = ['id_orcamento' => $id_orcamento];
 
-        $valorAPagar = OrcamentoPagamento::where('id_orcamento', '=', $id_orcamento)->sum('valor_parcela');
+        $valorRecebido = OrcamentoPagamento::where('id_orcamento', '=', $id_orcamento)->sum('valor_total');
 
-        return view('admin.orcamento.adicionar', compact('registros', 'veiculos', 'objOcamento', 'orcamento', 'tabelaItem', 'pagamentos', 'valorAPagar'));
+        $tabelaPag = $this->tabelaPagamento($id_orcamento);
+
+        return view('admin.orcamento.adicionar', compact('registros', 'veiculos', 'objOcamento', 'orcamento', 'tabelaItem', 'pagamentos', 'valorRecebido','tabelaPag'));
     }
 
     public function novo($id)
@@ -121,7 +123,7 @@ class OrcamentoController extends Controller
             // return view('admin.orcamento.adicionar', ['id_orcamento' => $idOrcamento], compact('registros', 'veiculos'));
             return redirect(route('admin.orcamentos.adicionar', ['id' => $id, 'id_orcamento' => $idOrcamento]));
         } catch (\Throwable $th) {
-            return response()->json(['msg' => '<div class="alert alert-danger" role="alert"> Erro ao salvar o cadastro. ' . $th->getMessage() . ' </div>',]);;
+            return response()->json(['msg' => '<div class="alert alert-danger" role="alert"> Erro ao salvar o cadastro. ' . $th->getMessage() . ' </div>']);
         }
     }
 
