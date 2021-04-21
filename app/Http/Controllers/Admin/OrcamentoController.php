@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\model\admin\Agente;
 use Illuminate\Http\Request;
 use App\model\admin\Orcamento;
 use App\model\admin\OrcamentoItem;
 use App\model\admin\Cliente;
+use App\model\admin\OrcamentoPagamento;
 use App\model\admin\Pagamento;
 use App\model\admin\Veiculo;
 use App\User;
@@ -30,7 +32,50 @@ class OrcamentoController extends Controller
     public function pagOrcamento(Request $request)
     {
         $dados = $request->all();
-        dd($dados);
+        // dd($dados);
+        $objBanco = DB::table('vw_forma_pagamento')->where('id_pagamento', '=', $dados['id_pagamento'])->first();
+        $obj = collect([
+            'id_orcamento' => intval($dados['id_orcamento']),
+            'id_agente' => $objBanco->id_agente,
+            'id_pagamento' => $objBanco->id_pagamento,
+            'id_banco' => $objBanco->id_banco,
+            'parcelas' => intval($dados['parcela']),
+            'valor_parcela' => doubleval($dados['valor'] / $dados['parcela']),
+            'valor_total' => doubleval($dados['valor'])
+        ])->toArray();
+        // dd($obj);
+        try {
+            OrcamentoPagamento::create($obj);
+            return response()->json(['msg' => $this->tabelaPagamento($dados['id_orcamento'])]);
+        } catch (\Throwable $th) {
+            return response()->json(['msg' => '<div class="alert alert-danger" role="alert"> Erro tecnico: ' . $th->getMessage() . ' </div>',]);;
+        }
+    }
+
+    public function tabelaPagamento($id_orcamento)
+    {
+        $dados = OrcamentoPagamento::where('id_orcamento', '=', $id_orcamento)->get();
+        $tabela = '<table class="table-active table table-bordered" id="resultado_itemorcamento">
+         <thead>
+             <tr>
+                 <th>Parcelas</th>
+                 <th>Valor Parcelas</th>
+                 <th>Valor Total</th>
+                 <th></th>
+             </tr>
+         </thead>
+         <tbody>';
+        foreach ($dados as $obj) {
+            $tabela .= '<tr>';
+            $tabela .= '<td>' . $obj->parcelas . '</td>';
+            $tabela .= '<td>' . $obj->valor_parcela . '</td>';
+            $tabela .= '<td>' . $obj->valor_total . '</td>';
+            $tabela .= '<td> remover </td>';
+            $tabela .= '</tr>';
+        }
+        $tabela .= '</tbody></table>';
+
+        return $tabela;
     }
 
     public function adicionar($id, $id_orcamento)
@@ -51,7 +96,9 @@ class OrcamentoController extends Controller
 
         $objOcamento = ['id_orcamento' => $id_orcamento];
 
-        return view('admin.orcamento.adicionar', compact('registros', 'veiculos', 'objOcamento', 'orcamento', 'tabelaItem', 'pagamentos'));
+        $valorAPagar = OrcamentoPagamento::where('id_orcamento', '=', $id_orcamento)->sum('valor_parcela');
+
+        return view('admin.orcamento.adicionar', compact('registros', 'veiculos', 'objOcamento', 'orcamento', 'tabelaItem', 'pagamentos', 'valorAPagar'));
     }
 
     public function novo($id)

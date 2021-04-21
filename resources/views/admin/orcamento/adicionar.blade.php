@@ -50,11 +50,12 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="" class="label">Valor à receber:</label>
-                                        <input type="text" name="valor_receber" class="form-control form-control-user" id="valor_receber" value="{{isset($orcamento->valor_total)?$orcamento->valor_total:'0.0'}}" disabled >
+
+                                        <input type="text" name="valor_receber" class="form-control form-control-user" id="valor_receber" value="{{isset($orcamento->valor_total) ? $orcamento->valor_total - $valorAPagar :'0.0'}}" disabled >
                                     </div>
                                 </div>
                                 <div class="row ">
-                                    
+
                                 </div>
                             </div>
                             @include('admin.pagamento._formpag')
