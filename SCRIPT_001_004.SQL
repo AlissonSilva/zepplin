@@ -232,3 +232,14 @@ BEGIN
 end
 $$
 DELIMITER ;
+
+create or replace
+algorithm = UNDEFINED view `vw_orcamento_pagamento` as
+select 
+op.id_orcamento,
+vfp.forma_pagamento,
+op.parcelas,
+op.valor_parcela,
+op.valor_total 
+from orcamento_pagamentos op 
+inner join vw_forma_pagamento vfp on op.id_pagamento = vfp.id_pagamento;

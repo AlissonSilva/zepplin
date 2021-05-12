@@ -241,16 +241,16 @@ $(document).ready(function () {
             data: { _token: $('meta[name="csrf-token"]').attr('content'), descricao: descricao, preco: preco, unidade: unidade, ativo: ativo, estoque: estoque },
             success: function (e) {
                 // $('#resultadoProduto').html(e);
-                 if (e.tipo == 'true') {  
-                        $('#descricao_produto').val('');
-                        $('#preco_produto').val('');
-                        $('#unidade_produto').val('');
-                        $('#ativo_produto').prop('checked');
-                        $('#quantidade_produto').val('');
-                     $('#resultadoProduto').html(e.msg);
-                 } else {
-                     $('#resultadoProduto').html(e.msg);
-                 }
+                if (e.tipo == 'true') {
+                    $('#descricao_produto').val('');
+                    $('#preco_produto').val('');
+                    $('#unidade_produto').val('');
+                    $('#ativo_produto').prop('checked');
+                    $('#quantidade_produto').val('');
+                    $('#resultadoProduto').html(e.msg);
+                } else {
+                    $('#resultadoProduto').html(e.msg);
+                }
             }
         });
     });
@@ -410,8 +410,12 @@ $(document).ready(function () {
                     _token: $('meta[name="csrf-token"]').attr('content'), id_orcamento: id_orcamento
                 },
                 success: function (e) {
-                    alert('Orçamento aprovado com sucesso');
-                    window.location.reload();
+                    if (e.tipo == 0) {
+                        alert(e.msg);
+                    } else {
+                        alert('Orçamento aprovado com sucesso');
+                        window.location.reload();
+                    }
                 }
             });
         }
@@ -549,6 +553,23 @@ $(document).ready(function () {
             });
         }
     });
+
+
+
+    $('#forma_pagamento').on('click', function (event) {
+        // disable button
+        $(this).prop("disabled", true);
+
+        // add spinner to button for some time
+        $(this).html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> Aguarde recalculando...');
+
+        var _self = $(this);
+
+        setTimeout(function () {
+            _self.html('CHECKED');
+        }, 3000);
+    });
+
 
 
 })

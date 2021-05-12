@@ -102,8 +102,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/orcamento/printer/{id}', ['as' => 'admin.orcamentos.printer', 'uses' => 'Admin\OrcamentoController@printerOrcamento'])->where('id', '[0-9]+');
     Route::post('/admin/orcamento/aprovar/', ['as' => 'admin.orcamentos.aprovar', 'uses' => 'Admin\OrcamentoController@aprovarOrcamento']);
     Route::post('/admin/orcamento/cancelar/', ['as' => 'admin.orcamentos.cancelar', 'uses' => 'Admin\OrcamentoController@cancelarOrcamento']);
-    Route::post('/admin/financeiro/forma_pagamento/pagamento_orcamento',['as' => 'admin.orcamentos.pagorcamento', 'uses'=>'Admin\OrcamentoController@pagOrcamento']);
-    Route::get('/admin/orcament/forma_pagamento/{id}', ['as'=> 'admin.orcamentos.tabelaPagamentos', 'uses'=>'Admin\OrcamentoController@tabelaPagamento'])->where('id', '[0-9]+');
+    Route::post('/admin/financeiro/forma_pagamento/pagamento_orcamento', ['as' => 'admin.orcamentos.pagorcamento', 'uses' => 'Admin\OrcamentoController@pagOrcamento']);
+    Route::get('/admin/orcament/forma_pagamento/{id}', ['as' => 'admin.orcamentos.tabelaPagamentos', 'uses' => 'Admin\OrcamentoController@tabelaPagamento'])->where('id', '[0-9]+');
+    Route::get('/admin/orcamento/removerformapagamento/{id}', ['as' => 'admin.orcamentos.removerPagamento', 'uses' => 'Admin\OrcamentoController@removerPagamento'])->where('id', '[0-9]+');
 
     // Bancos
     Route::get('/admin/financeiro/banco/', ['as' => 'admin.bancos', 'uses' => 'Admin\BancoController@index']);

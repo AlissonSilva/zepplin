@@ -5,7 +5,7 @@
    </head>
    <body class="c52" onload="window.print()">
       <div>
-         <p class="c25"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 816.50px; height: 110.71px;"><img alt="" src="https://demo.qodeinteractive.com/central/wp-content/uploads/2013/05/header.jpg" style="width: 816.50px; height: 110.71px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>
+         <p class="c25"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 816.50px; height: 110.71px;"><img alt="" src="{{asset("/img/top_orcamento.jpg")}}" style="width: 816.50px; height: 110.71px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>
          <p class="c24"><span class="c33"></span></p>
         <p class="c51"><span class="c13"></span></p>
          <p class="c25"><span class="c23 c42">[Orçamento] </span><span class="c23 c42">&nbsp; </span><span class="c23 c56">{{ str_pad($orcamento->id_orcamento , 5 , '0' , STR_PAD_LEFT) }} &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c23">{{$orcamento->nome}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data:  {{ date('d/m/y', strtotime($orcamento->created_at)) }}</span></p>
@@ -61,12 +61,13 @@
                     </td>
                     <td class="c11" colspan="1" rowspan="1">
                         <p class="c43"><span class="c4"></span></p>
-                        <p class="c28"><span class="c44">R$ {{ number_format($item->valor_desconto, 2, ',', '.') }}</span></p>
+                        <p class="c28"><span class="c44"> {{ $item->quantidade }}</span></p>
+
                      </td>
 
                      <td class="c11" colspan="1" rowspan="1">
                         <p class="c43"><span class="c4"></span></p>
-                        <p class="c28"><span class="c44"> {{ $item->quantidade }}</span></p>
+                        <p class="c28"><span class="c44">R$ {{ number_format($item->valor_desconto, 2, ',', '.') }}</span></p>
                      </td>
 
                      <td class="c11" colspan="1" rowspan="1">
@@ -85,11 +86,12 @@
                <td class="c20 c55" colspan="1" rowspan="1">
                   <p class="c30"><span class="c50">TOTAL</span></p>
                </td>
-               <td class="c11 c20" colspan="1" rowspan="1">
-                  <p class="c30"><span class="c32">R$</span><span class="c9">&nbsp;</span><span class="c9">{{ number_format($orcamento->valor_desconto, 2, ',', '.') }}  </span></p>
-               </td>
+
                <td class="c11 c20" colspan="1" rowspan="1">
                 <p class="c30"><span class="c32"></span><span class="c9">&nbsp;</span><span class="c9">{{$orcamento->total}}</span></p>
+               </td>
+               <td class="c11 c20" colspan="1" rowspan="1">
+                  <p class="c30"><span class="c32">R$</span><span class="c9">&nbsp;</span><span class="c9">{{ number_format($orcamento->valor_desconto, 2, ',', '.') }}  </span></p>
                </td>
                <td class="c11 c20" colspan="1" rowspan="1">
                 <p class="c30"><span class="c32">R$</span><span class="c9">&nbsp;</span><span class="c9"> {{ number_format($orcamento->valor_total_sem_desconto, 2, ',', '.') }} </span></p>
@@ -111,7 +113,28 @@
                   <p class="c15"><span class="c21">PRAZO </span><span class="c4">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>
                </td>
                <td class="c8" colspan="1" rowspan="1">
-                  <p class="c15 c29"><span class="c4">Inclua informa&ccedil;&otilde;es sobre seu prazo</span></p>
+                  <p class="c15 c29">
+                      <span class="c4">
+                          <table>
+                              <tr>
+                                  <td>
+                                      Status Orçamento:
+                                  </td>
+                                  <td>
+                                    &nbsp; &nbsp; &nbsp; &nbsp; {{ucfirst($orcamento->status_orcamento)}}
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td>
+                                      Validade:
+                                  </td>
+                                  <td>
+                                    &nbsp; &nbsp; &nbsp; &nbsp; {{ date('d/m/Y', strtotime(date($orcamento->created_at, strtotime('+3 day')))) }}
+                                  </td>
+                              </tr>
+                          </table>
+                      </span>
+                  </p>
                </td>
             </tr>
          </tbody>
@@ -126,7 +149,29 @@
                   <p class="c15"><span class="c21">FORMAS DE PAGAMENTO</span><span class="c4">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>
                </td>
                <td class="c8" colspan="1" rowspan="1">
-                  <p class="c15 c29"><span class="c4">Inclua sua formas de pagamento</span></p>
+                  <p class="c15 c29"><span class="c4">
+                      <table>
+
+                        @foreach ($formaPagamento as $pag)
+                        <tr >
+                            <td>
+                                <li>
+                                    {{  $pag->forma_pagamento }}
+                                </li>
+                            </td>
+                            <td>&nbsp; &nbsp; &nbsp;
+                                {{  $pag->parcelas }}
+                            </td>
+                            <td>&nbsp; &nbsp; &nbsp;
+                                {{ number_format($pag->valor_parcela, 2, ',', '.') }}
+                            </td>
+                            <td>&nbsp; &nbsp; &nbsp;
+                                {{ number_format($pag->valor_total, 2, ',', '.') }}
+                            </td>
+                        </tr>
+                        @endforeach
+                      </table>
+                  </span></p>
                </td>
             </tr>
          </tbody>

@@ -13,6 +13,7 @@ use App\model\admin\Pagamento;
 use App\model\admin\Veiculo;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use League\CommonMark\Extension\Table\Table;
 use PhpParser\Node\Stmt\TryCatch;
 
 class OrcamentoController extends Controller
@@ -43,10 +44,14 @@ class OrcamentoController extends Controller
             'valor_parcela' => doubleval($dados['valor'] / $dados['parcela']),
             'valor_total' => doubleval($dados['valor'])
         ])->toArray();
-        // dd($obj);
         try {
             OrcamentoPagamento::create($obj);
-            return response()->json(['msg' => $this->tabelaPagamento($dados['id_orcamento']), 'tipo' => 'true']);
+
+            $consolidador = DB::table('vw_orcamento_pagamento_consolidado')->where('id_orcamento', '=', $dados['id_orcamento'])->groupBy('id_orcamento')->first();
+            $valor_a_receber = $consolidador->valor_a_receber;
+            $valor_recebido = $consolidador->valor_total_recebido;
+
+            return response()->json(['msg' => $this->tabelaPagamento($dados['id_orcamento']), 'tipo' => 'true', 'valor_a_receber' => $valor_a_receber, 'valor_recebido' => $valor_recebido]);
         } catch (\Throwable $th) {
             return response()->json(['msg' => '<div class="alert alert-danger" role="alert"> Erro tecnico: ' . $th->getMessage() . ' </div>', 'tipo' => 'false']);
         }
@@ -70,7 +75,7 @@ class OrcamentoController extends Controller
             $tabela .= '<td>' . $obj->parcelas . '</td>';
             $tabela .= '<td>' .  number_format($obj->valor_parcela, 2, ',', '.')  . '</td>';
             $tabela .= '<td>' .  number_format($obj->valor_total, 2, ',', '.')   . '</td>';
-            $tabela .= '<td> x </td>';
+            $tabela .= '<td> <a href="' . route('admin.orcamentos.removerPagamento', $obj->id_orcamento_pagamento) . '" class="btn btn-sm btn-outline-danger"> REMOVER</a> </td>';
             $tabela .= '</tr>';
         }
         $tabela .= '</tbody></table>';
@@ -100,7 +105,7 @@ class OrcamentoController extends Controller
 
         $tabelaPag = $this->tabelaPagamento($id_orcamento);
 
-        return view('admin.orcamento.adicionar', compact('registros', 'veiculos', 'objOcamento', 'orcamento', 'tabelaItem', 'pagamentos', 'valorRecebido','tabelaPag'));
+        return view('admin.orcamento.adicionar', compact('registros', 'veiculos', 'objOcamento', 'orcamento', 'tabelaItem', 'pagamentos', 'valorRecebido', 'tabelaPag'));
     }
 
     public function novo($id)
@@ -140,40 +145,41 @@ class OrcamentoController extends Controller
         $objOcamento = '';
         $objOcamentoItem = '';
 
-        // dd($registros);
+        $verificadorPagamento = $this->verificarPagamento($registros['id_orcamento']);
 
-        $objOcamento = collect([
-            'id_veiculo' => $registros['id_veiculo']
-        ])->toArray();
+        if ($verificadorPagamento == 'true') {
+            return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao inserir o item. Verificaras condições de pagamento. Atualizar a página</div>',]);
+        } else {
 
-        try {
-            Orcamento::where('id_orcamento', $registros['id_orcamento'])->update($objOcamento);
-        } catch (\Throwable $e) {
-            return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao atualizar o veículo . ' . $e->getMessage() . ' </div>',]);
-        }
+            $objOcamento = collect([
+                'id_veiculo' => $registros['id_veiculo']
+            ])->toArray();
 
-        $identificador = $registros['tipo'] == 'servico' ? 'id_servico' : 'id_produto';
+            try {
+                Orcamento::where('id_orcamento', $registros['id_orcamento'])->update($objOcamento);
+            } catch (\Throwable $e) {
+                return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao atualizar o veículo . ' . $e->getMessage() . ' </div>',]);
+            }
 
-        $objOcamentoItem = collect([
-            'id_orcamento' => $registros['id_orcamento'],
-            $identificador => $registros['id_produto'],
-            'valor_desconto' => $registros['valor_desconto'],
-            'percentual_desconto' => $registros['percentual_desconto'],
-            'valor_total_sem_desconto' => ($registros['valor_unitario'] * $registros['quantidade']),
-            'quantidade' => $registros['quantidade'],
-            'valor_total' => $registros['valor_total'],
-            'id_user' => $registros['id_user']
-        ])->toArray();
+            $identificador = $registros['tipo'] == 'servico' ? 'id_servico' : 'id_produto';
 
-        // dd($objOcamentoItem);
+            $objOcamentoItem = collect([
+                'id_orcamento' => $registros['id_orcamento'],
+                $identificador => $registros['id_produto'],
+                'valor_desconto' => $registros['valor_desconto'],
+                'percentual_desconto' => $registros['percentual_desconto'],
+                'valor_total_sem_desconto' => ($registros['valor_unitario'] * $registros['quantidade']),
+                'quantidade' => $registros['quantidade'],
+                'valor_total' => $registros['valor_total'],
+                'id_user' => $registros['id_user']
+            ])->toArray();
 
-        try {
-            OrcamentoItem::create($objOcamentoItem);
-            $dadosOrcamento = $this->dadosOrcamento($registros['id_orcamento']);
+            try {
+                OrcamentoItem::create($objOcamentoItem);
+                $dadosOrcamento = $this->dadosOrcamento($registros['id_orcamento']);
 
-            // dd($dadosOrcamento);
-            return response()->json([
-                'tabela' => '
+                return response()->json([
+                    'tabela' => '
                 <table class="table-active table table-bordered" id="resultado_itemorcamento">
                         <thead>
                             <tr>
@@ -192,9 +198,10 @@ class OrcamentoController extends Controller
                         </tbody>
 
                     </table>', 'valor_total_sem_desconto' => $dadosOrcamento['valor_total_sem_desconto'], 'valor_desconto' => $dadosOrcamento['valor_desconto'], 'valor_total' => $dadosOrcamento['valor_total']
-            ]);
-        } catch (\Throwable $e) {
-            return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao inserir item . ' . $e->getMessage() . ' </div>',]);
+                ]);
+            } catch (\Throwable $e) {
+                return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao inserir item . ' . $e->getMessage() . ' </div>',]);
+            }
         }
     }
 
@@ -215,7 +222,7 @@ class OrcamentoController extends Controller
             Orcamento::where('id_orcamento', $dados['id_orcamento'])->update($obj);
             return back();
         } catch (\Throwable $th) {
-            return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Salvar o orçamento . ' . $th->getMessage() . ' </div>',]);
+            return response()->json(['tabela' => '<div class="alert alert-danger" role="alert">Salvar o orçamento . ' . $th->getMessage() . ' </div>',]);
         }
     }
 
@@ -227,7 +234,10 @@ class OrcamentoController extends Controller
         $orcamento = Orcamento::join('vw_clientes', 'orcamentos.id_cliente', '=', 'vw_clientes.id_cliente')
             ->join('vw_orcamento_qtd_item', 'orcamentos.id_orcamento', '=', 'vw_orcamento_qtd_item.id_orcamento')
             ->where('orcamentos.id_orcamento', '=', $id)->first();
-        return view('admin.orcamento.orcamento_print', compact('orcamento', 'dados'));
+
+        $formaPagamento = DB::table('vw_orcamento_pagamento')->where('id_orcamento', '=', $id)->get();
+
+        return view('admin.orcamento.orcamento_print', compact('orcamento', 'dados', 'formaPagamento'));
     }
 
     public function tabelaItemOrcamento($id_orcamento)
@@ -247,12 +257,38 @@ class OrcamentoController extends Controller
             if ($valor['status_orcamento'] != 'aberto') {
                 $retorno .= '<td></td>';
             } else {
-                $retorno .= '<td> <a href="' . route('admin.orcamentos.removeritem', $valor['id_orcamento_item']) . '" class=" btn-circle btn-sm btn-danger " > <i class="fas fa-times"></i> </a> </td>';
+                if ($this->verificarPagamento($id_orcamento)) {
+                    $retorno .= '<td> <a href="#" class=" btn btn-sm btn-outline-danger disabled" > <i class="fas fa-times"></i> </a> </td>';
+                } else {
+                    $retorno .= '<td> <a id="forma_pagamento" href="' . route('admin.orcamentos.removeritem', $valor['id_orcamento_item']) . '" class=" btn btn-sm btn-outline-danger " > <i class="fas fa-times"></i> </a> </td>';
+                }
             }
-
             '</tr>';
         }
         return $retorno;
+    }
+
+    public function removerPagamento($id)
+    {
+        try {
+            OrcamentoPagamento::where('id_orcamento_pagamento', $id)->delete();
+            return back();
+        } catch (\Throwable $th) {
+            response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao remover pagamento . ' . $th->getMessage() . ' </div>',]);
+        }
+    }
+
+    public function verificarPagamento($id_orcamento)
+    {
+        $obj = DB::table('orcamento_pagamentos')->count();
+        $retorno = $obj > 0 ?  'true' : 'false';
+        return $retorno;
+    }
+
+    public function validarSaldoPagamento($id_orcamento)
+    {
+        $obj = DB::table('vw_orcamento_pagamento_consolidado')->where('id_orcamento', '=', $id_orcamento)->sum('valor_a_receber');
+        return $obj == 0 ? 'true' : 'false';
     }
 
     public function removerItem($id_orcamento_item)
@@ -267,17 +303,22 @@ class OrcamentoController extends Controller
 
     public function aprovarOrcamento(Request $request)
     {
-        $dados = $request->all();
 
-        $obj = collect([
-            'status_orcamento' => 'aprovado',
-        ])->toArray();
+        if ($this->validarSaldoPagamento($request['id_orcamento']) == 'true') {
+            $dados = $request->all();
 
-        try {
-            Orcamento::where('id_orcamento', $dados['id_orcamento'])->update($obj);
-            return back();
-        } catch (\Throwable $th) {
-            return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao aprovar orçamento . ' . $th->getMessage() . ' </div>',]);
+            $obj = collect([
+                'status_orcamento' => 'aprovado',
+            ])->toArray();
+
+            try {
+                Orcamento::where('id_orcamento', $dados['id_orcamento'])->update($obj);
+                return back();
+            } catch (\Throwable $th) {
+                return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao aprovar orçamento . ' . $th->getMessage() . ' </div>',]);
+            }
+        } else {
+            return response()->json(['msg' => 'Falha na aprova. Verificar o saldo na forma de pagamento', 'tipo' => 0]);
         }
     }
 
