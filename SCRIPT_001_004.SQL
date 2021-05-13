@@ -243,3 +243,13 @@ op.valor_parcela,
 op.valor_total 
 from orcamento_pagamentos op 
 inner join vw_forma_pagamento vfp on op.id_pagamento = vfp.id_pagamento;
+
+create or replace
+algorithm = UNDEFINED view `vw_orcamento_pagamento_consolidado` as
+select 
+vop.id_orcamento, 
+cast(sum(valor_parcela) as decimal(10,2)) as valor_parcela, 
+cast(sum(valor_total) as decimal(10,2)) as valor_total_recebido, 
+(select valor_total from orcamentos o where o.id_orcamento = vop.id_orcamento) as valor_total,
+(select valor_total from orcamentos o where o.id_orcamento = vop.id_orcamento) - cast(sum(valor_total) as decimal(10,2)) as valor_a_receber
+from vw_orcamento_pagamento vop group by vop.id_orcamento;
