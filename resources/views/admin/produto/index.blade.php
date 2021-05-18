@@ -25,6 +25,7 @@
                     <th>Descricação</th>
                     <th>UC</th>
                     <th>Preço</th>
+                    <th>Qtd.</th>
                     <th>Status</th>
                     <th></th>
                 </tr>
@@ -36,6 +37,7 @@
                     <td>{{$registro->descricao}}</td>
                     <td>{{$registro->unidade}}</td>
                     <td>{{$registro->preco}}</td>
+                    <td>{{$registro->estoque}}</td>
                     <td>
                         @if ($registro->ativo)
                         Ativo

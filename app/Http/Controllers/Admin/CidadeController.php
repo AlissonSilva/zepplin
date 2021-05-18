@@ -58,7 +58,8 @@ class CidadeController extends Controller
             $dados['capital'] = 0;
         }
         Cidade::where('cidades.id_cidade',$id_cidade)->update($dados);
-        return redirect()->route('admin.cidades');
+        // return redirect()->route('admin.cidades');
+        return back()->with('success','Registro atualizado com sucesso.');
     }
 
     public function deletar($id_cidade){

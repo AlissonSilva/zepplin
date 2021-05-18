@@ -23,6 +23,13 @@
                     </div>
                 </div>
             </form>
+            
+            @if ($message = Session::get('success'))
+            <div class="alert alert-info alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>{{ $message }}</strong>
+            </div>
+            @endif
         </div>
     </div>
 </div>

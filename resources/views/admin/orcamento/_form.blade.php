@@ -141,7 +141,6 @@
     $(function () {
            $('#produto').autocomplete({
                source:function(request,response){
-                   console.log(request.term);
                    $.getJSON('/api/apisigom/produto/autocomplete?term='+request.term,function(data){
                         var array = $.map(data,function(row){
                             return {
@@ -152,7 +151,6 @@
                                 tipo: row.tipo
                             }
                         });
-                        console.log(array);
                         response($.ui.autocomplete.filter(array,request.term));
                    });
                },
@@ -165,8 +163,16 @@
                    $('#valor_total').val(ui.item.valor_unitario * ui.item.quantidade)
                    $('#id_produto').val(ui.item.id_produto)
                    $('#tipo').val(ui.item.tipo)
+                   return false;
                }
-           });
+           }).autocomplete("instance")._renderItem = function(ul, item) {
+            return $("<li class='each'>")
+                .append("<div class='acItem'><span class='name'>" +
+                    "Item: "+item.label + "</span><br><span class='desc'>" +
+                    "Estoque: "+item.quantidade + "</span><br><span class='desc'>" +
+                    "Valor Unitario: "+item.valor_unitario + "</span></div>")
+                .appendTo(ul);
+            };
 
            $("#quantidade").bind("change paste keyup", function() {
                 $('#valor_total').val($('#valor_unitario').val() * $(this).val())

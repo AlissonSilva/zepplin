@@ -30,7 +30,7 @@
     </div>
     <div class="col-sm-4">
         <label for="" class="label">Quantidade: </label>
-        <input type="number" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"  name="estoque" class="form-control form-control-user" id="quantidade_produto" value="{{isset($registros->quantidade)? $registros->quantidade : '' }}" required>
+        <input type="number" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');"  name="estoque" class="form-control form-control-user" id="quantidade_produto" value="{{isset($registros->estoque)? $registros->estoque : '' }}" required>
     </div>
     <div class="col-sm-2">
         <label for="" class="label">Status: </label>

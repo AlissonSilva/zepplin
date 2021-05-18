@@ -19,7 +19,7 @@
                 <div class="row form-group">
                     <div class="col-sm-10">
                         <button class="btn btn btn-primary ">Atualizar</button>
-                        <a class="btn btn-secondary" href="{{route('admin.pessoafisica.editar',$registros->id_pessoa_fisica)}}">Voltar</a>
+                        <a class="btn btn-secondary" href="{{route('admin.pessoafisica')}}">Voltar</a>
                     </div>
                 </div>
             </form>

@@ -47,7 +47,8 @@ class ProdutoController extends Controller
 
             // dd($dados);
             Produto::where('produtos.id_produto', $id_produto)->update($dados);
-            return redirect()->route('admin.produtos');
+            // return redirect()->route('admin.produtos');
+            return back()->with('success','Item atualizado com sucesso.');
         };
     }
 
