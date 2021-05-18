@@ -19,10 +19,17 @@
                 <div class="row form-group">
                     <div class="col-sm-10">
                         <button class="btn btn btn-primary ">Atualizar</button>
-                        <a class="btn btn-secondary" href="{{route('admin.pessoafisica')}}">Voltar</a>
+                        <a class="btn btn-secondary" href="{{route('admin.pessoafisica.editar',$registros->id_pessoa_fisica)}}">Voltar</a>
                     </div>
                 </div>
             </form>
+
+            @if ($message = Session::get('success'))
+            <div class="alert alert-info alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>{{ $message }}</strong>
+            </div>
+            @endif
         </div>
     </div>
 </div>

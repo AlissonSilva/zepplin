@@ -43,9 +43,12 @@
 
                   </form>
                   <hr>
-                  <div class="text-center">
-                    <a class="small" href="forgot-password.html">Esqueceu a sua senha?</a>
-                  </div>
+                  @if ($message = Session::get('error'))
+                    <div class="alert alert-danger alert-block">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>{{ $message }}</strong>
+                    </div>
+                  @endif
                 </div>
               </div>
             </div>

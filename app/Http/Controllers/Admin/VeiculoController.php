@@ -63,7 +63,7 @@ class VeiculoController extends Controller
         //      dd($dados);
         try {
             Veiculo::where('veiculos.id_veiculo', $dados['veiculo'])->update($obj);
-            return back();
+            return back()->with('success', 'Atualizado com sucesso!');
         } catch (\Throwable $th) {
             return response()->json(['msg' => '<div class="alert alert-danger">Erro ao atualizar o cadastro do veículo.' . $th->getMessage() . '.</div>', 'tipo' => 'false']);
         }

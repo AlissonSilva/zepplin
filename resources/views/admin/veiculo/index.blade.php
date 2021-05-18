@@ -6,9 +6,12 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Veículos</h1>
+    @foreach($registros as $r)
+       <label style="display: none"> {{ $i = $r->id_cliente }} </label>
+    @endforeach
 
-    @if (!isset($cliente->nome) || !isset($cliente->razao_social))
-        <a href="{{ route('admin.veiculos.adicionar' , ['id_cliente'=>$cliente->id_cliente] ) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Adicionar veículo</a>
+    @if (isset($i))
+    <a href="{{ route('admin.veiculos.adicionar' , ['id_cliente'=>$cliente->id_cliente] ) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Adicionar veículo</a>
     @endif
 
     </div>
@@ -17,9 +20,7 @@
     <div class="card shadow mb-4">
 
 
-        @foreach($registros as $r)
-            {{ $i = $r->id_cliente }}
-        @endforeach
+
 
         @if (isset($i))
 
@@ -27,14 +28,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Tabela dos veículos cadastrados</h6>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-5">
-                        <label for="" class="label">Cliente</label>
-                    </div>
-                </div>
                 <div class="table-responsive">
-
-
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: 12px">
                         <thead>
                           <tr>
@@ -44,7 +38,6 @@
                               <th>Fabricante</th>
                               <th>Ano Mod./Fabr.</th>
                               <th>Cor</th>
-
                               <th></th>
                           </tr>
                         </thead>
@@ -100,6 +93,7 @@
                 <div class="row form-group">
                     <div class="col-sm-10">
                         <button class="btn btn btn-primary " id="adicionarVeiculo">Adicionar</button>
+                        <a class="btn btn-secondary" href="{{route('admin.pessoafisica.editar',$cliente->id_pessoa_fisica)}}">Voltar</a>
                     </div>
                 </div>
             </div>

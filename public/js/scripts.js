@@ -356,7 +356,7 @@ $(document).ready(function () {
         let placa = $('#placa').val();
         let ano = $('#ano').val();
         let fabricacao = $('#fabricacao').val();
-        let cor = $('#cor').val()
+        let cor = $('#cor').val();
         let observacao = $('#observacao').val();
 
         $.ajax({
@@ -369,7 +369,14 @@ $(document).ready(function () {
             },
             success: function (e) {
                 $('#resultadoVeiculo').html(e.msg);
-
+                $('#descricao_veiculo').val('');
+                $('#modelo').val('');
+                $('#fabricante').val('');
+                $('#placa').val('');
+                $('#ano').val('');
+                $('#fabricacao').val('');
+                $('#cor').val('');
+                $('#observacao').val('');
             }
         });
     });

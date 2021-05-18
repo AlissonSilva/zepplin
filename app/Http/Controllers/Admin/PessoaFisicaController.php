@@ -116,6 +116,7 @@ class PessoaFisicaController extends Controller
         }
 
         PessoaFisica::where('pessoa_fisicas.id_pessoa_fisica', $id)->update($dados);
-        return redirect()->route('admin.pessoafisica');
+        //return redirect()->route('admin.pessoafisica');
+        return back()->with(['success' => 'Cadastro atualizado com sucesso.']);
     }
 }

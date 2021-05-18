@@ -147,39 +147,39 @@ class OrcamentoController extends Controller
 
         $verificadorPagamento = $this->verificarPagamento($registros['id_orcamento']);
 
-        if ($verificadorPagamento == 'true') {
-            return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao inserir o item. Verificaras condições de pagamento. Atualizar a página</div>',]);
-        } else {
+        // if ($verificadorPagamento == 'true') {
+        //     return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao inserir o item. Verificaras condições de pagamento. Atualizar a página</div>',]);
+        // } else {
 
-            $objOcamento = collect([
-                'id_veiculo' => $registros['id_veiculo']
-            ])->toArray();
+        $objOcamento = collect([
+            'id_veiculo' => $registros['id_veiculo']
+        ])->toArray();
 
-            try {
-                Orcamento::where('id_orcamento', $registros['id_orcamento'])->update($objOcamento);
-            } catch (\Throwable $e) {
-                return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao atualizar o veículo . ' . $e->getMessage() . ' </div>',]);
-            }
+        try {
+            Orcamento::where('id_orcamento', $registros['id_orcamento'])->update($objOcamento);
+        } catch (\Throwable $e) {
+            return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao atualizar o veículo . ' . $e->getMessage() . ' </div>',]);
+        }
 
-            $identificador = $registros['tipo'] == 'servico' ? 'id_servico' : 'id_produto';
+        $identificador = $registros['tipo'] == 'servico' ? 'id_servico' : 'id_produto';
 
-            $objOcamentoItem = collect([
-                'id_orcamento' => $registros['id_orcamento'],
-                $identificador => $registros['id_produto'],
-                'valor_desconto' => $registros['valor_desconto'],
-                'percentual_desconto' => $registros['percentual_desconto'],
-                'valor_total_sem_desconto' => ($registros['valor_unitario'] * $registros['quantidade']),
-                'quantidade' => $registros['quantidade'],
-                'valor_total' => $registros['valor_total'],
-                'id_user' => $registros['id_user']
-            ])->toArray();
+        $objOcamentoItem = collect([
+            'id_orcamento' => $registros['id_orcamento'],
+            $identificador => $registros['id_produto'],
+            'valor_desconto' => $registros['valor_desconto'],
+            'percentual_desconto' => $registros['percentual_desconto'],
+            'valor_total_sem_desconto' => ($registros['valor_unitario'] * $registros['quantidade']),
+            'quantidade' => $registros['quantidade'],
+            'valor_total' => $registros['valor_total'],
+            'id_user' => $registros['id_user']
+        ])->toArray();
 
-            try {
-                OrcamentoItem::create($objOcamentoItem);
-                $dadosOrcamento = $this->dadosOrcamento($registros['id_orcamento']);
+        try {
+            OrcamentoItem::create($objOcamentoItem);
+            $dadosOrcamento = $this->dadosOrcamento($registros['id_orcamento']);
 
-                return response()->json([
-                    'tabela' => '
+            return response()->json([
+                'tabela' => '
                 <table class="table-active table table-bordered" id="resultado_itemorcamento">
                         <thead>
                             <tr>
@@ -198,11 +198,11 @@ class OrcamentoController extends Controller
                         </tbody>
 
                     </table>', 'valor_total_sem_desconto' => $dadosOrcamento['valor_total_sem_desconto'], 'valor_desconto' => $dadosOrcamento['valor_desconto'], 'valor_total' => $dadosOrcamento['valor_total']
-                ]);
-            } catch (\Throwable $e) {
-                return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao inserir item . ' . $e->getMessage() . ' </div>',]);
-            }
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao inserir item . ' . $e->getMessage() . ' </div>',]);
         }
+        // }
     }
 
     public function dadosOrcamento($id_orcamento)
