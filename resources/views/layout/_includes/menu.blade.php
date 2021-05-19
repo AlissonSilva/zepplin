@@ -97,7 +97,7 @@
 
 
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCaixa" aria-expanded="true" aria-controls="collapseCaixa">
-            <i class="fas fa-fw fa-dollar-sign"></i>
+            <i class="fas fa-fw fa-donate"></i>
             <span>Caixa</span>
           </a>
           <div id="collapseCaixa" class="collapse" aria-labelledby="headingCaixa" data-parent="#accordionSidebar">
