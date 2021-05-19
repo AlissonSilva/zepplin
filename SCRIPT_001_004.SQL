@@ -135,13 +135,19 @@ where
 	
 	
 DELIMITER $$
-create or replace TRIGGER tg_orcamento_item AFTER insert 
+create or replace trigger tg_orcamento_item after insert 
 ON orcamento_items FOR EACH ROW
 begin
 	declare valor_desconto_tg float;
 	declare percentual_desconto_tg float;
 	declare valor_total_sem_desconto_tg float;
 	declare valor_total_tg float;
+	declare quantidade int;
+	declare quantidade_prod int;
+
+	select estoque into quantidade_prod from produtos where id_produto = new.id_produto;
+
+	set quantidade = new.quantidade;
 
 	select sum(valor_desconto) into valor_desconto_tg from orcamento_items oi where oi.id_orcamento = new.id_orcamento group by oi.id_orcamento ;
 	select avg(percentual_desconto) into percentual_desconto_tg from orcamento_items oi where oi.id_orcamento = new.id_orcamento group by oi.id_orcamento ;
@@ -149,13 +155,13 @@ begin
 	select sum(valor_total) into valor_total_tg from orcamento_items oi where oi.id_orcamento = new.id_orcamento group by oi.id_orcamento ;
 	
 	update orcamentos set valor_desconto = valor_desconto_tg, percentual_desconto = percentual_desconto_tg, valor_total_sem_desconto = valor_total_sem_desconto_tg , valor_total = valor_total_tg where id_orcamento = new.id_orcamento;
-
+	
+	update produtos set estoque = (quantidade_prod - quantidade) where id_produto = new.id_produto;
 end
 $$
 DELIMITER ;
 
 
-	
 DELIMITER $$
 create or replace TRIGGER tg_orcamento_item_delete AFTER delete 
 ON orcamento_items FOR EACH ROW
@@ -164,12 +170,17 @@ begin
 	declare percentual_desconto_tg float;
 	declare valor_total_sem_desconto_tg float;
 	declare valor_total_tg float;
+	declare quantidade int;
+	declare quantidade_prod int;
 
 	select sum(valor_desconto) into valor_desconto_tg from orcamento_items oi where oi.id_orcamento = OLD.id_orcamento group by oi.id_orcamento ;
 	select avg(percentual_desconto) into percentual_desconto_tg from orcamento_items oi where oi.id_orcamento = OLD.id_orcamento group by oi.id_orcamento ;
 	select sum(valor_total_sem_desconto) into valor_total_sem_desconto_tg from orcamento_items oi where oi.id_orcamento = OLD.id_orcamento group by oi.id_orcamento ;
 	select sum(valor_total) into valor_total_tg from orcamento_items oi where oi.id_orcamento = OLD.id_orcamento group by oi.id_orcamento ;
 
+	select estoque into quantidade_prod from produtos where id_produto = old.id_produto;
+
+	set quantidade = old.quantidade;
 
 	if old.id_orcamento is null then
 		set valor_desconto_tg = 0;
@@ -179,7 +190,7 @@ begin
 	end if;
 
 	update orcamentos set valor_desconto = ifnull(valor_desconto_tg,0), percentual_desconto = ifnull(percentual_desconto_tg,0), valor_total_sem_desconto = ifnull(valor_total_sem_desconto_tg,0) , valor_total = ifnull(valor_total_tg,0) where id_orcamento = OLD.id_orcamento;
-
+	update produtos set estoque = (quantidade_prod + quantidade) where id_produto = old.id_produto;
 end
 $$
 DELIMITER ;

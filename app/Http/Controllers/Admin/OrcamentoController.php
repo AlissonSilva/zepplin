@@ -257,11 +257,12 @@ class OrcamentoController extends Controller
             if ($valor['status_orcamento'] != 'aberto') {
                 $retorno .= '<td></td>';
             } else {
-                if ($this->verificarPagamento($id_orcamento)) {
-                    $retorno .= '<td> <a href="#" class=" btn btn-sm btn-outline-danger disabled" > <i class="fas fa-times"></i> </a> </td>';
-                } else {
-                    $retorno .= '<td> <a id="forma_pagamento" href="' . route('admin.orcamentos.removeritem', $valor['id_orcamento_item']) . '" class=" btn btn-sm btn-outline-danger " > <i class="fas fa-times"></i> </a> </td>';
-                }
+                // if ($this->verificarPagamento($id_orcamento)) {
+                //     $retorno .= '<td> <a href="#" class=" btn btn-sm btn-outline-danger disabled" > <i class="fas fa-times"></i> </a> </td>';
+                // } else {
+                //     $retorno .= '<td> <a id="forma_pagamento" href="' . route('admin.orcamentos.removeritem', $valor['id_orcamento_item']) . '" class=" btn btn-sm btn-outline-danger " > <i class="fas fa-times"></i> </a> </td>';
+                // }
+                $retorno .= '<td> <a id="forma_pagamento" href="' . route('admin.orcamentos.removeritem', $valor['id_orcamento_item']) . '" class=" btn btn-sm btn-outline-danger " > <i class="fas fa-times"></i> </a> </td>';
             }
             '</tr>';
         }
@@ -295,7 +296,7 @@ class OrcamentoController extends Controller
     {
         try {
             OrcamentoItem::where('orcamento_items.id_orcamento_item', $id_orcamento_item)->delete();
-            return back();
+            return back()->with('success', 'Item removido com sucesso.');
         } catch (\Throwable $th) {
             response()->json(['tabela' => '<div class="alert alert-danger" role="alert"> Erro ao remover item . ' . $th->getMessage() . ' </div>',]);
         }

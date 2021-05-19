@@ -1,5 +1,21 @@
 
+<style>
+.each{
+    border-bottom: 1px solid #555;
+    padding: 3px 0;
+}
+.acItem .name{
+    padding: 5px;
+  font-size: 14px;
+}
 
+.acItem .desc{
+    padding: 5px;
+  font-size: 10px;
+  color:#555;
+}
+
+</style>
 <div class="row form-group">
     <div class="col-sm-2">
         <label for="" class="label">Cód. Orçamento: </label>
@@ -69,6 +85,7 @@
     <div class="col-sm-1">
         <label for="" class="label">Quantidade:</label>
         <input type="text" name="quantidade" class="form-control form-control-user" id="quantidade" value="0" onChange="javascript:this.value=this.value.toUpperCase();" {{$orcamento->status_orcamento != 'aberto'?'disabled':''}} required>
+        <input type="text" style="display:none" name="estoque" class="form-control form-control-user" id="estoque" value="0" onChange="javascript:this.value=this.value.toUpperCase();" {{$orcamento->status_orcamento != 'aberto'?'disabled':''}}  required>
     </div>
     <div class="col-sm-1">
         <label for="" class="label">% Desc.:</label>
@@ -114,7 +131,12 @@
         </thead>
     </table>
 </div>
-
+@if ($message = Session::get('success'))
+<div class="alert alert-info alert-success">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>{{ $message }}</strong>
+</div>
+@endif
 <div class="form-group ">
     <div class="row ">
         <div class="col-sm-3 float-right">
@@ -146,7 +168,7 @@
                             return {
                                 label:row.descricao,
                                 valor_unitario:row.preco,
-                                quantidade:1,
+                                estoque:row.estoque,
                                 id_produto: row.id_produto,
                                 tipo: row.tipo
                             }
@@ -157,19 +179,25 @@
                minLength:1,
                delay:500,
                select:function(event,ui){
-                   $('#produto').val(ui.item.produto)
-                   $('#valor_unitario').val(ui.item.valor_unitario)
-                   $('#quantidade').val(ui.item.quantidade)
-                   $('#valor_total').val(ui.item.valor_unitario * ui.item.quantidade)
-                   $('#id_produto').val(ui.item.id_produto)
-                   $('#tipo').val(ui.item.tipo)
-                   return false;
+                   if (ui.item.estoque == 0) {
+                       alert('Item com estoque zerado');
+                       return false
+                   } else {
+                        $('#produto').val(ui.item.label);
+                        $('#valor_unitario').val(ui.item.valor_unitario);
+                        $('#quantidade').val(1);
+                        $('#estoque').val(ui.item.estoque);
+                        $('#valor_total').val(ui.item.valor_unitario * 1);
+                        $('#id_produto').val(ui.item.id_produto);
+                        $('#tipo').val(ui.item.tipo);
+                        return false;
+                   }
                }
            }).autocomplete("instance")._renderItem = function(ul, item) {
             return $("<li class='each'>")
                 .append("<div class='acItem'><span class='name'>" +
                     "Item: "+item.label + "</span><br><span class='desc'>" +
-                    "Estoque: "+item.quantidade + "</span><br><span class='desc'>" +
+                    "Estoque: "+item.estoque + "</span><br><span class='desc'>" +
                     "Valor Unitario: "+item.valor_unitario + "</span></div>")
                 .appendTo(ul);
             };
@@ -190,15 +218,14 @@
                }
             });
 
-
             $('#btn-add-item').click(function(){
-
-                if ($('#id_produto').val() == '' || $('#valor_unitario').val() == '' || $('#quantidade').val() == '' || $('#valor_desconto').val()== '' || $('#percentual_desconto').val()==''){
+                if($('#quantidade').val() > $('#estoque').val() && $('#tipo').val() == 'produto'){
+                    alert('Quantidade maior que a disponibilidade em estoque. \nQuantidade: '+$('#quantidade').val()+'; Estoque: '+$('#estoque').val());
+                }else if ($('#id_produto').val() == '' || $('#valor_unitario').val() == '' || $('#quantidade').val() == '' || $('#valor_desconto').val()== '' || $('#percentual_desconto').val()==''){
                     alert('Verificar os seguintes campos: Produto/Serviço, Valor unitário, quantidade, % Desc, Valor Desc, Valot Total');
                 }else if ($('#id_veiculo').val() == 'null'){
                     alert("Selecionar um veículo valido");
                 }else{
-
                     var id_orcamento = $('#id_orcamento').val();
                     var nome = $('#nome').val();
                     var id_cliente = $('#id_cliente').val();
@@ -232,14 +259,13 @@
                     });
             }
 
-
-            $('#quantidade').val(0);
-            $('#id_produto').val("");
-            $('#percentual_desconto').val(0.0);
-            $('#valor_unitario').val("");
-            $('#valor_desconto').val(0.0);
-            $('#valor_total').val(0.0);
-            $('#produto').val("");
+                $('#quantidade').val(0);
+                $('#id_produto').val("");
+                $('#percentual_desconto').val(0.0);
+                $('#valor_unitario').val("");
+                $('#valor_desconto').val(0.0);
+                $('#valor_total').val(0.0);
+                $('#produto').val("");
             });
 })
 </script>
