@@ -264,3 +264,14 @@ cast(sum(valor_total) as decimal(10,2)) as valor_total_recebido,
 (select valor_total from orcamentos o where o.id_orcamento = vop.id_orcamento) as valor_total,
 (select valor_total from orcamentos o where o.id_orcamento = vop.id_orcamento) - cast(sum(valor_total) as decimal(10,2)) as valor_a_receber
 from vw_orcamento_pagamento vop group by vop.id_orcamento;
+
+
+
+
+	DELIMITER $$
+	create or replace procedure pc_cobranca(in id_orcamento int, in id_pagamento date)
+	NOT DETERMINISTIC CONTAINS SQL SQL SECURITY DEFINER 
+	
+	end;
+	$$
+	DELIMITER ;

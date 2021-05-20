@@ -517,6 +517,7 @@ class ComposerStaticInitca6d9f286156ff2cbe8f9b12052cf83c
         'App\\model\\admin\\Caixa' => __DIR__ . '/../..' . '/app/model/admin/Caixa.php',
         'App\\model\\admin\\Cidade' => __DIR__ . '/../..' . '/app/model/admin/Cidade.php',
         'App\\model\\admin\\Cliente' => __DIR__ . '/../..' . '/app/model/admin/Cliente.php',
+        'App\\model\\admin\\Cobranca' => __DIR__ . '/../..' . '/app/model/admin/Cobranca.php',
         'App\\model\\admin\\Estado' => __DIR__ . '/../..' . '/app/model/admin/Estado.php',
         'App\\model\\admin\\Orcamento' => __DIR__ . '/../..' . '/app/model/admin/Orcamento.php',
         'App\\model\\admin\\OrcamentoItem' => __DIR__ . '/../..' . '/app/model/admin/OrcamentoItem.php',

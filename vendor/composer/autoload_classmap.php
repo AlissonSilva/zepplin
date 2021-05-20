@@ -48,6 +48,7 @@ return array(
     'App\\model\\admin\\Caixa' => $baseDir . '/app/model/admin/Caixa.php',
     'App\\model\\admin\\Cidade' => $baseDir . '/app/model/admin/Cidade.php',
     'App\\model\\admin\\Cliente' => $baseDir . '/app/model/admin/Cliente.php',
+    'App\\model\\admin\\Cobranca' => $baseDir . '/app/model/admin/Cobranca.php',
     'App\\model\\admin\\Estado' => $baseDir . '/app/model/admin/Estado.php',
     'App\\model\\admin\\Orcamento' => $baseDir . '/app/model/admin/Orcamento.php',
     'App\\model\\admin\\OrcamentoItem' => $baseDir . '/app/model/admin/OrcamentoItem.php',
