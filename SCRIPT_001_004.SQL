@@ -267,11 +267,46 @@ from vw_orcamento_pagamento vop group by vop.id_orcamento;
 
 
 
+DELIMITER $$
+create or replace procedure pc_cobranca(in id_orcamento int, in id_pagamento int)
+NOT DETERMINISTIC CONTAINS SQL SQL SECURITY definer
+begin 
+declare id_orcamento int;
+declare id_banco int;
+declare id_cliente int;
+declare id_agente int;
+declare id_pagamento int;
+declare data_vencimento date;
+declare data_pagamento date default '1900-01-01';
+declare data_recebimento date default '1900-01-01';
+declare status_pagamento varchar(20) default 'aberto';
+declare num_parcela int;
+declare valor_parcela decimal(10,2);
+declare valor_recebido decimal(10,2) default (0.00);
+declare valor_desconto decimal(10,2) default (0.00);
+declare valor_multa decimal(10,2) default (0.00);
+declare valor_juros decimal(10,2) default (0.00);
+declare valor_total decimal(10,2) default (0.00);
+declare validador int;
+declare i int;
+declare j int;
 
-	DELIMITER $$
-	create or replace procedure pc_cobranca(in id_orcamento int, in id_pagamento date)
-	NOT DETERMINISTIC CONTAINS SQL SQL SECURITY DEFINER 
-	
-	end;
-	$$
-	DELIMITER ;
+select count(*) into validador from orcamento_pagamentos where id_orcamento = id_orcamento;
+set i = 0;
+set j = 0;
+
+while(i < validador) do
+	select 
+	id_pagamento = id_pagamento,
+	parcelas  = num_parcela,
+	valor_parcela  = valor_parcela,
+	id_agente  = id_agente
+	from orcamento_pagamentos where id_orcamento = id_orcamento limit i, validador;
+	-- while(j < num_parcela) do 
+		-- insert into cobrancas values (id_cliente, id_orcamento, data_geracao, data_vencimento, data_pagamento, data_recebimento, status_pagamento, id_agente, id_banco, id_pagamento 
+	-- end while;
+end while;
+
+end;
+$$
+DELIMITER ;
