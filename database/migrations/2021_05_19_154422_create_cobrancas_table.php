@@ -20,9 +20,9 @@ class CreateCobrancasTable extends Migration
             $table->integer('id_orcamento')->unsigned();
             $table->date('data_geracao')->default(DB::raw('CURRENT_TIMESTAMP(0)'));
             $table->date('data_vencimento');
-            $table->date('data_pagamento');
-            $table->date('data_recebimento');
-            $table->enum('status_pagamento', ['aberto', 'pendente', 'estornado']);
+            $table->date('data_pagamento')->default('1900-01-01');
+            $table->date('data_recebimento')->default('1900-01-01');
+            $table->enum('status_pagamento', ['baixado', 'aberto', 'atrasado', 'estornado']);
             $table->integer('id_agente')->unsigned();
             $table->integer('id_banco')->unsigned();
             $table->integer('id_pagamento')->unsigned();
