@@ -266,6 +266,59 @@ cast(sum(valor_total) as decimal(10,2)) as valor_total_recebido,
 from vw_orcamento_pagamento vop group by vop.id_orcamento;
 
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pc_cobranca`(in id_orcamento int, in id_pagamento int)
+begin
+declare p_id_banco int;
+declare p_id_cliente int;
+declare p_id_agente int;
+declare p_data_vencimento date;
+declare p_data_pagamento date default '1900-01-01';
+declare p_data_recebimento date default '1900-01-01';
+declare p_status_pagamento varchar(20) default 'aberto';
+declare p_num_parcela int;
+declare p_valor_parcela decimal(10,2);
+declare p_valor_recebido decimal(10,2) default (0.00);
+declare p_valor_desconto decimal(10,2) default (0.00);
+declare p_valor_multa decimal(10,2) default (0.00);
+declare p_valor_juros decimal(10,2) default (0.00);
+declare p_valor_total decimal(10,2) default (0.00);
+declare validador int;
+declare i int;
+declare j int;
+
+select count(1) into validador from orcamento_pagamentos where id_orcamento = id_orcamento;
+set i = 0;
+set j = 1;
+
+
+while(i < validador) do
+	select
+	p_num_parcela = orcamento_pagamentos.parcelas,
+	p_valor_parcela  = orcamento_pagamentos.valor_parcela,
+	p_id_agente  = orcamento_pagamentos.id_agente,
+  p_id_banco = orcamento_pagamentos.id_banco,
+  p_id_cliente = orcamentos.id_cliente
+	from orcamento_pagamentos
+  inner join orcamentos on orcamento_pagamentos.id_orcamento = orcamentos.id_orcamento
+    where orcamento_pagamentos.id_orcamento = id_orcamento
+    and
+    orcamento_pagamentos.id_pagamento = id_pagamento
+    limit i, validador;
+
+	while(j <= p_num_parcela) do
+
+		insert
+			into
+			cobrancas
+      (id_cliente, id_orcamento, data_geracao, data_vencimento, data_pagamento, data_recebimento, status_pagamento,id_agente,id_banco ,id_pagamento, num_parcela, valor_parcela, valor_recebido, valor_desconto, valor_multa, valor_juros, valor_total)
+				values
+			(p_id_cliente, id_orcamento, cast(now() as date), DATE_ADD(cast(now() as date), INTERVAL j MONTH), '1900-01-01',  '1900-01-01', p_status_pagamento, p_id_agente, p_id_banco, id_pagamento,j,p_valor_parcela, 0.0, 0.0,0.0,0.0,0.0 );
+        set j = j+1;
+		end while;
+    set i = i+1;
+end while;
+end
+
 
 DELIMITER $$
 create or replace procedure pc_cobranca(in id_orcamento int, in id_pagamento int)
