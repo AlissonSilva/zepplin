@@ -267,7 +267,7 @@ from vw_orcamento_pagamento vop group by vop.id_orcamento;
 
 DELIMITER $$
 
-create or replace DEFINER=`root`@`localhost` PROCEDURE `sp_cobranca`(in in_id_orcamento int, in in_id_pagamento int)
+CREATE OR REPLACE PROCEDURE `sp_cobranca`(in in_id_orcamento int, in in_id_pagamento int, in in_id_orcamento_pagamento int)
 begin
 declare p_id_banco int;
 declare p_id_cliente int;
@@ -291,42 +291,59 @@ select
 orcamento_pagamentos.parcelas into p_num_parcela
 from orcamento_pagamentos
 inner join orcamentos on orcamento_pagamentos.id_orcamento = orcamentos.id_orcamento
-    where orcamento_pagamentos.id_orcamento = in_id_orcamento
+    where 
+    	orcamento_pagamentos.id_orcamento = in_id_orcamento
     and
-    orcamento_pagamentos.id_pagamento = in_id_pagamento;
+    	orcamento_pagamentos.id_pagamento = in_id_pagamento
+   and 
+   		orcamento_pagamentos.id_orcamento_pagamento = in_id_orcamento_pagamento
+    ;
 
 select 
 orcamento_pagamentos.valor_parcela into p_valor_parcela
 from orcamento_pagamentos
 inner join orcamentos on orcamento_pagamentos.id_orcamento = orcamentos.id_orcamento
-    where orcamento_pagamentos.id_orcamento = in_id_orcamento
+    where 
+    	orcamento_pagamentos.id_orcamento = in_id_orcamento
     and
-    orcamento_pagamentos.id_pagamento = in_id_pagamento;
+	    orcamento_pagamentos.id_pagamento = in_id_pagamento
+    and 
+    	orcamento_pagamentos.id_orcamento_pagamento = in_id_orcamento_pagamento
+   ;
 
 select 
 orcamento_pagamentos.id_agente into p_id_agente
 from orcamento_pagamentos
 inner join orcamentos on orcamento_pagamentos.id_orcamento = orcamentos.id_orcamento
-    where orcamento_pagamentos.id_orcamento = in_id_orcamento
+    where 
+    	orcamento_pagamentos.id_orcamento = in_id_orcamento
     and
-    orcamento_pagamentos.id_pagamento = in_id_pagamento;
+	    orcamento_pagamentos.id_pagamento = in_id_pagamento
+	and 
+		orcamento_pagamentos.id_orcamento_pagamento = in_id_orcamento_pagamento;
    
 select 
 orcamento_pagamentos.id_banco into p_id_banco
 from orcamento_pagamentos
 inner join orcamentos on orcamento_pagamentos.id_orcamento = orcamentos.id_orcamento
-    where orcamento_pagamentos.id_orcamento = in_id_orcamento
+    where 
+    	orcamento_pagamentos.id_orcamento = in_id_orcamento
     and
-    orcamento_pagamentos.id_pagamento = in_id_pagamento;
+    	orcamento_pagamentos.id_pagamento = in_id_pagamento
+    and 
+   		orcamento_pagamentos.id_orcamento_pagamento = in_id_orcamento_pagamento;
 
 
 select 
 orcamentos.id_cliente into p_id_cliente
 from orcamento_pagamentos
 inner join orcamentos on orcamento_pagamentos.id_orcamento = orcamentos.id_orcamento
-    where orcamento_pagamentos.id_orcamento = in_id_orcamento
+    where 
+    	orcamento_pagamentos.id_orcamento = in_id_orcamento
     and
-    orcamento_pagamentos.id_pagamento = in_id_pagamento;
+    	orcamento_pagamentos.id_pagamento = in_id_pagamento
+    and 
+   		orcamento_pagamentos.id_orcamento_pagamento = in_id_orcamento_pagamento;
    
 
 	while(j <= p_num_parcela) do
@@ -340,6 +357,55 @@ inner join orcamentos on orcamento_pagamentos.id_orcamento = orcamentos.id_orcam
         set j = j+1;
 		end while;
 end
+$$
+DELIMITER ;
 
+
+DELIMITER $$
+create or replace TRIGGER tg_orcamentos_update AFTER UPDATE
+ON orcamentos FOR EACH ROW
+begin
+	declare validador int;
+	declare i int;
+	declare new_id_pagamento int;
+	declare new_id_orcamento_pagamento int;
+
+	set i = 0;
+	if new.status_orcamento = 'aprovado' then 
+		select count(1) into validador from orcamento_pagamentos where id_orcamento = new.id_orcamento;
+		while i < validador do
+			select 
+					id_pagamento into new_id_pagamento
+				from orcamento_pagamentos 
+				where 
+					id_orcamento = new.id_orcamento 
+					and 
+					not exists (
+						select 1 from cobrancas 
+							where 
+								id_orcamento = new.id_orcamento 
+							and 
+								cobrancas.id_pagamento = orcamento_pagamentos.id_pagamento)
+				limit  1;
+			
+				select 
+					id_orcamento_pagamento into new_id_orcamento_pagamento
+				from orcamento_pagamentos 
+				where 
+					id_orcamento = new.id_orcamento 
+					and 
+					not exists (
+						select 1 from cobrancas 
+							where 
+								id_orcamento = new.id_orcamento 
+							and 
+								cobrancas.id_pagamento = orcamento_pagamentos.id_pagamento)
+				limit  1;
+				
+			call sp_cobranca(new.id_orcamento, new_id_pagamento, new_id_orcamento_pagamento);
+			set i = i + 1;
+		end while;
+	end if;
+end
 $$
 DELIMITER ;
