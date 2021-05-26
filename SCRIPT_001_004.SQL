@@ -265,6 +265,25 @@ cast(sum(valor_total) as decimal(10,2)) as valor_total_recebido,
 (select valor_total from orcamentos o where o.id_orcamento = vop.id_orcamento) - cast(sum(valor_total) as decimal(10,2)) as valor_a_receber
 from vw_orcamento_pagamento vop group by vop.id_orcamento;
 
+create or replace view vw_cobranca as
+select 
+c.id_cobranca,
+c.id_pagamento,
+vc.nome,
+vc.documento,
+c.num_parcela,
+c.valor_parcela,
+c.status_pagamento,
+c.data_geracao,
+c.data_pagamento,
+c.data_recebimento,
+c.data_vencimento 
+from cobrancas c 
+inner join orcamentos o on c.id_orcamento = o.id_orcamento 
+inner join vw_clientes vc on c.id_cliente = vc.id_cliente 
+inner join pagamentos p on c.id_pagamento = p.id_pagamento 
+;
+
 DELIMITER $$
 
 CREATE OR REPLACE PROCEDURE `sp_cobranca`(in in_id_orcamento int, in in_id_pagamento int, in in_id_orcamento_pagamento int)

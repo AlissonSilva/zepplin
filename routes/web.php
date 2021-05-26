@@ -126,4 +126,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/admin/financeiro/forma_pagamento/inserir', ['as' => 'admin.pagamentos.inserir', 'uses' => 'Admin\PagamentoController@inserir']);
     Route::get('/admin/financeiro/forma_pagamento/editar/{id}', ['as' => 'admin.pagamentos.editar', 'uses' => 'Admin\PagamentoController@editar'])->where('id', '[0-9]');
     Route::put('/admin/financeiro/forma_pagamento/atualizar/{id}', ['as' => 'admin.pagamentos.atualizar', 'uses' => 'Admin\PagamentoController@atualizar'])->where('id', '[0-9]');
+
+    // Caixa
+    Route::get('/admin/financeiro/caixa/', ['as' => 'admin.caixa', 'uses'=> 'Admin\CaixaController@index']);
 });
