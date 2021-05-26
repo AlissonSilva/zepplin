@@ -42,7 +42,7 @@
                     <td>{{$registro->status_pagamento}}</td>
                     <td>{{$registro->data_geracao}}</td>
                     <td>{{$registro->data_vencimento}}</td>
-                    <td><a href="#" class=" btn btn-sm btn-outline-info " > <i class="fas fa-eye"></i> </a></td>
+                    <td><a href="#" data-id="{{$registro->id_cobranca}}" data-toggle="modal" data-content="<ul><li>Documento de cobrança: {{$registro->id_cobranca}}</li><li>Cliente: {{$registro->nome}}</li><li>Número da parcela: {{$registro->num_parcela}}</li><li> Valor: {{$registro->valor_parcela}}</li><li>Data Geração: {{$registro->data_geracao}}</li><li>Data Vencimento: {{$registro->data_vencimento}}</li><li>Data Pagamento: {{$registro->data_pagamento}}</li><li>Status: {{$registro->status_pagamento}}</li><li>Forma de pagamento: {{$registro->descricao}}</li><li>Banco: {{$registro->banco}}</li><li>Tipo: {{$registro->tipo_conta}}</li><li>Agencia: {{$registro->agencia}} Conta: {{$registro->conta}}</li>" data-target="#element" class=" btn btn-sm btn-outline-info " > <i class="fas fa-eye"></i> </a></td>
                 </tr>
                 @endforeach
               </tbody>
@@ -50,6 +50,25 @@
           </div>
         </div>
       </div>
+</div>
+
+
+<div class="modal fade" id="element" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myModalLabel">Detalhe da Cobrança</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        
+      </div>
+      <div class="modal-body">
+          
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -68,8 +87,26 @@
 
 
             // alert(valorSelecionado);
-            $('#valor_selecionado').html('<h3> Valor Selecionado: '+valorSelecionado+'</h3');
+            $('#valor_selecionado').html('<h3> Valor Selecionado: '+valorSelecionado.toLocaleString("pt-BR", { style: "currency" , currency:"BRL"})+'</h3');
         });
+
+        $('#element').on('show.bs.modal', function(event) {
+          $target = {};
+          ['id','button','title','content'].forEach(function(value, key) {
+              $target[value] = $(event.relatedTarget).data(value);
+          });
+       
+         $(".new").addClass('hidden');
+          $(".close-changes").text('Salvar').data('button');
+          //$(".modal-title").text($target.title);
+          $(".modal-body").html($target.content);
+          if ($target.id == 1 || $target.id == 2) {
+              $(".close-changes").text($target.button);
+          }
+            if ($target.id == 3) {
+              $(".new").removeClass('hidden');
+          }
+   });
     });
 </script>
 @endsection

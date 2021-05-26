@@ -102,7 +102,7 @@
           </a>
           <div id="collapseCaixa" class="collapse" aria-labelledby="headingCaixa" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="#">Baixa Manual</a>
+              <a class="collapse-item" href="{{route('admin.caixa')}}">Baixa Manual</a>
             </div>
           </div>
         </li>

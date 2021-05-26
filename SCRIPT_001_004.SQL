@@ -277,11 +277,20 @@ c.status_pagamento,
 c.data_geracao,
 c.data_pagamento,
 c.data_recebimento,
-c.data_vencimento 
+c.data_vencimento,
+p.descricao,
+a.tipo_conta,
+a.titular,
+a.agencia,
+a.conta,
+b.codigo,
+b.descricao as banco
 from cobrancas c 
 inner join orcamentos o on c.id_orcamento = o.id_orcamento 
 inner join vw_clientes vc on c.id_cliente = vc.id_cliente 
 inner join pagamentos p on c.id_pagamento = p.id_pagamento 
+inner join agentes a on p.id_agente = a.id_agente 
+inner join bancos b on a.id_banco = b.id_banco 
 ;
 
 DELIMITER $$
