@@ -129,4 +129,5 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Caixa
     Route::get('/admin/financeiro/caixa/', ['as' => 'admin.caixa', 'uses'=> 'Admin\CaixaController@index']);
+    Route::post('/admin/financeiro/caixa/recebimento/', ['as'=>'admin.caixa.recebimento', 'uses'=>'Admin\CaixaController@recebimento']);
 });

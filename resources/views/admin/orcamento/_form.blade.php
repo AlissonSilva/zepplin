@@ -198,7 +198,7 @@
                 .append("<div class='acItem'><span class='name'>" +
                     "Item: "+item.label + "</span><br><span class='desc'>" +
                     "Estoque: "+item.estoque + "</span><br><span class='desc'>" +
-                    "Valor Unitario: "+item.valor_unitario + "</span></div>")
+                    "Valor Unitario: "+item.valor_unitario.toLocaleString("pt-BR", { style: "currency" , currency:"BRL"}) + "</span></div>")
                 .appendTo(ul);
             };
 

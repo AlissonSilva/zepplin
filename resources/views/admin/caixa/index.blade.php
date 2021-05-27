@@ -6,7 +6,41 @@
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Caixa</h1>
-        <label><div id="valor_selecionado" ><h3>Valor Selecionado: 0,00</h3></div></label>
+
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                              Valor Selecionado
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                               <label><div id="valor_selecionado" ><h3> 0,00</h3></div></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+         </div>
+         <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-primary shadow h-100 py-2">
+              <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Valor Recebido
+                          </div>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800">
+                             {{-- <label><div id="valor_recebido" ><h3> {{isset($caixa->valor_recebido) ? '0,00' : $caixa->valor_recebido}} 0,00</h3></div></label> --}}
+                             <label><div id="valor_recebido" ><h3>0,00</h3></div></label>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+       </div>
+        
         <a href="#" id="btn_recebimento" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#exampleModal">Receber</a>
     </div>
 
@@ -38,10 +72,10 @@
                     <td>{{$registro->nome}}</td>
                     <td>{{$registro->documento}}</td>
                     <td>{{$registro->num_parcela}}</td>
-                    <td>{{$registro->valor_parcela}}</td>
+                    <td> {{number_format($registro->valor_parcela, 2, ',', '.')}}</td>
                     <td>{{$registro->status_pagamento}}</td>
-                    <td>{{$registro->data_geracao}}</td>
-                    <td>{{$registro->data_vencimento}}</td>
+                    <td>{{date('d/m/Y', strtotime($registro->data_geracao)) }} </td>
+                    <td>{{date('d/m/Y', strtotime($registro->data_vencimento))}}</td>
                     <td><a href="#" data-id="{{$registro->id_cobranca}}" data-toggle="modal" data-content="<ul><li>Documento de cobrança: {{$registro->id_cobranca}}</li><li>Cliente: {{$registro->nome}}</li><li>Número da parcela: {{$registro->num_parcela}}</li><li> Valor: {{$registro->valor_parcela}}</li><li>Data Geração: {{$registro->data_geracao}}</li><li>Data Vencimento: {{$registro->data_vencimento}}</li><li>Data Pagamento: {{$registro->data_pagamento}}</li><li>Status: {{$registro->status_pagamento}}</li><li>Forma de pagamento: {{$registro->descricao}}</li><li>Banco: {{$registro->banco}}</li><li>Tipo: {{$registro->tipo_conta}}</li><li>Agencia: {{$registro->agencia}} Conta: {{$registro->conta}}</li>" data-target="#element" class=" btn btn-sm btn-outline-info " > <i class="fas fa-eye"></i> </a></td>
                 </tr>
                 @endforeach
@@ -50,6 +84,14 @@
           </div>
         </div>
       </div>
+
+      
+      @if ($message = Session::get('success'))
+      <div class="alert alert-info alert-success">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>{{ $message }}</strong>
+      </div>
+    @endif
 </div>
 
 
@@ -74,7 +116,6 @@
 
 
 <script>
-
     $(document).ready(function(){
         var valorSelecionado = 0.0;
         var arrayChk = [];
@@ -87,7 +128,7 @@
                 valorSelecionado = valorSelecionado - parseFloat($(this).val());
                 arrayChk.splice(arrayChk.indexOf($(this).attr('id')),1);
             }
-            $('#valor_selecionado').html('<h3> Valor Selecionado: '+valorSelecionado.toLocaleString("pt-BR", { style: "currency" , currency:"BRL"})+'</h3>');
+            $('#valor_selecionado').html('<h3>'+valorSelecionado.toLocaleString("pt-BR", { style: "currency" , currency:"BRL"})+'</h3>');
         });
 
         $('#element').on('show.bs.modal', function(event) {
@@ -109,10 +150,23 @@
 
 
    $('#btn_recebimento').click(function(){
+     if(arrayChk.length == 0 || arrayChk == null){
+       alert("Nenhum valor selecionado! Operação não permitida.");
+     }else{
         var r = confirm('Receber o valor de '+valorSelecionado.toLocaleString("pt-BR", { style: "currency" , currency:"BRL"})+'?');
         if (r) {
-            alert('Valor recebido com sucesso!');
+            $.ajax({
+              type: 'post',
+              url: '/admin/financeiro/caixa/recebimento/',
+              header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+              data: { _token: $('meta[name="csrf-token"]').attr('content'), arrayChk:arrayChk },
+              success: function (e) {
+                  $('#valor_recebido').html(e);
+                  // alert('Valor recebido com sucesso!');
+              }
+          });
         }
+     }
    });
 });
 </script>
