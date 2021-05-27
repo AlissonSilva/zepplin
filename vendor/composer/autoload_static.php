@@ -484,6 +484,7 @@ class ComposerStaticInitca6d9f286156ff2cbe8f9b12052cf83c
         'App\\Http\\Controllers\\Admin\\BancoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/BancoController.php',
         'App\\Http\\Controllers\\Admin\\CaixaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/CaixaController.php',
         'App\\Http\\Controllers\\Admin\\CidadeController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/CidadeController.php',
+        'App\\Http\\Controllers\\Admin\\CobrancaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/CobrancaController.php',
         'App\\Http\\Controllers\\Admin\\EstadoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/EstadoController.php',
         'App\\Http\\Controllers\\Admin\\OrcamentoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/OrcamentoController.php',
         'App\\Http\\Controllers\\Admin\\PagamentoController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/PagamentoController.php',

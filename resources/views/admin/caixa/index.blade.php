@@ -7,7 +7,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Caixa</h1>
         <label><div id="valor_selecionado" ><h3>Valor Selecionado: 0,00</h3></div></label>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Receber</a>
+        <a href="#" id="btn_recebimento" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#exampleModal">Receber</a>
     </div>
 
     <!-- DataTales Example -->
@@ -59,10 +59,10 @@
       <div class="modal-header">
         <h5 class="modal-title" id="myModalLabel">Detalhe da Cobrança</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        
+
       </div>
       <div class="modal-body">
-          
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -71,23 +71,23 @@
   </div>
 </div>
 
+
+
 <script>
 
     $(document).ready(function(){
         var valorSelecionado = 0.0;
+        var arrayChk = [];
         $('input[type="checkbox"]').change(function(){
-            //alert( $(this).val() );
             var xeck = $(this);
             if(xeck.is( ":checked" )){
                 valorSelecionado = valorSelecionado + parseFloat($(this).val());
+                arrayChk.push($(this).attr('id'));
             }else{
                 valorSelecionado = valorSelecionado - parseFloat($(this).val());
+                arrayChk.splice(arrayChk.indexOf($(this).attr('id')),1);
             }
-            // $('#myCheckbox').attr('checked', true);
-
-
-            // alert(valorSelecionado);
-            $('#valor_selecionado').html('<h3> Valor Selecionado: '+valorSelecionado.toLocaleString("pt-BR", { style: "currency" , currency:"BRL"})+'</h3');
+            $('#valor_selecionado').html('<h3> Valor Selecionado: '+valorSelecionado.toLocaleString("pt-BR", { style: "currency" , currency:"BRL"})+'</h3>');
         });
 
         $('#element').on('show.bs.modal', function(event) {
@@ -95,10 +95,9 @@
           ['id','button','title','content'].forEach(function(value, key) {
               $target[value] = $(event.relatedTarget).data(value);
           });
-       
+
          $(".new").addClass('hidden');
           $(".close-changes").text('Salvar').data('button');
-          //$(".modal-title").text($target.title);
           $(".modal-body").html($target.content);
           if ($target.id == 1 || $target.id == 2) {
               $(".close-changes").text($target.button);
@@ -107,7 +106,15 @@
               $(".new").removeClass('hidden');
           }
    });
-    });
+
+
+   $('#btn_recebimento').click(function(){
+        var r = confirm('Receber o valor de '+valorSelecionado.toLocaleString("pt-BR", { style: "currency" , currency:"BRL"})+'?');
+        if (r) {
+            alert('Valor recebido com sucesso!');
+        }
+   });
+});
 </script>
 @endsection
 
