@@ -23,12 +23,52 @@ class CaixaController extends Controller
     public function recebimento(Request $request)
     {
         $dados = $request->all();
+        $id_caixa = 0;
+        $id_user = auth()->user()->id;
+
         try {
+
             Cobranca::whereIn('id_cobranca', $dados['arrayChk'])->update(['status_pagamento' => 'baixado', 'data_pagamento' => DB::raw('CURRENT_TIMESTAMP(0)'), 'data_recebimento' => DB::raw('CURRENT_TIMESTAMP(0)')]);
+
+            $id_caixa = $this->verificarCaixa($id_user);
+
+            // dd($id_caixa);
+        
+            // DB::table('caixa_cobranca')->insert([
+            //     'id_caixa'=>$id_caixa,
+            //     'id_cobranca'=>$dados['arrayChk'],
+            //     'data_recebimento'=>DB::raw('cast(now() as date)')
+            // ]);
+
             return back()->with('success', 'Valor recebido com sucesso!');
+            //auth()->user()->id,
+
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+
+    public function verificarCaixa($id_user){
+        // $idOrcamento = Orcamento::insertGetId($objOcamento);
+        $data_atual = DB::select('select cast(now() as date) as data_atual')->first();
+        $retorno_caixa = DB::table('caixas')
+            ->where('id_user','=',$id_user)
+            ->where('data_recebimento','=',$data_atual['data_atual'])->count();
+
+        $id_caixa = 0;
+
+        if($retorno_caixa > 0){
+            $id_caixa = DB::table('caixas')
+            ->where('id_user','=',$id_user)
+            ->where('data_recebimento','=',$data_atual)->first();
+        }else{
+            $id_caixa = DB::table('caixas')->insertGetId([
+                'id_user'=>$id_user,
+                'data_recebimento'=>DB::raw('cast(now() as date)')
+            ]);
+        }
+        return $id_caixa;
     }
 
     public function baixa($id_cobranca)

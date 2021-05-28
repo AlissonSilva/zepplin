@@ -7,7 +7,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Caixa</h1>
 
-          <div class="col-xl-3 col-md-6 mb-4">
+          <div class="col-xl-2 col-md-4 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -23,7 +23,7 @@
                 </div>
             </div>
          </div>
-         <div class="col-xl-3 col-md-6 mb-4">
+         <div class="col-xl-2 col-md-4 mb-4">
           <div class="card border-left-primary shadow h-100 py-2">
               <div class="card-body">
                   <div class="row no-gutters align-items-center">

@@ -16,7 +16,7 @@ class CreateCaixasTable extends Migration
     {
         Schema::create('caixas', function (Blueprint $table) {
             $table->increments('id_caixa');
-            $table->integer('valor_recebido');
+            $table->float('valor_recebido')->nullable();
             $table->biginteger('id_user')->unsigned();
             $table->date('data_recebimento')->default(DB::raw('CURRENT_TIMESTAMP(0)'));
             $table->timestamps();
