@@ -32,15 +32,15 @@
                             Valor Recebido
                           </div>
                           <div class="h5 mb-0 font-weight-bold text-gray-800">
-                             {{-- <label><div id="valor_recebido" ><h3> {{isset($caixa->valor_recebido) ? '0,00' : $caixa->valor_recebido}} 0,00</h3></div></label> --}}
-                             <label><div id="valor_recebido" ><h3>0,00</h3></div></label>
+                             <label><div id="valor_recebido" ><h3> {{isset($caixa->vl_recebido ) ? number_format($caixa->vl_recebido, 2, ',', '.') :  '0,00' }}  </h3></div></label>
+                             {{-- <label><div id="valor_recebido" ><h3>0,00</h3></div></label> --}}
                           </div>
                       </div>
                   </div>
               </div>
           </div>
        </div>
-        
+
         <a href="#" id="btn_recebimento" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#exampleModal">Receber</a>
     </div>
 
@@ -76,7 +76,7 @@
                     <td>{{$registro->status_pagamento}}</td>
                     <td>{{date('d/m/Y', strtotime($registro->data_geracao)) }} </td>
                     <td>{{date('d/m/Y', strtotime($registro->data_vencimento))}}</td>
-                    <td><a href="#" data-id="{{$registro->id_cobranca}}" data-toggle="modal" data-content="<ul><li>Documento de cobrança: {{$registro->id_cobranca}}</li><li>Cliente: {{$registro->nome}}</li><li>Número da parcela: {{$registro->num_parcela}}</li><li> Valor: {{$registro->valor_parcela}}</li><li>Data Geração: {{$registro->data_geracao}}</li><li>Data Vencimento: {{$registro->data_vencimento}}</li><li>Data Pagamento: {{$registro->data_pagamento}}</li><li>Status: {{$registro->status_pagamento}}</li><li>Forma de pagamento: {{$registro->descricao}}</li><li>Banco: {{$registro->banco}}</li><li>Tipo: {{$registro->tipo_conta}}</li><li>Agencia: {{$registro->agencia}} Conta: {{$registro->conta}}</li>" data-target="#element" class=" btn btn-sm btn-outline-info " > <i class="fas fa-eye"></i> </a></td>
+                    <td><a href="#" data-id="{{$registro->id_cobranca}}" data-toggle="modal" data-content="<ul><li>Documento de cobrança: {{$registro->id_cobranca}}</li><li>Cliente: {{$registro->nome}}</li><li>Número da parcela: {{$registro->num_parcela}}</li><li> Valor: {{number_format($registro->valor_parcela, 2, ',', '.')}}</li><li>Data Geração: {{date('d/m/Y', strtotime($registro->data_geracao))}}</li><li>Data Vencimento: {{date('d/m/Y', strtotime($registro->data_vencimento))}}</li><li>Data Pagamento: {{date('d/m/Y', strtotime($registro->data_pagamento))}}</li><li>Status: {{$registro->status_pagamento}}</li><li>Forma de pagamento: {{$registro->descricao}}</li><li>Banco: {{$registro->banco}}</li><li>Tipo: {{$registro->tipo_conta}}</li><li>Agencia: {{$registro->agencia}} Conta: {{$registro->conta}}</li>" data-target="#element" class=" btn btn-sm btn-outline-info " > <i class="fas fa-eye"></i> </a></td>
                 </tr>
                 @endforeach
               </tbody>
@@ -85,7 +85,7 @@
         </div>
       </div>
 
-      
+
       @if ($message = Session::get('success'))
       <div class="alert alert-info alert-success">
           <button type="button" class="close" data-dismiss="alert">×</button>
@@ -161,8 +161,10 @@
               header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
               data: { _token: $('meta[name="csrf-token"]').attr('content'), arrayChk:arrayChk },
               success: function (e) {
-                  $('#valor_recebido').html(e);
-                  // alert('Valor recebido com sucesso!');
+                  // $('#valor_recebido').html(e);
+                  alert('Valor recebido com sucesso!');
+                  location.reload();
+
               }
           });
         }
