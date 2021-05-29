@@ -46,7 +46,6 @@
                     @else
                         <option value="{{$opt->id_veiculo}}" >{{$opt->placa .' | '. $opt->descricao_veiculo}}</option>
                     @endif
-
             @endforeach
         </select>
     </div>

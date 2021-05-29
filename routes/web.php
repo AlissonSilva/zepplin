@@ -67,7 +67,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/pessoajuridica/editar/{id}', ['as' => 'admin.pessoajuridica.editar', 'uses' => 'Admin\PessoaJuridicaController@editar'])->where('id', '[0-9]+');
     Route::put('/admin/pessoajuridica/atualizar/{id}', ['as' => 'admin.pessoajuridica.atualizar', 'uses' => 'Admin\PessoaJuridicaController@atualizar'])->where('id', '[0-9]+');
 
-
     // Rotas referente aos perfis
     Route::get('/admin/perfil', ['as' => 'admin.perfil', 'uses' => 'Admin\PerfilController@index']);
     Route::get('/admin/perfil/adicionar', ['as' => 'admin.perfil.adicionar', 'uses' => 'Admin\PerfilController@adicionar']);
@@ -82,7 +81,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/veiculos/{id_cliente}/{id}', ['as' => 'admin.veiculos.editar', 'uses' => 'Admin\VeiculoController@editar'])->where('id', '[0-9]+');
     Route::get('/admin/veiculos/{id_cliente}/adicionar', ['as' => 'admin.veiculos.adicionar', 'uses' => 'Admin\VeiculoController@adicionar'])->where('id_cliente', '[0-9]+');
     Route::put('/admin/veiculos/atualizar/', ['as' => 'admin.veiculos.atualizar', 'uses' => 'Admin\VeiculoController@atualizar']);
-
 
     // Rotas users
     Route::get('/admin/user/', ['as' => 'admin.user', 'uses' => 'Admin\UserController@index']);
@@ -129,5 +127,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Caixa
     Route::get('/admin/financeiro/caixa/', ['as' => 'admin.caixa', 'uses'=> 'Admin\CaixaController@index']);
+    Route::get('/admin/financeiro/caixa/relatorio/',['as'=>'admin.caixa.relatorio', 'uses' => 'Admin\CaixaController@relatorio']);
     Route::post('/admin/financeiro/caixa/recebimento/', ['as'=>'admin.caixa.recebimento', 'uses'=>'Admin\CaixaController@recebimento']);
 });

@@ -62,6 +62,8 @@ class UserController extends Controller
     public function atualizar(Request $request, $id)
     {
         $ativo = $request->ativo == 'true' ? 1 : 0;
+        $foto = null;
+
         if (empty($request->name)) {
             return response()->json(['msg' => '<div class="alert alert-danger"> O campo nome é obrigatório.</div>', 'tipo' => 'false']);
         } else if (empty($request->email)) {
@@ -69,6 +71,16 @@ class UserController extends Controller
         } else if ($this->verificarEmail($request->email, $id) > 0) {
             return response()->json(['msg' => '<div class="alert alert-danger">E-mail já cadastrado para um usuário.</div>', 'tipo' => 'false']);
         } else {
+            if($request->hasFile('foto')){
+                $imagem = $request->file('foto');
+                $num = rand(1111,9999);
+                $dir = "img/perfil/";
+                $ex = $imagem->guessClientExtension();
+                $nomeImagem = "imagem_".$num.".".$ex;
+                $imagem->move($dir, $nomeImagem);
+                $foto = $dir."/".$nomeImagem;
+
+            }
             if (!empty($request->password)) {
                 $obj = collect(
                     [
@@ -77,7 +89,8 @@ class UserController extends Controller
                         'password' => bcrypt($request->password),
                         'ativo' => $ativo,
                         'id_perfil' => $request->perfil,
-                        'updated_at' => now()->toDateTimeString()
+                        'updated_at' => now()->toDateTimeString(),
+                        'foto' =>  $foto
                     ]
                 )->toArray();
             } else {
@@ -87,7 +100,8 @@ class UserController extends Controller
                         'email' => strtolower($request->email),
                         'ativo' =>  $ativo,
                         'id_perfil' => $request->perfil,
-                        'updated_at' => now()->toDateTimeString()
+                        'updated_at' => now()->toDateTimeString(),
+                        'foto' =>  $foto
                     ]
                 )->toArray();
             }
@@ -95,7 +109,11 @@ class UserController extends Controller
                 //dd($obj);
                 User::where('id', $id)->update($obj);
                 // return response()->json(['msg' => '<div class="alert alert-success">Usuário atualizado com sucesso.</div>', 'tipo' => 'true']);
-                return redirect()->route('admin.user');
+
+                // return redirect()->route('admin.user');
+                return back()->with('success','Usuário atualizado com sucesso!');
+                
+
             } catch (\Throwable $th) {
                 return response()->json(['msg' => '<div class="alert alert-danger">Erro ao atualizar o cadastro do usuário.' . $th->getMessage() . '.</div>', 'tipo' => 'false']);
             }
