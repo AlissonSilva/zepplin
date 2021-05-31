@@ -39,7 +39,7 @@ class CaixaController extends Controller
 
             foreach ($dados['arrayChk'] as $obj) {
                 DB::table('caixa_cobranca')->insert([
-                    'id_caixa' => $id_caixa->id_caixa,
+                    'id_caixa' => $id_caixa,
                     'id_cobranca' => $obj,
                     'data_recebimento' => now()->toDateString()
                 ]);
@@ -66,6 +66,7 @@ class CaixaController extends Controller
                 ->select('id_caixa')
                 ->where('id_user', '=', $id_user)
                 ->where('data_recebimento', '=', $data_atual)->first();
+            $id_caixa = $id_caixa->id_caixa;
         } else {
             $id_caixa = DB::table('caixas')->insertGetId([
                 'id_user' => $id_user,
