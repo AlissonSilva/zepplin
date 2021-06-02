@@ -76,6 +76,30 @@ class CaixaController extends Controller
         return $id_caixa;
     }
 
+    public function gerador(Request $request){
+        $dados = $request->all();
+
+        // dd($dados);
+
+        $registros = DB::select('select 
+        c.id_caixa,
+        c.valor_recebido,
+        c.id_user,
+        cc.data_recebimento
+        from caixa_cobranca cc 
+        inner join caixas c on c.id_caixa = cc.id_caixa 
+        inner join cobrancas c2 on cc.id_cobranca = c2.id_cobranca
+        inner join users u2  on c.id_user = u2.id 
+        where c.id_user between :cod_inicio and :cod_fim and cc.data_recebimento between :datainicio and :datafim ',
+        [
+            'cod_inicio'=>intval($dados['cod_user_inicio']),'cod_fim'=>intval($dados['cod_user_fim']), 
+            'datainicio'=>$dados['data-inicio'], 'datafim'=>$dados['data-fim']
+        ]
+    )->groupBy('data_recebimento');
+
+    return view('admin.caixa.relatoriocaixaretorno',compact('registros'));
+    }
+
     public function baixa($id_cobranca)
     {
         Cobranca::where('id_cobranca', '=', $id_cobranca)->each->update(['status_pagamento' => 'baixado']);
