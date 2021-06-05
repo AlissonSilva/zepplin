@@ -67,9 +67,16 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRelatorio" aria-expanded="true" aria-controls="collapseRelatorio">
               <i class="fas fa-fw fa-chart-area"></i>
-              <span>Relatórios</span></a>
+              <span>Relatórios</span>
+            </a>
+            <div id="collapseRelatorio" class="collapse" aria-labelledby="headingRelatorio" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                  <a class="collapse-item" href="{{route('admin.produtos.relatorioestoque')}}">Relatório de Estoque</a>
+                  <a class="collapse-item" href="{{route('admin.caixa.relatorio')}}">Relatório de Caixa</a>
+                </div>
+              </div>
           </li>
 
 
@@ -134,12 +141,12 @@
         <li class="nav-item ">
           <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
             <i class="fas fa-fw fa-cog "></i>
-            <span>Lançamentos</span>
+            <span>OS</span>
           </a>
           <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="#">Compra de Peças</a>
-              <a class="collapse-item" href="#">Visualizar Estoque</a>
+              <a class="collapse-item" href="#">Ordem de Serviço</a>
+              <a class="collapse-item" href="#">Consultar Ordem</a>
 
             </div>
           </div>

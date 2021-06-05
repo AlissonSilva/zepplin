@@ -293,6 +293,32 @@ inner join agentes a on p.id_agente = a.id_agente
 inner join bancos b on a.id_banco = b.id_banco 
 ;
 
+create or replace view vw_estoque as
+select
+	p.id_produto,
+	p.descricao,
+	p.estoque,
+	ifnull(x.reservado, 0) reservado ,
+	p.estoque + ifnull(x.reservado, 0) as total_estoque,
+	p.unidade,
+	p.preco,
+	p.preco * (p.estoque + ifnull(x.reservado, 0)) as valor_total,
+	p.ativo
+from
+	produtos p
+left join (
+	select
+		oi.id_produto, sum(oi.quantidade) as reservado
+	from
+		orcamentos o
+	inner join orcamento_items oi on
+		o.id_orcamento = oi.id_orcamento
+	where
+		o.status_orcamento = 'aberto'
+		and oi.id_produto is not null
+	group by
+		oi.id_produto ) x on p.id_produto = x.id_produto;
+
 DELIMITER $$
 
 CREATE OR REPLACE PROCEDURE `sp_cobranca`(in in_id_orcamento int, in in_id_pagamento int, in in_id_orcamento_pagamento int)

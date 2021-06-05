@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\model\admin\Cobranca;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use \PDF;
 
 class CaixaController extends Controller
 {
@@ -13,17 +14,18 @@ class CaixaController extends Controller
     {
         $registros = DB::table('vw_cobranca')->where('status_pagamento', '=', 'aberto')->get();
         $caixa = DB::table('cobrancas')
-            ->join('caixa_cobranca','cobrancas.id_cobranca','=' ,'caixa_cobranca.id_cobranca')
-            ->join('caixas','caixa_cobranca.id_caixa','=','caixas.id_caixa')
+            ->join('caixa_cobranca', 'cobrancas.id_cobranca', '=', 'caixa_cobranca.id_cobranca')
+            ->join('caixas', 'caixa_cobranca.id_caixa', '=', 'caixas.id_caixa')
             ->select(DB::raw('sum(valor_parcela) as vl_recebido'))
-            ->where('caixas.id_user','=',auth()->user()->id)
+            ->where('caixas.id_user', '=', auth()->user()->id)
             ->where('caixas.data_recebimento', '=', DB::raw('cast(now() as date )'))
             ->where('cobrancas.status_pagamento', '=', 'baixado')
             ->first();
         return view('admin.caixa.index', compact('registros', 'caixa'));
     }
 
-    public function relatorio(){
+    public function relatorio()
+    {
         return view('admin.caixa.relatoriocaixa');
     }
 
@@ -76,28 +78,63 @@ class CaixaController extends Controller
         return $id_caixa;
     }
 
-    public function gerador(Request $request){
+    public function gerador(Request $request)
+    {
         $dados = $request->all();
 
         // dd($dados);
 
-        $registros = DB::select('select 
-        c.id_caixa,
-        c.valor_recebido,
-        c.id_user,
-        cc.data_recebimento
-        from caixa_cobranca cc 
-        inner join caixas c on c.id_caixa = cc.id_caixa 
-        inner join cobrancas c2 on cc.id_cobranca = c2.id_cobranca
-        inner join users u2  on c.id_user = u2.id 
-        where c.id_user between :cod_inicio and :cod_fim and cc.data_recebimento between :datainicio and :datafim ',
-        [
-            'cod_inicio'=>intval($dados['cod_user_inicio']),'cod_fim'=>intval($dados['cod_user_fim']), 
-            'datainicio'=>$dados['data-inicio'], 'datafim'=>$dados['data-fim']
-        ]
-    )->groupBy('data_recebimento');
+        $registros = DB::select(
+            'select
+            c.id_caixa,
+            sum(c2.valor_parcela) as valor_recebido,
+            c.id_user,
+            u2.name,
+            cc.data_recebimento
+            from caixa_cobranca cc
+            inner join caixas c on c.id_caixa = cc.id_caixa
+            inner join cobrancas c2 on cc.id_cobranca = c2.id_cobranca
+            inner join users u2  on c.id_user = u2.id
+        where c.id_user between :cod_inicio and :cod_fim and cc.data_recebimento between :datainicio and :datafim
+        group by c.id_user,u2.name,
+        cc.data_recebimento ',
+            [
+                'cod_inicio' => intval($dados['cod_user_inicio']), 'cod_fim' => intval($dados['cod_user_fim']),
+                'datainicio' => $dados['data-inicio'], 'datafim' => $dados['data-fim']
+            ]
+        );
 
-    return view('admin.caixa.relatoriocaixaretorno',compact('registros'));
+
+        $registrosSomado = DB::select(
+            'select
+                sum(c2.valor_parcela) as valor_total
+                from caixa_cobranca cc
+            inner join caixas c on c.id_caixa = cc.id_caixa
+            inner join cobrancas c2 on cc.id_cobranca = c2.id_cobranca
+            inner join users u2  on c.id_user = u2.id
+        where c.id_user between :cod_inicio and :cod_fim and cc.data_recebimento between :datainicio and :datafim
+        ',
+            [
+                'cod_inicio' => intval($dados['cod_user_inicio']), 'cod_fim' => intval($dados['cod_user_fim']),
+                'datainicio' => $dados['data-inicio'], 'datafim' => $dados['data-fim']
+            ]
+        );
+
+
+        $data = [
+            'cod_user_inicio' => $dados['cod_user_inicio'],
+            'cod_user_fim' => $dados['cod_user_fim'],
+            'data_inicio' => $dados['data-inicio'],
+            'data_fim' => $dados['data-fim'],
+            'registros' => $registros,
+            'total' => $registrosSomado
+        ];
+
+
+        $pdf = PDF::loadView('admin.caixa.myPDF', $data)->setPaper('A4', 'landscape');
+
+        // return view('admin.caixa.relatoriocaixaretorno', compact('registros'));
+        return $pdf->download('relatorio_caixa.pdf');
     }
 
     public function baixa($id_cobranca)

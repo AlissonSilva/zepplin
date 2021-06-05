@@ -51,6 +51,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/admin/produtos/inserir', ['as' => 'admin.produtos.inserir', 'uses' => 'Admin\ProdutoController@inserir']);
     Route::get('/admin/produtos/editar/{id_produto}', ['as' => 'admin.produtos.editar', 'uses' => 'Admin\ProdutoController@editar'])->where('id', '[0-9]+');
     Route::put('/admin/produtos/atualizar/{id_produto}', ['as' => 'admin.produtos.atualizar', 'uses' => 'Admin\ProdutoController@atualizar'])->where('id', '[0-9]+');
+    Route::get('/admin/produtos/relatorioestoque/', ['as' => 'admin.produtos.relatorioestoque', 'uses' => 'Admin\ProdutoController@relatorioestoque']);
+    Route::post('/admin/produtos/gerarpdf/', ['as' => 'admin.produtos.gerarpdf', 'uses' => 'Admin\ProdutoController@createpdf']);
 
     // Rotas referente ao cadastro de pessoas fisicas
     Route::get('/admin/pessoafisica', ['as' => 'admin.pessoafisica', 'uses' => 'Admin\PessoaFisicaController@index']);
@@ -126,8 +128,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/admin/financeiro/forma_pagamento/atualizar/{id}', ['as' => 'admin.pagamentos.atualizar', 'uses' => 'Admin\PagamentoController@atualizar'])->where('id', '[0-9]');
 
     // Caixa
-    Route::get('/admin/financeiro/caixa/', ['as' => 'admin.caixa', 'uses'=> 'Admin\CaixaController@index']);
-    Route::get('/admin/financeiro/caixa/relatorio/',['as'=>'admin.caixa.relatorio', 'uses' => 'Admin\CaixaController@relatorio']);
-    Route::post('/admin/financeiro/caixa/recebimento/', ['as'=>'admin.caixa.recebimento', 'uses'=>'Admin\CaixaController@recebimento']);
-    Route::post('/admin/financeiro/caixa/relatorio/gerado/',['as' =>'admin.caixa.gerador', 'uses'=>'Admin\CaixaController@gerador']);
+    Route::get('/admin/financeiro/caixa/', ['as' => 'admin.caixa', 'uses' => 'Admin\CaixaController@index']);
+    Route::get('/admin/financeiro/caixa/relatorio/', ['as' => 'admin.caixa.relatorio', 'uses' => 'Admin\CaixaController@relatorio']);
+    Route::post('/admin/financeiro/caixa/recebimento/', ['as' => 'admin.caixa.recebimento', 'uses' => 'Admin\CaixaController@recebimento']);
+    Route::post('/admin/financeiro/caixa/relatorio/gerado/', ['as' => 'admin.caixa.gerador', 'uses' => 'Admin\CaixaController@gerador']);
 });
