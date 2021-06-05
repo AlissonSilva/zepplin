@@ -98,7 +98,7 @@ footer { position: fixed; bottom: -60px; left: 0px; right: 0px; height: 50px; }
                 </td>
 
                 <td>
-                    {{$preco_inicio}}
+                    {{ number_format($preco_inicio, 2, ',', '.') }}
                 </td>
             </tr>
 
@@ -108,7 +108,7 @@ footer { position: fixed; bottom: -60px; left: 0px; right: 0px; height: 50px; }
                 </td>
 
                 <td>
-                    {{$preco_fim}}
+                    {{ number_format($preco_fim, 2, ',', '.') }}
                 </td>
             </tr>
             <tr>
