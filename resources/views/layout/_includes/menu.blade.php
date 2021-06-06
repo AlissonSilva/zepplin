@@ -133,7 +133,7 @@
         <div id="collapseOrcamento" class="collapse" aria-labelledby="headingOrcamento" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="{{route('admin.orcamentos')}}">Novo Orçamento</a>
-            <a class="collapse-item" href="#">Consultar Orçamento</a>
+            <a class="collapse-item" href="{{route('admin.orcamentos.pesquisar')}}">Consultar Orçamento</a>
           </div>
         </div>
       </li>

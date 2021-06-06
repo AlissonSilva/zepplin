@@ -269,6 +269,11 @@ class OrcamentoController extends Controller
         return $retorno;
     }
 
+    public function pesquisar()
+    {
+        return view('admin.orcamento.consultaorcamento');
+    }
+
     public function removerPagamento($id)
     {
         try {
