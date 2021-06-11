@@ -274,6 +274,40 @@ class OrcamentoController extends Controller
         return view('admin.orcamento.consultaorcamento');
     }
 
+    public function pesquisarOrcamento(Request $request){
+        $dados = $request->all();
+
+        $parametros = '';
+
+        if($dados['typevalue']=='0'|| $dados['typevalue']=='1' ){
+            $parametros = 'where documento = :obj ';
+        }else if($dados['typevalue']=='2'){
+            $parametros = 'where id_orcamento = :obj';
+        }else if($dados['typevalue']=='3'){
+            $parametros = 'where nome like \'%:obj%\' ';
+        }
+
+        $sql = 'select 
+        o.id_orcamento, 
+        o.valor_desconto, 
+        o.percentual_desconto, 
+        o.valor_total_sem_desconto, 
+        o.valor_total, 
+        o.status_orcamento,
+        vc.documento,
+        vc.nome
+        from orcamentos o
+        inner join vw_clientes vc on o.id_cliente = vc.id_cliente '.$parametros;
+        
+        $registros = DB::select($sql, [
+             'obj'=>$dados['descricao']
+         ]);
+
+        dd($registros);
+        // return response()->json(['status'=>'ture','values'=>$registros]);
+
+    }
+
     public function removerPagamento($id)
     {
         try {
