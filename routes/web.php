@@ -126,12 +126,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/financeiro/forma_pagamento', ['as' => 'admin.pagamentos', 'uses' => 'Admin\PagamentoController@index']);
     Route::get('/admin/financeiro/forma_pagamento/adicionar', ['as' => 'admin.pagamentos.adicionar', 'uses' => 'Admin\PagamentoController@adicionar']);
     Route::post('/admin/financeiro/forma_pagamento/inserir', ['as' => 'admin.pagamentos.inserir', 'uses' => 'Admin\PagamentoController@inserir']);
-    Route::get('/admin/financeiro/forma_pagamento/editar/{id}', ['as' => 'admin.pagamentos.editar', 'uses' => 'Admin\PagamentoController@editar'])->where('id', '[0-9]');
-    Route::put('/admin/financeiro/forma_pagamento/atualizar/{id}', ['as' => 'admin.pagamentos.atualizar', 'uses' => 'Admin\PagamentoController@atualizar'])->where('id', '[0-9]');
+    Route::get('/admin/financeiro/forma_pagamento/editar/{id}', ['as' => 'admin.pagamentos.editar', 'uses' => 'Admin\PagamentoController@editar'])->where('id', '[0-9]+');
+    Route::put('/admin/financeiro/forma_pagamento/atualizar/{id}', ['as' => 'admin.pagamentos.atualizar', 'uses' => 'Admin\PagamentoController@atualizar'])->where('id', '[0-9]+');
 
     // Caixa
     Route::get('/admin/financeiro/caixa/', ['as' => 'admin.caixa', 'uses' => 'Admin\CaixaController@index']);
     Route::get('/admin/financeiro/caixa/relatorio/', ['as' => 'admin.caixa.relatorio', 'uses' => 'Admin\CaixaController@relatorio']);
     Route::post('/admin/financeiro/caixa/recebimento/', ['as' => 'admin.caixa.recebimento', 'uses' => 'Admin\CaixaController@recebimento']);
     Route::post('/admin/financeiro/caixa/relatorio/gerado/', ['as' => 'admin.caixa.gerador', 'uses' => 'Admin\CaixaController@gerador']);
+
+    // Ordem de Serviço
+    Route::get('/admin/ordemservico/',['as'=>'admin.ordemservico', 'uses'=>'Admin\OrdemServicoController@index']);
+    Route::get('/admin/ordemservico/{id}',['as'=>'admin.ordemservico.form', 'uses'=>'Admin\OrdemServicoController@formulario'])->where('id', '[0-9]+');
+    Route::get('/admin/ordemservico/adicionar/{id_orcamento}',['as'=>'admin.ordemservico.adicionar', 'uses'=>'Admin\OrdemServicoController@adicionar'])->where('id_orcamento', '[0-9]+');
 });

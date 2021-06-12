@@ -250,10 +250,10 @@ class OrcamentoController extends Controller
                 <td>' . $valor['cod_item'] . '</td>
                 <td>' . $valor['descricao'] . '</td>
                 <td>' . $valor['quantidade'] . '</td>
-                <td>' . $valor['valor_unitario'] . '</td>
-                <td>' . $valor['percentual_desconto'] . '</td>
-                <td>' . $valor['valor_desconto'] . '</td>
-                <td>' . $valor['valor_total'] . '</td>';
+                <td>' . number_format($valor['valor_unitario'], 2, ',', '.')  . '</td>
+                <td>' . number_format($valor['percentual_desconto'],2,',','.') . '</td>
+                <td>' . number_format($valor['valor_desconto'],2,',','.') . '</td>
+                <td>' . number_format($valor['valor_total'],2,',','.') . '</td>';
             if ($valor['status_orcamento'] != 'aberto') {
                 $retorno .= '<td></td>';
             } else {
@@ -279,7 +279,7 @@ class OrcamentoController extends Controller
 
         $parametros = '';
 
-        if($dados['typevalue']=='0'|| $dados['typevalue']=='1' ){
+        if($dados['typevalue'] == '0'|| $dados['typevalue']=='1' ){
             $parametros = 'where documento = :obj ';
         }else if($dados['typevalue']=='2'){
             $parametros = 'where id_orcamento = :obj';
@@ -289,6 +289,7 @@ class OrcamentoController extends Controller
 
         $sql = 'select 
         o.id_orcamento, 
+        o.id_cliente,
         o.valor_desconto, 
         o.percentual_desconto, 
         o.valor_total_sem_desconto, 
@@ -303,9 +304,59 @@ class OrcamentoController extends Controller
              'obj'=>$dados['descricao']
          ]);
 
-        dd($registros);
-        // return response()->json(['status'=>'ture','values'=>$registros]);
+        // dd($registros);
+        return response()->json(['status'=>'true','tabela'=>$this->tabelaOrcamentos($registros)]);
 
+    }
+
+    public function tabelaOrcamentos($obj){
+        $tabela = '';
+        if(sizeof($obj)==0){
+            $tabela = '<div class="alert alert-warning" role="alert">Orçamento não localizado</div>';
+        }else{
+        $tabela = '
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="font-size: 12px">
+              <thead>
+                <tr>
+                    <th>#Cód. Orçamento</th>
+                    <th>Nome</th>
+                    <th>Documento</th>
+                    <th>Val. Desc.</th>
+                    <th>Méd. Desc.</th>
+                    <th>Val. Total S/ Desc.</th>
+                    <th>Valor Total</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+              </thead>
+              <tbody>';
+
+              foreach ($obj as $registro) {
+                    $tabela .= '<tr>';
+                    $tabela .= '<td>'.$registro->id_orcamento.'</td>';
+                    $tabela .= '<td>'.$registro->nome.'</td>';
+                    $tabela .= '<td>'.$registro->documento.'</td>';
+                    $tabela .= '<td>'.number_format($registro->valor_desconto, 2, ',', '.').'</td>';
+                    $tabela .= '<td>'.number_format($registro->percentual_desconto, 2, ',','.').'</td>';
+                    $tabela .= '<td>'.number_format($registro->valor_total_sem_desconto,2,',','.').'</td>';
+                    $tabela .= '<td>'.number_format($registro->valor_total,2,',','.').'</td>';
+                    if($registro->status_orcamento == 'aberto'){
+                        $tabela .= '<td><span class="badge badge-primary">'.strtoupper($registro->status_orcamento).'</span></td>';
+                    }else if($registro->status_orcamento == 'cancelado'){
+                        $tabela .= '<td><span class="badge badge-danger">'.strtoupper($registro->status_orcamento).'</span></td>';
+                    }else if($registro->status_orcamento == 'fechado'){
+                        $tabela .= '<td><span class="badge badge-secondary">'.strtoupper($registro->status_orcamento).'</span></td>';
+                    }else if($registro->status_orcamento == 'aprovado'){
+                        $tabela .= '<td><span class="badge badge-success">'.strtoupper($registro->status_orcamento).'</span></td>';
+                    }
+                    
+                    $tabela .= '<td><a href="'.route('admin.orcamentos.adicionar', [$registro->id_cliente, $registro->id_orcamento]).'" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm "  >Visualizar Orçamento</a></td>';
+                    $tabela .= '</tr>';
+              }
+              $tabela .= '</tbody>';
+              $tabela .= '</table>';
+        }
+        return $tabela;
     }
 
     public function removerPagamento($id)
@@ -327,8 +378,14 @@ class OrcamentoController extends Controller
 
     public function validarSaldoPagamento($id_orcamento)
     {
-        $obj = DB::table('vw_orcamento_pagamento_consolidado')->where('id_orcamento', '=', $id_orcamento)->sum('valor_a_receber');
-        return $obj == 0 ? 'true' : 'false';
+        $r = 'false';
+        $countT = DB::table('vw_orcamento_pagamento_consolidado')->where('id_orcamento', '=', $id_orcamento)->count();
+        if($countT > 0){
+            $obj = DB::table('vw_orcamento_pagamento_consolidado')->where('id_orcamento', '=', $id_orcamento)->sum('valor_a_receber');
+            $r = $obj == 0 ? 'true' : 'false';
+        }
+        
+        return $r;
     }
 
     public function removerItem($id_orcamento_item)

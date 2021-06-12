@@ -54,6 +54,7 @@ return array(
     'App\\model\\admin\\Orcamento' => $baseDir . '/app/model/admin/Orcamento.php',
     'App\\model\\admin\\OrcamentoItem' => $baseDir . '/app/model/admin/OrcamentoItem.php',
     'App\\model\\admin\\OrcamentoPagamento' => $baseDir . '/app/model/admin/OrcamentoPagamento.php',
+    'App\\model\\admin\\OrdemServico' => $baseDir . '/app/model/admin/OrdemServico.php',
     'App\\model\\admin\\Pagamento' => $baseDir . '/app/model/admin/Pagamento.php',
     'App\\model\\admin\\Perfil' => $baseDir . '/app/model/admin/Perfil.php',
     'App\\model\\admin\\Produto' => $baseDir . '/app/model/admin/Produto.php',

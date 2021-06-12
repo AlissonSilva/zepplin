@@ -319,6 +319,25 @@ left join (
 	group by
 		oi.id_produto ) x on p.id_produto = x.id_produto;
 
+create or replace view vw_ordem_servico as
+select 
+o.id_orcamento,
+o.status_orcamento ,
+vc.id_cliente,
+vc.nome ,
+vc.documento ,
+v.fabricante,
+v.id_veiculo,
+v.modelo,
+v.observacao,
+ifnull(os.status_servico, 'Não Iniciado') as status_servico,
+os.id_ordemservico 
+from orcamentos o 
+inner join vw_clientes vc on o.id_cliente = vc.id_cliente 
+inner join veiculos v on o.id_veiculo = v.id_cliente 
+left join ordem_servicos os on o.id_orcamento = os.id_orcamento 
+where o.status_orcamento = 'aprovado';
+
 DELIMITER $$
 
 CREATE OR REPLACE PROCEDURE `sp_cobranca`(in in_id_orcamento int, in in_id_pagamento int, in in_id_orcamento_pagamento int)

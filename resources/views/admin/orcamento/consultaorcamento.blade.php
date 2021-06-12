@@ -24,8 +24,8 @@
                     <div class="col-sm-4">
                         <label for="" class="label">Pesquisar Por: </label>
                         <select name="tipo_pesquisa" id="tipo_pesquisa" class="form-control form-control">
-                            <option value="0" >CNPJ</option>
                             <option value="1" >CPF</option>
+                            <option value="0" >CNPJ</option>
                             <option value="2" >Cod. Orcamento</option>
                             <option value="3" >Nome do Cliente</option>
                         </select>
@@ -41,13 +41,20 @@
                     </div>
                 </div>
             </div>
-            <div id="resultadoPesquisaOrcamento"></div>
+            <div class="table-responsive">
+                <div id="resultadoPesquisaOrcamento"></div>
+            </div>
           </div>
     </div>
 </div>
 
 <script>
-    var typevalue = '';
+    var typevalue = '1';
+
+    $(document).ready(function(){
+        $("#descricao-pl") .mask('999.999.999-99');
+    });
+    
 
     $('#pesquisarorcamento').click(function(e){
         // alert(typevalue);
@@ -58,14 +65,16 @@
             header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             data: { _token: $('meta[name="csrf-token"]').attr('content'), typevalue: typevalue, descricao: desc },
             success: function (e) {
-                $('#resultadoPesquisaOrcamento').html(e);
+                console.log(e);
+                if(e.status=='true'){
+                    $('#resultadoPesquisaOrcamento').html(e.tabela);
+                }
+                
             }
         });
     });
-
     $("#tipo_pesquisa").change(function () {
         typevalue = $(this).find(':selected').val();
-
         if(typevalue == 0){
             $("#descricao-pl")
                 .attr('type','text')
@@ -79,11 +88,13 @@
             
         }else if(typevalue == 2){
             $("#descricao-pl").val('')
+                .unmask()
                 .attr('type','number');
+
         }else if(typevalue == 3){
             $("#descricao-pl").val('')
                 .attr('type','text')
-                .mask('');
+                .unmask();
         }
 
         /* $('#result_p').html('<label for="" class="label">Parcelas</label> <select name="parcelas" id="parcelas" class="form-control form-control"></select> <label for="" class="label">Valor:</label><input type="text" name="valor_parcela" class="form-control form-control-user" id="valor_parcela" value="0.0" ><br><button id="adicionar_forma_pagamento_orcamento" onClick="eventos()" class="btn btn-success">Adicionar</button>')

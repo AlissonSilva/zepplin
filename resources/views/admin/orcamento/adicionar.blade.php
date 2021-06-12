@@ -12,7 +12,7 @@
     <div class="card shadow mb-4">
             <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary"> Novo Orçamento </h6>
-          </div>
+    </div>
           <div class="card-body">
             <div class="form-cidade">
                 <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">

@@ -140,12 +140,12 @@
 
         <li class="nav-item ">
           <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-cog "></i>
-            <span>OS</span>
+            <i class="fas fa-fw fa-wrench "></i>
+            <span>Ordem de Serviço</span>
           </a>
           <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="#">Ordem de Serviço</a>
+              <a class="collapse-item" href="{{route('admin.ordemservico')}}">Ordem de Serviço</a>
               <a class="collapse-item" href="#">Consultar Ordem</a>
 
             </div>
