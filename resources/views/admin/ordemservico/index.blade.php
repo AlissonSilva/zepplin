@@ -5,7 +5,7 @@
 @section('conteudo')
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Ordem de Seriço</h1>
+        <h1 class="h3 mb-0 text-gray-800">Ordem de Serviço</h1>
     </div>
 
     <!-- DataTales Example -->
@@ -40,7 +40,8 @@
                     <td>{{$registro->modelo}}</td>
                     <td>{{$registro->status_servico}}</td>
                     <td>{{$registro->observacao}}</td>
-                    <td><a href="{{route('admin.ordemservico.adicionar',$registro->id_orcamento)}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Iniciar</a></td>
+                    {{--  <td>{{isset($registro->id_ordemservico)?$registro->id_ordemservico:$registro->id_orcamento}}</td>  --}}
+                    <td><a href="{{ isset($registro->id_ordemservico) ? route('admin.ordemservico.form',$registro->id_ordemservico) : route('admin.ordemservico.adicionar',$registro->id_orcamento)}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> {{isset($registro->id_ordemservico)? 'Visualizar':'Iniciar'}} </a></td>
                 </tr>
                 @endforeach
               </tbody>
