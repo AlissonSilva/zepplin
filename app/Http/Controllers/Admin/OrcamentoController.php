@@ -400,7 +400,6 @@ class OrcamentoController extends Controller
 
     public function aprovarOrcamento(Request $request)
     {
-
         if ($this->validarSaldoPagamento($request['id_orcamento']) == 'true') {
             $dados = $request->all();
 

@@ -76,4 +76,25 @@ class OrdemServicoController extends Controller
 
         return view('admin.ordemservico.formulario', compact('registros', 'servicos', 'funcionarios'));
     }
+
+    public function editarservico(Request $request){
+        $dados = $request->all();
+        $objUsuarioServico = collect(
+            [
+                'data_hora_inicio' => date('Y-m-d H:i:s'),
+                'status_servico' => 'Em Andamento',
+                'id_funcionario' => $dados->employee
+            ]
+        )->toArray();
+
+        try {
+            OrdemServicoServico::where('id', $dados->servico)->update($objUsuarioServico);
+            return back()->with('success', 'Serviço alterado com sucesso.');;
+        } catch (\Throwable $th) {
+            return back()->with('fail', 'Erro ao fazer a alteração do serviço.');;
+        }
+
+    }
 }
+
+

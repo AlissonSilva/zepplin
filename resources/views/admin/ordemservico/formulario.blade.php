@@ -86,6 +86,9 @@
                         <thead>
                             <tr>
                                 <th>
+                                    Registro
+                                </th>
+                                <th>
                                     Serviço
                                 </th>
                                 <th>
@@ -112,6 +115,9 @@
                         <tbody>
                             @foreach ($servicos as $item)
                             <tr>
+                                <td class="registro">
+                                    {{$item->id}}
+                                </td>
                                 <td>
                                     {{$item->descricao}}
                                 </td>
@@ -119,7 +125,7 @@
                                     {{$item->status_servico}}
                                 </td>
                                 <td>
-                                    {{date('d/m/Y H:m:s', $item->created_at) }}
+                                    {{date('d/m/Y H:m:s', strtotime($item->created_at)) }}
                                 </td>
                                 <td>
                                     {{ isset($item->data_hora_inicio) ? date('d/m/Y H:m:s',strtotime($item->data_hora_inicio)):'' }}
@@ -144,7 +150,6 @@
                                     @else
                                         <button class="finalizar btn btn-warning btn-sm" disabled>Finalizar</button>
                                     @endif
-
                                 </td>
                             </tr>
                             @endforeach
@@ -152,6 +157,8 @@
                     </table>
                 </div>
             </div>
+
+            <div id="retorno_ordem"></div>
 
             <div class="row form-group">
                 <div class="col-sm-10">
@@ -165,11 +172,19 @@
 
     <script>
         $(".iniciar").click(function() {
-            var $row = $(this).closest("tr");    // Find the row
-            var $text = $row.find(".employee option:selected").val(); // Find the text
-
+            var $row = $(this).closest("tr");
+            var $text = $row.find(".employee option:selected").val(); 
+            var $servico = $row.find(".registro").text();
             // Let's test it out
-            alert($text);
+            $.ajax({
+                type: 'post',
+                url: '/admin/ordemservico/editarservico/',
+                header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data: { _token: $('meta[name="csrf-token"]').attr('content'), employee: $text , servico: $servico},
+                success:function(e){
+                    // $('#retorno_ordem').html(e);
+                }
+            });
         });
     </script>
 

@@ -139,4 +139,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/admin/ordemservico/',['as'=>'admin.ordemservico', 'uses'=>'Admin\OrdemServicoController@index']);
     Route::get('/admin/ordemservico/{id}',['as'=>'admin.ordemservico.form', 'uses'=>'Admin\OrdemServicoController@formulario'])->where('id', '[0-9]+');
     Route::get('/admin/ordemservico/adicionar/{id_orcamento}',['as'=>'admin.ordemservico.adicionar', 'uses'=>'Admin\OrdemServicoController@adicionar'])->where('id_orcamento', '[0-9]+');
+    Route::post('/admin/ordemservico/editarservico/',['as'=>'admin.ordemservico.editarservico', 'uses'=>'Admin\OrdemServicoController@editarservico']);
+    
 });
