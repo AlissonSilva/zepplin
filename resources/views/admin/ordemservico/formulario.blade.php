@@ -137,17 +137,18 @@
                                 <td class="employee">
                                     <select name="funcionario" class="form-select" id="funcionario" {{isset($item->data_hora_inicio)?'disabled':''}}>
                                         <option value="0">SELECIONAR UM FUNCIONÁRIO</option>
+
                                         @foreach ($funcionarios as $employee)
-                                            <option value="{{$employee->id}}" {{isset($item->id_funcionario)? ($item->id_funcionario = $employee->id)? 'selected':'' :''}}>{{$employee->name}}</option>
+                                            <option value="{{$employee->id}}" {{ $item->id_funcionario == $employee->id ? 'selected':'' }}>{{ $employee->name}}</option>
                                         @endforeach
                                     </select>
                                 </td>
                                 <td>
                                     @if (!isset($item->data_hora_inicio))
                                         <button class="iniciar btn btn-success btn-sm">Iniciar</button>
-                                    @elseif(isset($item->data_hora_inicio) && isset($item->data_hora_inicio))
+                                    @elseif(isset($item->data_hora_inicio) && !isset($item->data_hora_finalizacao))
                                         <button class="finalizar btn btn-warning btn-sm">Finalizar</button>
-                                    @else
+                                    @elseif(isset($item->data_hora_finalizacao))
                                         <button class="finalizar btn btn-warning btn-sm" disabled>Finalizar</button>
                                     @endif
                                 </td>
@@ -158,12 +159,24 @@
                 </div>
             </div>
 
-            <div id="retorno_ordem"></div>
+            <div id="retorno_ordem">
+                @if ($message = Session::get('success'))
+                    <div class="alert alert-info alert-success">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <strong>{{ $message }}</strong>
+                    </div>
+                @elseif($message = Session::get('fail'))
+                <div class="alert alert-info alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>{{ $message }}</strong>
+                </div>
+
+                @endif
+            </div>
 
             <div class="row form-group">
                 <div class="col-sm-10">
                     <button class="btn btn-primary btn-sm">Alterar</button>
-                    <button class="btn btn-success btn-sm">Iniciar</button>
                     <button class="btn btn-warning btn-sm">Finalizar</button>
                 </div>
             </div>
@@ -173,7 +186,7 @@
     <script>
         $(".iniciar").click(function() {
             var $row = $(this).closest("tr");
-            var $text = $row.find(".employee option:selected").val(); 
+            var $text = $row.find(".employee option:selected").val();
             var $servico = $row.find(".registro").text();
             // Let's test it out
             $.ajax({
@@ -182,10 +195,26 @@
                 header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data: { _token: $('meta[name="csrf-token"]').attr('content'), employee: $text , servico: $servico},
                 success:function(e){
-                    // $('#retorno_ordem').html(e);
+                    location.reload();
                 }
             });
         });
+
+        $(".finalizar").click(function(){
+            var $row = $(this).closest("tr");
+            var $servico = $row.find(".registro").text();
+
+            $.ajax({
+                type: 'post',
+                url: '/admin/ordemservico/finalizarservico/',
+                header: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data: { _token: $('meta[name="csrf-token"]').attr('content'),servico: $servico},
+                success:function(e){
+                    location.reload();
+                }
+
+            });
+        })
     </script>
 
 @endsection

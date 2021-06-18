@@ -105,8 +105,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/admin/financeiro/forma_pagamento/pagamento_orcamento', ['as' => 'admin.orcamentos.pagorcamento', 'uses' => 'Admin\OrcamentoController@pagOrcamento']);
     Route::get('/admin/orcament/forma_pagamento/{id}', ['as' => 'admin.orcamentos.tabelaPagamentos', 'uses' => 'Admin\OrcamentoController@tabelaPagamento'])->where('id', '[0-9]+');
     Route::get('/admin/orcamento/removerformapagamento/{id}', ['as' => 'admin.orcamentos.removerPagamento', 'uses' => 'Admin\OrcamentoController@removerPagamento'])->where('id', '[0-9]+');
-    Route::get('/admin/orcamento/pesquisar/', ['as' => 'admin.orcamentos.pesquisar', 'uses'=>'Admin\OrcamentoController@pesquisar']);
-    Route::post('/admin/orcamento/pesquisarocamento/', ['as' => 'admin.orcamento.pesquisarorcamento', 'uses'=>'Admin\OrcamentoController@pesquisarOrcamento']);
+    Route::get('/admin/orcamento/pesquisar/', ['as' => 'admin.orcamentos.pesquisar', 'uses' => 'Admin\OrcamentoController@pesquisar']);
+    Route::post('/admin/orcamento/pesquisarocamento/', ['as' => 'admin.orcamento.pesquisarorcamento', 'uses' => 'Admin\OrcamentoController@pesquisarOrcamento']);
 
     // Bancos
     Route::get('/admin/financeiro/banco/', ['as' => 'admin.bancos', 'uses' => 'Admin\BancoController@index']);
@@ -136,9 +136,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/admin/financeiro/caixa/relatorio/gerado/', ['as' => 'admin.caixa.gerador', 'uses' => 'Admin\CaixaController@gerador']);
 
     // Ordem de Serviço
-    Route::get('/admin/ordemservico/',['as'=>'admin.ordemservico', 'uses'=>'Admin\OrdemServicoController@index']);
-    Route::get('/admin/ordemservico/{id}',['as'=>'admin.ordemservico.form', 'uses'=>'Admin\OrdemServicoController@formulario'])->where('id', '[0-9]+');
-    Route::get('/admin/ordemservico/adicionar/{id_orcamento}',['as'=>'admin.ordemservico.adicionar', 'uses'=>'Admin\OrdemServicoController@adicionar'])->where('id_orcamento', '[0-9]+');
-    Route::post('/admin/ordemservico/editarservico/',['as'=>'admin.ordemservico.editarservico', 'uses'=>'Admin\OrdemServicoController@editarservico']);
-    
+    Route::get('/admin/ordemservico/', ['as' => 'admin.ordemservico', 'uses' => 'Admin\OrdemServicoController@index']);
+    Route::get('/admin/ordemservico/{id}', ['as' => 'admin.ordemservico.form', 'uses' => 'Admin\OrdemServicoController@formulario'])->where('id', '[0-9]+');
+    Route::get('/admin/ordemservico/adicionar/{id_orcamento}', ['as' => 'admin.ordemservico.adicionar', 'uses' => 'Admin\OrdemServicoController@adicionar'])->where('id_orcamento', '[0-9]+');
+    Route::post('/admin/ordemservico/editarservico/', ['as' => 'admin.ordemservico.editarservico', 'uses' => 'Admin\OrdemServicoController@editarservico']);
+    Route::post('/admin/ordemservico/finalizarservico/', ['as' => 'admin.ordemservico.finalizarservico', 'uses' => 'Admin\OrdemServicoController@finalizarservico']);
 });
