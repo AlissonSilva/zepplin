@@ -1,4 +1,4 @@
-CREATE DATABASE zeppelin;
+CREATE DATABASE IF NOT EXISTS zeppelin;
 
 use zeppelin;
 
