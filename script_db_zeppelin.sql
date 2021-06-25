@@ -1,11 +1,6 @@
--- phpMyAdmin SQL Dump
--- version 5.0.4
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Tempo de geração: 11-Abr-2021 às 05:41
--- Versão do servidor: 10.4.17-MariaDB
--- versão do PHP: 8.0.2
+CREATE DATABASE zeppelin;
+
+use zeppelin;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
