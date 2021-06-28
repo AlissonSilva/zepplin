@@ -123,7 +123,7 @@ class ProdutoController extends Controller
     public function inserir(Request $request)
     {
         if (empty($request->descricao)) {
-            return response()->json(['msg' => '<div class="alert alert-danger"> O campo descrição é obrigatório.</div>', 'tipo' => 'false']);
+            return response()->json(['msg' => '<div class="alert alert-danger">O campo descrição é obrigatório.</div>', 'tipo' => 'false']);
         } else if (empty($request->preco)) {
             return response()->json(['msg' => '<div class="alert alert-danger">O campo valor é obrigatório.</div>', 'tipo' => 'false']);
         } else {
