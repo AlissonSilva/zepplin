@@ -1,11 +1,7 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+## SIGOM
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+O SIGOM foi desenvolvido para atender os requisitos da materia de Projeto Interdisciplinar, do curso de Analise e desenvolvimento de sistemas, da faculdade FANAP - Aparecida de Goiânia - GO.
+
 
 ## Como instalar a aplicação.
 
@@ -34,6 +30,41 @@ Por fim, executar o comando php artisan serve para iniciar a aplicação laravel
 php artisan serve <br>
 
 Como pré-requisito ter instalado o PHP7, Composer, Laravel e o MySQL.
+
+## Utilização
+
+Usuário e senha pardão <br>
+Usuário: admin@admin.com <br>
+Senha: 123456
+
+![Tela de Login](assets/img1.png)
+
+Dashboard da aplicação.
+
+![Dashboard](assets/img2.png)
+
+Listagem de Produtos.
+
+![Listaem de produtos](assets/img3.png)
+
+Cadastro de um novo produto.
+
+![Cadastro de um novo item](assets/img4.png)
+
+Tela de orçamento.
+
+![Tela de orçamento](assets/img5.png)
+
+Vinculação da forma de pagamento ao orçamento
+
+![Formas de pagamento](assets/img6.png)
+
+![Formas de pagamento2](assets/img7.png)
+
+Impressão do orçamento.
+
+![Tela de Login](assets/img8.png)
+
 
 ## About Laravel
 
